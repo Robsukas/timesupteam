@@ -17,8 +17,8 @@
 ## Sprint 1 (9.02-23.02)
 
 * [x] Uurida mängumootori (nt LibGDX) ja Javas mängutegemise võimalusi => eesmärk: valime endale sobiva. **libGDX ja Netty.io**
-* [ ] Uurida TalTechi serveriga ühilduvust => eesmärk: oskame planeerida tehnilist lahendust, et mäng saaks joosta TalTechi serveris
-* [ ] Ssaada mängu punane ruut ja see klaviatuuriga (WASD) liikuma panna
+* [x] Uurida TalTechi serveriga ühilduvust => eesmärk: oskame planeerida tehnilist lahendust, et mäng saaks joosta TalTechi serveris
+* [ ] Saada mängu punane ruut ja see klaviatuuriga (WASD) liikuma panna
 
 ## Sprint 2 (23.02-9.03)
 

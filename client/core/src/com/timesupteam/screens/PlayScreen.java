@@ -22,27 +22,26 @@ import com.timesupteam.TimesUpTeamGame;
 
 public class PlayScreen implements Screen {
 
-    //Main variables
+    // Main variables
     private TimesUpTeamGame game;
-    Texture texture;
     private OrthographicCamera gameCam;
     private Viewport gamePort;
 
-    //Tiled map variables
+    // Tiled map variables
     private TmxMapLoader maploader;
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
 
-    //Box2d variables
+    // Box2d variables
 
     public PlayScreen(TimesUpTeamGame game) {
         this.game = game;
 
-        //Initialize gameCam
+        // Initialize gameCam
         gameCam = new OrthographicCamera();
         gamePort = new FitViewport(TimesUpTeamGame.V_WIDTH / TimesUpTeamGame.PPM, TimesUpTeamGame.V_HEIGHT / TimesUpTeamGame.PPM, gameCam);
 
-        //Set gamecam position
+        // Set gamecam position to center
         gameCam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
     }
     @Override

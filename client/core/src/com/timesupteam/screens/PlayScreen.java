@@ -32,7 +32,12 @@ public class PlayScreen implements Screen {
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
 
-    // Box2d variables
+    //Box2d variables
+    private World world;
+    private Box2DDebugRenderer b2dr;
+    private Character player;
+
+
 
     public PlayScreen(TimesUpTeamGame game) {
         this.game = game;
@@ -41,23 +46,64 @@ public class PlayScreen implements Screen {
         gameCam = new OrthographicCamera();
         gamePort = new FitViewport(TimesUpTeamGame.V_WIDTH / TimesUpTeamGame.PPM, TimesUpTeamGame.V_HEIGHT / TimesUpTeamGame.PPM, gameCam);
 
+        maploader = new TmxMapLoader();
+        map = maploader.load("final_test.tmx");
+        renderer = new OrthogonalTiledMapRenderer(map, 1 / TimesUpTeamGame.PPM);
+
         // Set gamecam position to center
         gameCam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
+
+
+        world = new World(new Vector2(0, -10), true);
+        b2dr = new Box2DDebugRenderer();
+        //player = new Character(world);
+
+        BodyDef bdef = new BodyDef();
+        PolygonShape shape = new PolygonShape();
+        FixtureDef fdef = new FixtureDef();
+        Body body;
+
+
     }
     @Override
     public void show() {
 
     }
 
+    public void handleInput(float dt) {
+
+    }
+    public void update(float dt) {
+        //handle user input first
+        handleInput(dt);
+
+        world.step(1/60f, 6, 2);
+
+        //update our gamecam with correct coordinates after changes
+        gameCam.update();
+
+        //tell our renderer to draw only what our camera can see in our game world
+        renderer.setView(gameCam);
+    }
+
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(1, 0, 0, 1);
+        update(delta);
+
+        Gdx.gl.glClearColor(135/255f, 206/255f, 235/255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        //render our game map
+        renderer.render();
+
+        //render our Box2DDebugLines
+        b2dr.render(world, gameCam.combined);
+
     }
 
     @Override
     public void resize(int width, int height) {
-
+        gamePort.update(width, height);
     }
 
     @Override

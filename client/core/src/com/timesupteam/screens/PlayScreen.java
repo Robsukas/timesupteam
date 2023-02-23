@@ -63,6 +63,21 @@ public class PlayScreen implements Screen {
         FixtureDef fdef = new FixtureDef();
         Body body;
 
+        // Create fixtures for walls
+        for(RectangleMapObject object : map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)) {
+            Rectangle rect = object.getRectangle();
+
+            bdef.type = BodyDef.BodyType.StaticBody;
+            bdef.position.set((rect.getX() + rect.getWidth() / 2)/ TimesUpTeamGame.PPM, (rect.getY() + rect.getHeight() / 2)/ TimesUpTeamGame.PPM);
+
+            body = world.createBody(bdef);
+
+            shape.setAsBox(rect.getWidth() / 2 / TimesUpTeamGame.PPM, rect.getHeight() / 2 / TimesUpTeamGame.PPM);
+            fdef.shape = shape;
+            body.createFixture(fdef);
+        }
+
+
 
     }
     @Override
@@ -71,7 +86,6 @@ public class PlayScreen implements Screen {
     }
 
     public void handleInput(float dt) {
-
     }
     public void update(float dt) {
         //handle user input first

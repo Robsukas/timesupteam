@@ -10,8 +10,8 @@ import com.timesupteam.screens.PlayScreen;
 public class TimesUpTeamGame extends Game {
 
 	// Virtual width and height
-	public static final int V_WIDTH = 400;
-	public static final int V_HEIGHT = 208;
+	public static final int V_WIDTH = 512;
+	public static final int V_HEIGHT = 288;
 
 	// PPM - pixels per meter
 	public static final float PPM = 100;

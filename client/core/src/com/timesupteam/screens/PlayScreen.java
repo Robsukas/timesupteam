@@ -19,6 +19,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.timesupteam.TimesUpTeamGame;
+import com.timesupteam.sprites.Character;
 
 public class PlayScreen implements Screen {
 
@@ -54,9 +55,9 @@ public class PlayScreen implements Screen {
         gameCam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
 
 
-        world = new World(new Vector2(0, -10), true);
+        world = new World(new Vector2(0, 0), true);
         b2dr = new Box2DDebugRenderer();
-        //player = new Character(world);
+        player = new Character(world);
 
         BodyDef bdef = new BodyDef();
         PolygonShape shape = new PolygonShape();
@@ -86,6 +87,19 @@ public class PlayScreen implements Screen {
     }
 
     public void handleInput(float dt) {
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            player.b2Body.applyLinearImpulse(new Vector2(0.1f, 0), player.b2Body.getWorldCenter(), true);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            player.b2Body.applyLinearImpulse(new Vector2(-0.1f, 0), player.b2Body.getWorldCenter(), true);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            player.b2Body.applyLinearImpulse(new Vector2(0, 0.1f), player.b2Body.getWorldCenter(), true);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+            player.b2Body.applyLinearImpulse(new Vector2(0, -0.1f), player.b2Body.getWorldCenter(), true);
+        }
+
     }
     public void update(float dt) {
         //handle user input first
@@ -93,11 +107,16 @@ public class PlayScreen implements Screen {
 
         world.step(1/60f, 6, 2);
 
+        // Put gamecam on character
+        gameCam.position.x = player.b2Body.getPosition().x;
+        gameCam.position.y = player.b2Body.getPosition().y;
+
         //update our gamecam with correct coordinates after changes
         gameCam.update();
 
         //tell our renderer to draw only what our camera can see in our game world
         renderer.setView(gameCam);
+
     }
 
     @Override

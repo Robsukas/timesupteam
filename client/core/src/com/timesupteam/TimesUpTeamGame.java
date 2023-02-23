@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.timesupteam.screens.PlayScreen;
 
+import java.io.IOException;
+
 public class TimesUpTeamGame extends Game {
 
 	// Virtual width and height
@@ -22,6 +24,15 @@ public class TimesUpTeamGame extends Game {
 	public void create () {
 		batch = new SpriteBatch();
 		setScreen(new PlayScreen(this));
+
+		// Try to connect to the server
+		try {
+			new MainClient();
+		} catch (IOException e) {
+			System.err.println("--- IOException; seems like ports may be already in use. " +
+					"Did you try to close game instances?");
+			throw new RuntimeException(e);
+		}
 	}
 
 	@Override

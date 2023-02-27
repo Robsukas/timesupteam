@@ -20,6 +20,8 @@ public class TimesUpTeamGame extends Game {
 
 	public SpriteBatch batch;
 
+	public MainClient client;
+
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
@@ -27,7 +29,7 @@ public class TimesUpTeamGame extends Game {
 
 		// Try to connect to the server
 		try {
-			new MainClient();
+			client = new MainClient();
 		} catch (IOException e) {
 			System.err.println("--- IOException; seems like ports may be already in use. " +
 					"Did you try to close game instances?");

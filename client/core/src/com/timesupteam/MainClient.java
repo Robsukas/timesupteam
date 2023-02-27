@@ -2,6 +2,7 @@ package com.timesupteam;
 
 import com.esotericsoftware.kryonet.Client;
 
+import javax.management.loading.ClassLoaderRepository;
 import java.io.IOException;
 
 public class MainClient {
@@ -15,9 +16,18 @@ public class MainClient {
     public MainClient() throws IOException {
         client = new Client();
         // RegisterClasses.register(client);
+        client.getKryo().register(PlayerPosition.class);
 
         client.start();
         int connectionTimeout = 7000;
         client.connect(connectionTimeout, SERVER_IP, TCP_PORT, UDP_PORT);
+    }
+
+    public void sendPosition(float x, float y) {
+        PlayerPosition pos = new PlayerPosition();
+        pos.x = x;
+        pos.y = y;
+
+        client.sendTCP(pos);
     }
 }

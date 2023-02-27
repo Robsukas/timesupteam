@@ -86,13 +86,17 @@ public class PlayScreen implements Screen {
     }
 
     public void handleInput() {
-        float speed = 2.0f;
-
         boolean moveUp = Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP);
         boolean moveLeft = Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT);
         boolean moveDown = Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyPressed(Input.Keys.DOWN);
         boolean moveRight = Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT);
 
+        // Do nothing if player has not moved
+        if (!moveRight && !moveUp && !moveLeft && !moveDown) {
+            return;
+        }
+
+        float speed = 2.0f;
         if (moveUp) {
             player.b2Body.setTransform(player.b2Body.getPosition().x,
                     player.b2Body.getPosition().y + (speed / TimesUpTeamGame.PPM), 0);
@@ -109,6 +113,9 @@ public class PlayScreen implements Screen {
             player.b2Body.setTransform(player.b2Body.getPosition().x + (speed / TimesUpTeamGame.PPM),
                     player.b2Body.getPosition().y, 0);
         }
+
+        // Send new position to server
+        game.client.sendPosition(player.b2Body.getPosition().x, player.b2Body.getPosition().y);
     }
 
     public void update() {

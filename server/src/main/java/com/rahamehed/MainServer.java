@@ -60,6 +60,7 @@ public class MainServer {
              * "This method should not block for long periods as other network activity will not be processed until it returns."
              */
             public void received(Connection c, Object object) {
+                System.out.println("here2");
                 if (object == null) {
                     return;
                 }
@@ -69,6 +70,11 @@ public class MainServer {
                 System.out.println("--- Connection ID: " + c.getID());
                 System.out.println("--- Object: " + object);
                 System.out.println();
+
+                if (object instanceof PlayerPosition) {
+                    System.out.println(((PlayerPosition) object).x);
+                    System.out.println(((PlayerPosition) object).y);
+                }
             }
         });
 

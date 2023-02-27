@@ -39,7 +39,6 @@ public class PlayScreen implements Screen {
     private Character player;
 
 
-
     public PlayScreen(TimesUpTeamGame game) {
         this.game = game;
 
@@ -65,11 +64,11 @@ public class PlayScreen implements Screen {
         Body body;
 
         // Create fixtures for walls
-        for(RectangleMapObject object : map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)) {
+        for (RectangleMapObject object : map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = object.getRectangle();
 
             bdef.type = BodyDef.BodyType.StaticBody;
-            bdef.position.set((rect.getX() + rect.getWidth() / 2)/ TimesUpTeamGame.PPM, (rect.getY() + rect.getHeight() / 2)/ TimesUpTeamGame.PPM);
+            bdef.position.set((rect.getX() + rect.getWidth() / 2) / TimesUpTeamGame.PPM, (rect.getY() + rect.getHeight() / 2) / TimesUpTeamGame.PPM);
 
             body = world.createBody(bdef);
 
@@ -79,33 +78,44 @@ public class PlayScreen implements Screen {
         }
 
 
-
     }
+
     @Override
     public void show() {
 
     }
 
-    public void handleInput(float dt) {
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            player.b2Body.applyLinearImpulse(new Vector2(0.1f, 0), player.b2Body.getWorldCenter(), true);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            player.b2Body.applyLinearImpulse(new Vector2(-0.1f, 0), player.b2Body.getWorldCenter(), true);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            player.b2Body.applyLinearImpulse(new Vector2(0, 0.1f), player.b2Body.getWorldCenter(), true);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            player.b2Body.applyLinearImpulse(new Vector2(0, -0.1f), player.b2Body.getWorldCenter(), true);
-        }
+    public void handleInput() {
+        float speed = 2.0f;
 
+        boolean moveUp = Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP);
+        boolean moveLeft = Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT);
+        boolean moveDown = Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyPressed(Input.Keys.DOWN);
+        boolean moveRight = Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT);
+
+        if (moveUp) {
+            player.b2Body.setTransform(player.b2Body.getPosition().x,
+                    player.b2Body.getPosition().y + (speed / TimesUpTeamGame.PPM), 0);
+        }
+        if (moveLeft) {
+            player.b2Body.setTransform(player.b2Body.getPosition().x - (speed / TimesUpTeamGame.PPM),
+                    player.b2Body.getPosition().y, 0);
+        }
+        if (moveDown) {
+            player.b2Body.setTransform(player.b2Body.getPosition().x,
+                    player.b2Body.getPosition().y - (speed / TimesUpTeamGame.PPM), 0);
+        }
+        if (moveRight) {
+            player.b2Body.setTransform(player.b2Body.getPosition().x + (speed / TimesUpTeamGame.PPM),
+                    player.b2Body.getPosition().y, 0);
+        }
     }
-    public void update(float dt) {
-        //handle user input first
-        handleInput(dt);
 
-        world.step(1/60f, 6, 2);
+    public void update() {
+        //handle user input first
+        handleInput();
+
+        world.step(1 / 60f, 6, 2);
 
         // Put gamecam on character
         gameCam.position.x = player.b2Body.getPosition().x;
@@ -121,9 +131,9 @@ public class PlayScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        update(delta);
+        update();
 
-        Gdx.gl.glClearColor(135/255f, 206/255f, 235/255f, 1);
+        Gdx.gl.glClearColor(135 / 255f, 206 / 255f, 235 / 255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         //render our game map

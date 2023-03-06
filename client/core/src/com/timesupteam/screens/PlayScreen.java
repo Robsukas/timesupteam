@@ -20,6 +20,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.timesupteam.TimesUpTeamGame;
 import com.timesupteam.sprites.Character;
+import com.timesupteam.tools.B2WorldCreator;
 
 public class PlayScreen implements Screen {
 
@@ -47,7 +48,7 @@ public class PlayScreen implements Screen {
         gamePort = new FitViewport(TimesUpTeamGame.V_WIDTH / TimesUpTeamGame.PPM, TimesUpTeamGame.V_HEIGHT / TimesUpTeamGame.PPM, gameCam);
 
         maploader = new TmxMapLoader();
-        map = maploader.load("final_test.tmx");
+        map = maploader.load("test_level_1.tmx");
         renderer = new OrthogonalTiledMapRenderer(map, 1 / TimesUpTeamGame.PPM);
 
         // Set gamecam position to center
@@ -56,27 +57,10 @@ public class PlayScreen implements Screen {
 
         world = new World(new Vector2(0, 0), true);
         b2dr = new Box2DDebugRenderer();
+
+        new B2WorldCreator(world, map);
+
         player = new Character(world);
-
-        BodyDef bdef = new BodyDef();
-        PolygonShape shape = new PolygonShape();
-        FixtureDef fdef = new FixtureDef();
-        Body body;
-
-        // Create fixtures for walls
-        for (RectangleMapObject object : map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)) {
-            Rectangle rect = object.getRectangle();
-
-            bdef.type = BodyDef.BodyType.StaticBody;
-            bdef.position.set((rect.getX() + rect.getWidth() / 2) / TimesUpTeamGame.PPM, (rect.getY() + rect.getHeight() / 2) / TimesUpTeamGame.PPM);
-
-            body = world.createBody(bdef);
-
-            shape.setAsBox(rect.getWidth() / 2 / TimesUpTeamGame.PPM, rect.getHeight() / 2 / TimesUpTeamGame.PPM);
-            fdef.shape = shape;
-            body.createFixture(fdef);
-        }
-
 
     }
 
@@ -94,26 +78,26 @@ public class PlayScreen implements Screen {
         boolean moveRight = Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT);
 
         if (moveUp) {
-            player.b2Body.setTransform(player.b2Body.getPosition().x,
-                    player.b2Body.getPosition().y + (speed / TimesUpTeamGame.PPM), 0);
+            player.b2Body.applyLinearImpulse(new Vector2(0, 0.3f), player.b2Body.getWorldCenter(), true);
+
         }
         if (moveLeft) {
-            player.b2Body.setTransform(player.b2Body.getPosition().x - (speed / TimesUpTeamGame.PPM),
-                    player.b2Body.getPosition().y, 0);
+            player.b2Body.applyLinearImpulse(new Vector2(-0.3f, 0), player.b2Body.getWorldCenter(), true);
         }
         if (moveDown) {
-            player.b2Body.setTransform(player.b2Body.getPosition().x,
-                    player.b2Body.getPosition().y - (speed / TimesUpTeamGame.PPM), 0);
+            player.b2Body.applyLinearImpulse(new Vector2(0, -0.3f), player.b2Body.getWorldCenter(), true);
         }
         if (moveRight) {
-            player.b2Body.setTransform(player.b2Body.getPosition().x + (speed / TimesUpTeamGame.PPM),
-                    player.b2Body.getPosition().y, 0);
+            player.b2Body.applyLinearImpulse(new Vector2(0.3f, 0), player.b2Body.getWorldCenter(), true);
         }
+        System.out.println("X = " + player.b2Body.getPosition().x * 100);
+        System.out.println("Y = " + player.b2Body.getPosition().y * 100);
     }
 
     public void update() {
         //handle user input first
         handleInput();
+        player.b2Body.setLinearDamping(20);
 
         world.step(1 / 60f, 6, 2);
 
@@ -166,6 +150,9 @@ public class PlayScreen implements Screen {
 
     @Override
     public void dispose() {
-
+        map.dispose();
+        renderer.dispose();
+        world.dispose();
+        b2dr.dispose();
     }
 }

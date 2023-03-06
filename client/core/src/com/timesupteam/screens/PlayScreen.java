@@ -38,6 +38,8 @@ public class PlayScreen implements Screen {
     private Box2DDebugRenderer b2dr;
     private Character player;
 
+    private float lastPositionX, lastPositionY;
+
 
     public PlayScreen(TimesUpTeamGame game) {
         this.game = game;
@@ -53,8 +55,7 @@ public class PlayScreen implements Screen {
         // Set gamecam position to center
         gameCam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
 
-
-        world = new World(new Vector2(0, 0), true);
+        world = new World(Vector2.Zero, true);
         b2dr = new Box2DDebugRenderer();
         player = new Character(world);
 
@@ -91,49 +92,55 @@ public class PlayScreen implements Screen {
         boolean moveDown = Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyPressed(Input.Keys.DOWN);
         boolean moveRight = Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT);
 
-        // Do nothing if player has not moved
+        // Do nothing if player hasn't moved
         if (!moveRight && !moveUp && !moveLeft && !moveDown) {
             return;
         }
 
-        float speed = 2.0f;
-        if (moveUp) {
-            player.b2Body.setTransform(player.b2Body.getPosition().x,
-                    player.b2Body.getPosition().y + (speed / TimesUpTeamGame.PPM), 0);
-        }
-        if (moveLeft) {
-            player.b2Body.setTransform(player.b2Body.getPosition().x - (speed / TimesUpTeamGame.PPM),
-                    player.b2Body.getPosition().y, 0);
-        }
-        if (moveDown) {
-            player.b2Body.setTransform(player.b2Body.getPosition().x,
-                    player.b2Body.getPosition().y - (speed / TimesUpTeamGame.PPM), 0);
-        }
-        if (moveRight) {
-            player.b2Body.setTransform(player.b2Body.getPosition().x + (speed / TimesUpTeamGame.PPM),
-                    player.b2Body.getPosition().y, 0);
-        }
+        // Otherwise, calculate & apply force to player body
+        float moveX = 0f;
+        float moveY = 0f;
 
-        // Send new position to server
-        game.client.sendPosition(player.b2Body.getPosition().x, player.b2Body.getPosition().y);
+        if (moveRight) moveX = 1f;
+        if (moveLeft) moveX = -1f;
+        if (moveUp) moveY = 1f;
+        if (moveDown) moveY = -1f;
+
+        Vector2 moveDir = new Vector2(moveX, moveY).nor();  // normalized => diagonal movement is not faster
+        float moveSpeed = 0.75f;
+        moveDir.x *= moveSpeed;
+        moveDir.y *= moveSpeed;
+
+        player.b2Body.applyLinearImpulse(moveDir, player.b2Body.getWorldCenter(), true);
     }
 
     public void update() {
-        //handle user input first
+        // Stop player movement, then handle user input (for possible new movement)
+        player.b2Body.setLinearVelocity(Vector2.Zero);
         handleInput();
 
+        // Take a time step (actually simulate movement, collision detection, etc.)
         world.step(1 / 60f, 6, 2);
 
-        // Put gamecam on character
-        gameCam.position.x = player.b2Body.getPosition().x;
-        gameCam.position.y = player.b2Body.getPosition().y;
+        // Put game-cam on character
+        float currentPositionX = player.b2Body.getPosition().x;
+        float currentPositionY = player.b2Body.getPosition().y;
+        gameCam.position.x = currentPositionX;
+        gameCam.position.y = currentPositionY;
 
-        //update our gamecam with correct coordinates after changes
+        // Update our game-cam with correct coordinates after changes
         gameCam.update();
 
-        //tell our renderer to draw only what our camera can see in our game world
+        // Tell our renderer to draw only what our camera can see in our game world
         renderer.setView(gameCam);
 
+        // SERVER: if player position has changed since last update, send the new position to server for broadcasting
+        if (currentPositionX != lastPositionX || currentPositionY != lastPositionY) {
+            game.client.sendPosition(player.b2Body.getPosition().x, player.b2Body.getPosition().y);
+
+            lastPositionX = currentPositionX;
+            lastPositionY = currentPositionY;
+        }
     }
 
     @Override
@@ -143,12 +150,11 @@ public class PlayScreen implements Screen {
         Gdx.gl.glClearColor(135 / 255f, 206 / 255f, 235 / 255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        //render our game map
+        // Render our game map
         renderer.render();
 
-        //render our Box2DDebugLines
+        // Render our Box2DDebugLines
         b2dr.render(world, gameCam.combined);
-
     }
 
     @Override

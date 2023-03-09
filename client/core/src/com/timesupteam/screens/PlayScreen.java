@@ -6,6 +6,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -20,11 +21,13 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.timesupteam.TimesUpTeamGame;
 import com.timesupteam.sprites.Character;
+import com.timesupteam.tools.B2WorldCreator;
 
 public class PlayScreen implements Screen {
 
     // Main variables
     private TimesUpTeamGame game;
+    private TextureAtlas atlas;
     private OrthographicCamera gameCam;
     private Viewport gamePort;
 
@@ -42,6 +45,10 @@ public class PlayScreen implements Screen {
 
 
     public PlayScreen(TimesUpTeamGame game) {
+        // Initialize texture
+        atlas = new TextureAtlas("Character.pack");
+
+        // Initialize game
         this.game = game;
 
         // Initialize gameCam
@@ -57,30 +64,16 @@ public class PlayScreen implements Screen {
 
         world = new World(Vector2.Zero, true);
         b2dr = new Box2DDebugRenderer();
-        player = new Character(world);
 
-        BodyDef bdef = new BodyDef();
-        PolygonShape shape = new PolygonShape();
-        FixtureDef fdef = new FixtureDef();
-        Body body;
+        new B2WorldCreator(world, map);
 
-        // Create fixtures for walls
-        for (RectangleMapObject object : map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)) {
-            Rectangle rect = object.getRectangle();
-
-            bdef.type = BodyDef.BodyType.StaticBody;
-            bdef.position.set((rect.getX() + rect.getWidth() / 2) / TimesUpTeamGame.PPM, (rect.getY() + rect.getHeight() / 2) / TimesUpTeamGame.PPM);
-
-            body = world.createBody(bdef);
-
-            shape.setAsBox(rect.getWidth() / 2 / TimesUpTeamGame.PPM, rect.getHeight() / 2 / TimesUpTeamGame.PPM);
-            fdef.shape = shape;
-            body.createFixture(fdef);
-        }
-
-
+        // Create character in to the world
+        player = new Character(world, this);
     }
 
+    public TextureAtlas getAtlas() {
+        return atlas;
+    }
     @Override
     public void show() {
 
@@ -114,13 +107,16 @@ public class PlayScreen implements Screen {
         player.b2Body.applyLinearImpulse(moveDir, player.b2Body.getWorldCenter(), true);
     }
 
-    public void update() {
+    public void update(float dt) {
         // Stop player movement, then handle user input (for possible new movement)
         player.b2Body.setLinearVelocity(Vector2.Zero);
         handleInput();
 
         // Take a time step (actually simulate movement, collision detection, etc.)
         world.step(1 / 60f, 6, 2);
+
+        // Update player sprite location
+        player.update(dt);
 
         // Put game-cam on character
         float currentPositionX = player.b2Body.getPosition().x;
@@ -145,7 +141,7 @@ public class PlayScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        update();
+        update(delta);
 
         Gdx.gl.glClearColor(135 / 255f, 206 / 255f, 235 / 255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -155,6 +151,15 @@ public class PlayScreen implements Screen {
 
         // Render our Box2DDebugLines
         b2dr.render(world, gameCam.combined);
+
+        // Give sprite a game batch to draw itself on
+        game.batch.setProjectionMatrix(gameCam.combined);
+        game.batch.begin();
+        player.draw(game.batch);
+        game.batch.end();
+
+        //
+
     }
 
     @Override
@@ -179,6 +184,9 @@ public class PlayScreen implements Screen {
 
     @Override
     public void dispose() {
-
+        map.dispose();
+        renderer.dispose();
+        world.dispose();
+        b2dr.dispose();
     }
 }

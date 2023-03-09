@@ -49,7 +49,7 @@ public class PlayScreen implements Screen {
         gamePort = new FitViewport(TimesUpTeamGame.V_WIDTH / TimesUpTeamGame.PPM, TimesUpTeamGame.V_HEIGHT / TimesUpTeamGame.PPM, gameCam);
 
         maploader = new TmxMapLoader();
-        map = maploader.load("final_test.tmx");
+        map = maploader.load("level_1.tmx");
         renderer = new OrthogonalTiledMapRenderer(map, 1 / TimesUpTeamGame.PPM);
 
         // Set gamecam position to center

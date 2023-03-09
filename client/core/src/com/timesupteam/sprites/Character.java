@@ -12,11 +12,21 @@ public class Character extends Sprite {
     private TextureRegion characterIdle;
 
     public Character(World world, PlayScreen screen) {
-        super(screen.getAtlas().findRegion("adventurer-idle-00"));
+        super(screen.getAtlas().findRegion("tile000"));
         this.world = world;
         defineCharacter();
-        characterIdle = new TextureRegion(getTexture(), 365, 118, 50, 37);
 
+        // Initialize character texture region
+        characterIdle = new TextureRegion(getTexture(), 1, 69, 32, 32);
+
+        // Create bounds and texture region for character
+        setBounds(0, 0, 32 / TimesUpTeamGame.PPM, 32 / TimesUpTeamGame.PPM);
+        setRegion(characterIdle);
+    }
+
+    public void update(float dt) {
+        // Set the position of the sprite on the b2body center
+        setPosition(b2Body.getPosition().x - getWidth() / 2, b2Body.getPosition().y - getHeight() / 2);
     }
 
     public void defineCharacter() {

@@ -107,13 +107,16 @@ public class PlayScreen implements Screen {
         player.b2Body.applyLinearImpulse(moveDir, player.b2Body.getWorldCenter(), true);
     }
 
-    public void update() {
+    public void update(float dt) {
         // Stop player movement, then handle user input (for possible new movement)
         player.b2Body.setLinearVelocity(Vector2.Zero);
         handleInput();
 
         // Take a time step (actually simulate movement, collision detection, etc.)
         world.step(1 / 60f, 6, 2);
+
+        // Update player sprite location
+        player.update(dt);
 
         // Put game-cam on character
         float currentPositionX = player.b2Body.getPosition().x;
@@ -138,7 +141,7 @@ public class PlayScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        update();
+        update(delta);
 
         Gdx.gl.glClearColor(135 / 255f, 206 / 255f, 235 / 255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -148,6 +151,15 @@ public class PlayScreen implements Screen {
 
         // Render our Box2DDebugLines
         b2dr.render(world, gameCam.combined);
+
+        // Give sprite a game batch to draw itself on
+        game.batch.setProjectionMatrix(gameCam.combined);
+        game.batch.begin();
+        player.draw(game.batch);
+        game.batch.end();
+
+        //
+
     }
 
     @Override

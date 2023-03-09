@@ -17,10 +17,10 @@ public class Character extends Sprite {
         defineCharacter();
 
         // Initialize character texture region
-        characterIdle = new TextureRegion(getTexture(), 1, 69, 32, 32);
+        characterIdle = new TextureRegion(getTexture(), 1, 1, 16, 16);
 
         // Create bounds and texture region for character
-        setBounds(0, 0, 32 / TimesUpTeamGame.PPM, 32 / TimesUpTeamGame.PPM);
+        setBounds(0, 0, 16 / TimesUpTeamGame.PPM, 16 / TimesUpTeamGame.PPM);
         setRegion(characterIdle);
     }
 

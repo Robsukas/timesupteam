@@ -17,7 +17,7 @@ public class Character extends Sprite {
 
     public void defineCharacter() {
         BodyDef bdef = new BodyDef();
-        bdef.position.set(32 / TimesUpTeamGame.PPM, 32 / TimesUpTeamGame.PPM);
+        bdef.position.set(5.68f, 5.87f);
         bdef.type = BodyDef.BodyType.DynamicBody;
         //bdef.fixedRotation = true;
         b2Body = world.createBody(bdef);

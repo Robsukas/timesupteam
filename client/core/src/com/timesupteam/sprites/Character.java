@@ -11,10 +11,10 @@ public class Character extends Sprite {
     public Body b2Body;
     private TextureRegion characterIdle;
 
-    public Character(World world, PlayScreen screen) {
+    public Character(World world, PlayScreen screen, boolean isMainCharacter) {
         super(screen.getAtlas().findRegion("tile000"));
         this.world = world;
-        defineCharacter();
+        defineCharacter(isMainCharacter);
 
         // Initialize character texture region
         characterIdle = new TextureRegion(getTexture(), 1, 1, 16, 16);
@@ -29,18 +29,22 @@ public class Character extends Sprite {
         setPosition(b2Body.getPosition().x - getWidth() / 2, b2Body.getPosition().y - getHeight() / 2);
     }
 
-    public void defineCharacter() {
+    public void defineCharacter(boolean isMainCharacter) {
         BodyDef bdef = new BodyDef();
-        bdef.position.set(5.68f, 5.87f);
+        bdef.position.set(5.68f, 5.87f);  // starting pos of characters
+
         bdef.type = BodyDef.BodyType.DynamicBody;
-        //bdef.fixedRotation = true;
+
         b2Body = world.createBody(bdef);
 
         FixtureDef fdef = new FixtureDef();
+
+        if (!isMainCharacter)
+            fdef.isSensor = true;  // it's another player, disable their collisions with the world
+
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(3 / TimesUpTeamGame.PPM, 3 / TimesUpTeamGame.PPM);
         fdef.shape = shape;
-        //fdef.density = playerDensity;
         b2Body.createFixture(fdef);
     }
 }

@@ -4,6 +4,7 @@ import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.minlog.Log;
+import com.timesupteam.screens.PlayScreen;
 
 import java.io.IOException;
 
@@ -15,7 +16,7 @@ public class MainClient {
     private final int TCP_PORT = 3000;  // must be the same on server
     private final int UDP_PORT = 3001;  // must be the same on server
 
-    public MainClient() {
+    public MainClient(final PlayScreen screen) {
         // Set logging level
         Log.set(Log.LEVEL_INFO);
 
@@ -53,10 +54,18 @@ public class MainClient {
                     System.out.println();
                     System.out.println("--- Received MovePlayer event from server.");
                     System.out.printf("--- (id: %d, x: %f, y: %f)\n", msg.id, msg.x, msg.y);
-                    System.out.println();
 
-                    // Update their position
-                    // ...
+                    if (screen.player2 == null) {
+                        System.out.println("- player2 is null, creating second player...");
+                        screen.createSecondPlayer(msg.x, msg.y);
+                        System.out.println("- Other player doesn't see us yet, send them MovePlayer with our current position...");
+                        sendPosition(screen.player.b2Body.getPosition().x, screen.player.b2Body.getPosition().y);
+                    } else {
+                        System.out.println("- player2 exists, moving them...");
+                        screen.moveSecondPlayer(msg.x, msg.y);
+                    }
+
+                    System.out.println();
                 }
             }
         }));

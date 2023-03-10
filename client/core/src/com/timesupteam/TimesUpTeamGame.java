@@ -1,13 +1,9 @@
 package com.timesupteam;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.ScreenUtils;
 import com.timesupteam.screens.PlayScreen;
 
-import java.io.IOException;
 
 public class TimesUpTeamGame extends Game {
 
@@ -20,15 +16,10 @@ public class TimesUpTeamGame extends Game {
 
     public SpriteBatch batch;
 
-    public MainClient client;
-
     @Override
     public void create() {
         batch = new SpriteBatch();
         setScreen(new PlayScreen(this));
-
-        // Try to create a client, add listeners, connect to the server
-        client = new MainClient();
     }
 
     @Override

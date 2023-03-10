@@ -5,20 +5,15 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.maps.MapObject;
-import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.timesupteam.MainClient;
 import com.timesupteam.TimesUpTeamGame;
 import com.timesupteam.sprites.Character;
 import com.timesupteam.tools.B2WorldCreator;
@@ -36,13 +31,15 @@ public class PlayScreen implements Screen {
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
 
-    //Box2d variables
+    // Box2d variables
     private World world;
     private Box2DDebugRenderer b2dr;
-    private Character player;
-
+    public Character player;
     private float lastPositionX, lastPositionY;
 
+    // Multiplayer variables
+    public MainClient client;
+    public Character player2;
 
     public PlayScreen(TimesUpTeamGame game) {
         // Initialize texture
@@ -67,13 +64,17 @@ public class PlayScreen implements Screen {
 
         new B2WorldCreator(world, map);
 
-        // Create character in to the world
-        player = new Character(world, this);
+        // Create main character in to the world
+        player = new Character(world, this, true);
+
+        // Try to create a client, add listeners, connect to the server
+        client = new MainClient(this);
     }
 
     public TextureAtlas getAtlas() {
         return atlas;
     }
+
     @Override
     public void show() {
 
@@ -108,15 +109,16 @@ public class PlayScreen implements Screen {
     }
 
     public void update(float dt) {
-        // Stop player movement, then handle user input (for possible new movement)
+        // Stop main character's movement, then handle user input (for possible new movement)
         player.b2Body.setLinearVelocity(Vector2.Zero);
+
         handleInput();
 
-        // Take a time step (actually simulate movement, collision detection, etc.)
-        world.step(1 / 60f, 6, 2);
-
-        // Update player sprite location
+        // Update player(s)'s sprite location
         player.update(dt);
+
+        if (player2 != null)
+            player2.update(dt);
 
         // Put game-cam on character
         float currentPositionX = player.b2Body.getPosition().x;
@@ -132,11 +134,14 @@ public class PlayScreen implements Screen {
 
         // SERVER: if player position has changed since last update, send the new position to server for broadcasting
         if (currentPositionX != lastPositionX || currentPositionY != lastPositionY) {
-            game.client.sendPosition(player.b2Body.getPosition().x, player.b2Body.getPosition().y);
+            client.sendPosition(player.b2Body.getPosition().x, player.b2Body.getPosition().y);
 
             lastPositionX = currentPositionX;
             lastPositionY = currentPositionY;
         }
+
+        // Take a time step (actually simulate movement, collision detection, etc.)
+        world.step(1 / 60f, 6, 2);
     }
 
     @Override
@@ -155,11 +160,14 @@ public class PlayScreen implements Screen {
         // Give sprite a game batch to draw itself on
         game.batch.setProjectionMatrix(gameCam.combined);
         game.batch.begin();
+
+        // Draw players, with our main character on top
+        if (player2 != null) {
+            player2.draw(game.batch);
+        }
         player.draw(game.batch);
+
         game.batch.end();
-
-        //
-
     }
 
     @Override
@@ -188,5 +196,14 @@ public class PlayScreen implements Screen {
         renderer.dispose();
         world.dispose();
         b2dr.dispose();
+    }
+
+    public void createSecondPlayer(float x, float y) {
+        player2 = new Character(world, this, false);
+        moveSecondPlayer(x, y);
+    }
+
+    public void moveSecondPlayer(float x, float y) {
+        player2.b2Body.setTransform(new Vector2(x, y), 0f);
     }
 }

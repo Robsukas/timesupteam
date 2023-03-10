@@ -65,8 +65,6 @@ public class Character extends Sprite {
         characterRunUp = new Animation<TextureRegion>(0.1f, frames);
         frames.clear();
 
-        defineCharacter(isMainCharacter);
-
         // Initialize character idle regions
         characterIdleDown = new TextureRegion(getTexture(), 1, 1, 16, 16);
         characterIdleUp = new TextureRegion(getTexture(), 109, 1, 16, 16);

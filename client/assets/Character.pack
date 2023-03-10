@@ -3,191 +3,86 @@ Character.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-tile000
+000
   rotate: false
   xy: 1, 1
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
-tile001
+001
   rotate: false
   xy: 19, 1
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
-tile002
+002
   rotate: false
   xy: 37, 1
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
-tile003
+003
   rotate: false
   xy: 55, 1
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
-tile004
+004
   rotate: false
   xy: 73, 1
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
-tile005
+005
   rotate: false
   xy: 91, 1
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
-tile006
+006
   rotate: false
   xy: 109, 1
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
-tile007
+007
   rotate: false
   xy: 127, 1
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
-tile008
+008
   rotate: false
   xy: 145, 1
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
-tile009
+009
   rotate: false
   xy: 163, 1
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
-tile010
+010
   rotate: false
   xy: 181, 1
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
-tile011
+011
   rotate: false
   xy: 199, 1
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: -1
-tile012
-  rotate: false
-  xy: 217, 1
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: -1
-tile013
-  rotate: false
-  xy: 235, 1
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: -1
-tile014
-  rotate: false
-  xy: 253, 1
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: -1
-tile015
-  rotate: false
-  xy: 271, 1
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: -1
-tile016
-  rotate: false
-  xy: 289, 1
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: -1
-tile017
-  rotate: false
-  xy: 307, 1
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: -1
-tile018
-  rotate: false
-  xy: 325, 1
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: -1
-tile019
-  rotate: false
-  xy: 343, 1
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: -1
-tile020
-  rotate: false
-  xy: 361, 1
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: -1
-tile021
-  rotate: false
-  xy: 379, 1
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: -1
-tile022
-  rotate: false
-  xy: 397, 1
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: -1
-tile023
-  rotate: false
-  xy: 415, 1
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: -1
-tile024
-  rotate: false
-  xy: 433, 1
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: -1
-tile025
-  rotate: false
-  xy: 451, 1
-  size: 16, 16
-  orig: 16, 16
-  offset: 0, 0
-  index: -1
-tile026
-  rotate: false
-  xy: 469, 1
   size: 16, 16
   orig: 16, 16
   offset: 0, 0

@@ -30,7 +30,7 @@ public class Character extends Sprite {
 
 
     public Character(World world, PlayScreen screen, boolean isMainCharacter) {
-        super(screen.getAtlas().findRegion("tile000"));
+        super(screen.getAtlas().findRegion("000"));
         this.world = world;
         defineCharacter(isMainCharacter);
 

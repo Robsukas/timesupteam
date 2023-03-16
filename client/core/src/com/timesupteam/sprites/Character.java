@@ -188,11 +188,14 @@ public class Character extends Sprite {
 
         b2Body = world.createBody(bdef);
 
-        FixtureDef fdef = new FixtureDef();
 
         if (!isMainCharacter)
-            fdef.isSensor = true;  // it's another player, disable their collisions with the world
+            // Don't use collision box for second player, since their position is updated directly
+            // (avoid unnecessary calculations)
+            return;
+            // fdef.isSensor = true;  // it's another player, disable their collisions with the world
 
+        FixtureDef fdef = new FixtureDef();
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(7 / TimesUpTeamGame.PPM, 8 / TimesUpTeamGame.PPM);
         fdef.shape = shape;

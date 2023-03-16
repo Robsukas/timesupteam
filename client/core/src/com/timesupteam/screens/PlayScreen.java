@@ -17,6 +17,7 @@ import com.timesupteam.MainClient;
 import com.timesupteam.TimesUpTeamGame;
 import com.timesupteam.sprites.Character;
 import com.timesupteam.tools.B2WorldCreator;
+import com.timesupteam.tools.WorldContactListener;
 
 public class PlayScreen implements Screen {
 
@@ -69,6 +70,8 @@ public class PlayScreen implements Screen {
 
         // Try to create a client, add listeners, connect to the server
         client = new MainClient(this);
+
+        world.setContactListener(new WorldContactListener());
     }
 
     public TextureAtlas getAtlas() {

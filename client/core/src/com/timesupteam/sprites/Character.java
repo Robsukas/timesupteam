@@ -167,7 +167,7 @@ public class Character extends Sprite {
             fdef.isSensor = true;  // it's another player, disable their collisions with the world
 
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(3 / TimesUpTeamGame.PPM, 3 / TimesUpTeamGame.PPM);
+        shape.setAsBox(7 / TimesUpTeamGame.PPM, 8 / TimesUpTeamGame.PPM);
         fdef.shape = shape;
         //fdef.density = playerDensity;
         b2Body.createFixture(fdef);

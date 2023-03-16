@@ -1,5 +1,6 @@
 package com.timesupteam.sprites;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -12,18 +13,26 @@ public class Walls extends InteractiveTileObject {
 
     public Walls(World world, TiledMap map, Rectangle bounds) {
         super(world, map, bounds);
-        BodyDef bdef = new BodyDef();
-        FixtureDef fdef = new FixtureDef();
-        PolygonShape shape = new PolygonShape();
+        fixture.setUserData(this);
+    }
 
+    @Override
+    public void onTopHit() {
+        Gdx.app.log("Walls", "Collision on Top");
+    }
 
-        bdef.type = BodyDef.BodyType.StaticBody;
-        bdef.position.set((bounds.getX() + bounds.getWidth() / 2) / TimesUpTeamGame.PPM, (bounds.getY() + bounds.getHeight() / 2 )/ TimesUpTeamGame.PPM);
+    @Override
+    public void onBottomHit() {
+        Gdx.app.log("Walls", "Collision on Bottom");
+    }
 
-        body = world.createBody(bdef);
+    @Override
+    public void onLeftHit() {
+        Gdx.app.log("Walls", "Collision on Left");
+    }
 
-        shape.setAsBox(bounds.getWidth() / 2 / TimesUpTeamGame.PPM, bounds.getHeight() / 2 / TimesUpTeamGame.PPM);
-        fdef.shape = shape;
-        body.createFixture(fdef);
+    @Override
+    public void onRightHit() {
+        Gdx.app.log("Walls", "Collision on Right");
     }
 }

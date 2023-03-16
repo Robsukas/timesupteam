@@ -35,7 +35,6 @@ public class PlayScreen implements Screen {
     private World world;
     private Box2DDebugRenderer b2dr;
     public Character player;
-    private float lastPositionX, lastPositionY;
 
     // Multiplayer variables
     public MainClient client;
@@ -109,8 +108,11 @@ public class PlayScreen implements Screen {
     }
 
     public void update(float dt) {
-        // Stop main character's movement, then handle user input (for possible new movement)
+        // Stop character(s)'s movement, then handle user input (for possible new movement)
         player.b2Body.setLinearVelocity(Vector2.Zero);
+
+        if (player2 != null)
+            player2.b2Body.setLinearVelocity(Vector2.Zero);
 
         handleInput();
 
@@ -120,7 +122,7 @@ public class PlayScreen implements Screen {
         if (player2 != null)
             player2.update(dt);
 
-        // Put game-cam on character
+        // Put game-cam on main character
         float currentPositionX = player.b2Body.getPosition().x;
         float currentPositionY = player.b2Body.getPosition().y;
         gameCam.position.x = currentPositionX;
@@ -133,11 +135,11 @@ public class PlayScreen implements Screen {
         renderer.setView(gameCam);
 
         // SERVER: if player position has changed since last update, send the new position to server for broadcasting
-        if (currentPositionX != lastPositionX || currentPositionY != lastPositionY) {
-            client.sendPosition(player.b2Body.getPosition().x, player.b2Body.getPosition().y);
+        if (currentPositionX != player.lastX || currentPositionY != player.lastY) {
+            client.sendPosition(currentPositionX, currentPositionY);
 
-            lastPositionX = currentPositionX;
-            lastPositionY = currentPositionY;
+            player.lastX = currentPositionX;
+            player.lastY = currentPositionY;
         }
 
         // Take a time step (actually simulate movement, collision detection, etc.)
@@ -154,7 +156,7 @@ public class PlayScreen implements Screen {
         // Render our game map
         renderer.render();
 
-        // Render our Box2DDebugLines
+        // DEBUG BOX LINES: render our Box2DDebugLines
         b2dr.render(world, gameCam.combined);
 
         // Give sprite a game batch to draw itself on
@@ -198,12 +200,28 @@ public class PlayScreen implements Screen {
         b2dr.dispose();
     }
 
+    /**
+     * Create a second Character to our world with given coordinates.
+     * Called from MainClient when we get a MovePlayer event
+     * about another player from the server.
+     *
+     * @param x x
+     * @param y y
+     */
     public void createSecondPlayer(float x, float y) {
         player2 = new Character(world, this, false);
         moveSecondPlayer(x, y);
     }
 
+    /**
+     * Move second player directly to given coordinates.
+     * Set last x and y for animation purposes (done in Character).
+     * @param x x
+     * @param y y
+     */
     public void moveSecondPlayer(float x, float y) {
+        player2.lastX = player2.b2Body.getPosition().x;
+        player2.lastY = player2.b2Body.getPosition().y;
         player2.b2Body.setTransform(new Vector2(x, y), 0f);
     }
 }

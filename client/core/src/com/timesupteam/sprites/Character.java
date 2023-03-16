@@ -10,7 +10,8 @@ import com.timesupteam.screens.PlayScreen;
 
 public class Character extends Sprite {
 
-    public enum State { RUNNINGUP, RUNNINGDOWN, RUNNINGLEFT, RUNNINGRIGHT, IDLEUP, IDLEDOWN, IDLELEFT, IDLERIGHT }
+    public enum State {RUNNINGUP, RUNNINGDOWN, RUNNINGLEFT, RUNNINGRIGHT, IDLEUP, IDLEDOWN, IDLELEFT, IDLERIGHT}
+
     public State currentState;
     public State previousState;
     public World world;
@@ -26,13 +27,15 @@ public class Character extends Sprite {
     private Animation<TextureRegion> characterRunRight;
     private float stateTimer;
 
-    // Direction: false = left, true = right
-
+    private boolean isMainCharacter;
+    public float lastX, lastY;
 
     public Character(World world, PlayScreen screen, boolean isMainCharacter) {
         super(screen.getAtlas().findRegion("000"));
         this.world = world;
-        defineCharacter(isMainCharacter);
+        this.isMainCharacter = isMainCharacter;
+
+        defineCharacter();
 
         currentState = State.IDLEDOWN;
         previousState = State.IDLEDOWN;
@@ -83,11 +86,11 @@ public class Character extends Sprite {
         setRegion(getFrame(dt));
     }
 
-    public TextureRegion getFrame (float dt) {
+    public TextureRegion getFrame(float dt) {
         currentState = getState();
 
         TextureRegion region;
-        switch(currentState) {
+        switch (currentState) {
             case RUNNINGUP:
                 region = characterRunUp.getKeyFrame(stateTimer, true);
                 break;
@@ -120,42 +123,66 @@ public class Character extends Sprite {
         return region;
     }
 
-    public State getState () {
-        if (b2Body.getLinearVelocity().y > 0) {
-            return State.RUNNINGUP;
+    public State getState() {
+
+        if (isMainCharacter) {
+            if (b2Body.getLinearVelocity().y > 0) {
+                return State.RUNNINGUP;
+            } else if (b2Body.getLinearVelocity().y < 0) {
+                return State.RUNNINGDOWN;
+            } else if (b2Body.getLinearVelocity().x > 0) {
+                return State.RUNNINGRIGHT;
+            } else if (b2Body.getLinearVelocity().x < 0) {
+                return State.RUNNINGLEFT;
+            } else {
+                if (previousState == State.RUNNINGUP) {
+                    return State.IDLEUP;
+                } else if (previousState == State.RUNNINGLEFT) {
+                    return State.IDLELEFT;
+                } else if (previousState == State.RUNNINGRIGHT) {
+                    return State.IDLERIGHT;
+                } else if (previousState == State.RUNNINGDOWN) {
+                    return State.IDLEDOWN;
+                } else {
+                    return previousState;
+                }
+            }
         }
-        else if (b2Body.getLinearVelocity().y < 0) {
-            return State.RUNNINGDOWN;
-        }
-        else if (b2Body.getLinearVelocity().x > 0) {
-            return State.RUNNINGRIGHT;
-        }
-        else if (b2Body.getLinearVelocity().x < 0) {
+
+        // A bit different logic for animating the other player
+        if (b2Body.getPosition().x < lastX) {
+            lastX = b2Body.getPosition().x;
             return State.RUNNINGLEFT;
-        }
-        else {
+        } else if (b2Body.getPosition().x > lastX) {
+            lastX = b2Body.getPosition().x;
+            return State.RUNNINGRIGHT;
+        } else if (b2Body.getPosition().y > lastY) {
+            lastY = b2Body.getPosition().y;
+            return State.RUNNINGUP;
+        } else if (b2Body.getPosition().y < lastY) {
+            lastY = b2Body.getPosition().y;
+            return State.RUNNINGDOWN;
+        } else {
             if (previousState == State.RUNNINGUP) {
                 return State.IDLEUP;
-            }
-            else if (previousState == State.RUNNINGLEFT) {
+            } else if (previousState == State.RUNNINGLEFT) {
                 return State.IDLELEFT;
-            }
-            else if (previousState == State.RUNNINGRIGHT) {
+            } else if (previousState == State.RUNNINGRIGHT) {
                 return State.IDLERIGHT;
-            }
-            else if (previousState == State.RUNNINGDOWN) {
+            } else if (previousState == State.RUNNINGDOWN) {
                 return State.IDLEDOWN;
-            }
-            else {
+            } else {
                 return previousState;
             }
         }
-
     }
 
-    public void defineCharacter(boolean isMainCharacter) {
+    public void defineCharacter() {
         BodyDef bdef = new BodyDef();
         bdef.position.set(5.68f, 5.87f);  // starting pos of characters
+
+        lastX = bdef.position.x;
+        lastY = bdef.position.y;
 
         bdef.type = BodyDef.BodyType.DynamicBody;
 
@@ -167,9 +194,8 @@ public class Character extends Sprite {
             fdef.isSensor = true;  // it's another player, disable their collisions with the world
 
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(3 / TimesUpTeamGame.PPM, 3 / TimesUpTeamGame.PPM);
+        shape.setAsBox(7 / TimesUpTeamGame.PPM, 8 / TimesUpTeamGame.PPM);
         fdef.shape = shape;
-        //fdef.density = playerDensity;
         b2Body.createFixture(fdef);
     }
 }

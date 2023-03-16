@@ -7,7 +7,7 @@ import com.timesupteam.screens.PlayScreen;
 
 public class TimesUpTeamGame extends Game {
 
-    // Virtual width and height
+    // Virtual width and height (camera size = zoom-in level)
     public static final int V_WIDTH = 512;
     public static final int V_HEIGHT = 288;
 

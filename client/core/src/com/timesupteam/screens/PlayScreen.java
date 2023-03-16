@@ -105,6 +105,8 @@ public class PlayScreen implements Screen {
         moveDir.x *= moveSpeed;
         moveDir.y *= moveSpeed;
 
+        System.out.println(moveDir);
+
         player.b2Body.applyLinearImpulse(moveDir, player.b2Body.getWorldCenter(), true);
     }
 

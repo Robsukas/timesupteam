@@ -40,6 +40,7 @@ public class PlayScreen implements Screen {
     // Multiplayer variables
     public MainClient client;
     public Character player2;
+    private float player2X, player2Y;
 
     public PlayScreen(TimesUpTeamGame game) {
         // Initialize texture
@@ -117,7 +118,15 @@ public class PlayScreen implements Screen {
         if (player2 != null)
             player2.b2Body.setLinearVelocity(Vector2.Zero);
 
+        // Apply main character's movement
         handleInput();
+
+        // Apply second player's movement
+        if (player2 != null) {
+            player2.lastX = player2.b2Body.getPosition().x;
+            player2.lastY = player2.b2Body.getPosition().y;
+            player2.b2Body.setTransform(new Vector2(player2X, player2Y), 0f);
+        }
 
         // Update player(s)'s sprite location
         player.update(dt);
@@ -223,8 +232,7 @@ public class PlayScreen implements Screen {
      * @param y y
      */
     public void moveSecondPlayer(float x, float y) {
-        player2.lastX = player2.b2Body.getPosition().x;
-        player2.lastY = player2.b2Body.getPosition().y;
-        player2.b2Body.setTransform(new Vector2(x, y), 0f);
+        player2X = x;
+        player2Y = y;
     }
 }

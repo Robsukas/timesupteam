@@ -1,4 +1,4 @@
-package com.rahamehed;
+package com.rahamehed.server;
 
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.FrameworkMessage;
@@ -7,20 +7,13 @@ import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.minlog.Log;
 
 import java.io.IOException;
-import java.util.HashMap;
 
 public class MainServer {
 
     private final Server server;
     // Ports must be the same in clients
-    private final int TCP_PORT = 3000;
-    private final int UDP_PORT = 3001;
-
-//    private class Player {
-//        float x, y;
-//    }
-//
-//    private final HashMap<Integer, Player> players = new HashMap<>();
+    private final int TCP_PORT = 8080;
+    private final int UDP_PORT = 8081;
 
     public static void main(String[] args) throws IOException {
         new MainServer();

@@ -12,9 +12,9 @@ public class MainClient {
 
     private final Client client;
 
-    private final String SERVER_IP = "localhost";
-    private final int TCP_PORT = 3000;  // must be the same on server
-    private final int UDP_PORT = 3001;  // must be the same on server
+    private final String SERVER_IP = "193.40.156.59"; //"localhost"; //   // "localhost"
+    private final int TCP_PORT = 8080;  // must be the same on server
+    private final int UDP_PORT = 8081;  // must be the same on server
 
     public MainClient(final PlayScreen screen) {
         // Set logging level
@@ -58,11 +58,13 @@ public class MainClient {
                     if (screen.player2 == null) {
                         System.out.println("- player2 is null, creating second player...");
                         screen.createSecondPlayer(msg.x, msg.y);
+                        // ...
                         System.out.println("- Other player doesn't see us yet, send them MovePlayer with our current position...");
                         sendPosition(screen.player.b2Body.getPosition().x, screen.player.b2Body.getPosition().y);
                     } else {
                         System.out.println("- player2 exists, moving them...");
                         screen.moveSecondPlayer(msg.x, msg.y);
+                        // ...
                     }
 
                     System.out.println();
@@ -77,6 +79,7 @@ public class MainClient {
         } catch (IOException e) {
             // During development, we might not need a server for client testing, so commented right now
             // System.exit(1);
+            e.printStackTrace();
             System.err.println("! Can't connect to server. Is a server instance running?");
         }
     }

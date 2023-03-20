@@ -45,8 +45,8 @@ public class HUD implements Disposable {
         table.setFillParent(true);
 
         //define our labels using the String, and a Label style consisting of a font and color
-        countdownLabel = new Label(String.format("%03d", worldTimer), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        keyCountLabel =new Label(String.format("%06d", keyCount), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        countdownLabel = new Label(String.format("%02d", worldTimer), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        keyCountLabel =new Label(String.format("%01d", keyCount), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         timeLabel = new Label("TIME", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         levelLabel = new Label("1-1", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
         worldLabel = new Label("LEVEL", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
@@ -74,7 +74,7 @@ public class HUD implements Disposable {
             } else {
                 timeUp = true;
             }
-            countdownLabel.setText(String.format("%03d", worldTimer));
+            countdownLabel.setText(String.format("%02d", worldTimer));
             timeCount = 0;
         }
     }

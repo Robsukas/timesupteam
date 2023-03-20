@@ -1,9 +1,9 @@
 plugins {
-    id 'java'
+    id 'java-library'
 }
 
-group 'org.example'
-version '1.0-SNAPSHOT'
+group 'com.rahamehed'
+version '1.0'
 
 repositories {
     mavenCentral()
@@ -19,3 +19,18 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'com.rahamehed.server.MainServer'
+        )
+    }
+
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+

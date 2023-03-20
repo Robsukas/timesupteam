@@ -15,7 +15,6 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.timesupteam.MainClient;
 import com.timesupteam.TimesUpTeamGame;
-import com.timesupteam.scenes.HUD;
 import com.timesupteam.sprites.Character;
 import com.timesupteam.tools.B2WorldCreator;
 import com.timesupteam.tools.WorldContactListener;
@@ -27,7 +26,6 @@ public class PlayScreen implements Screen {
     private TextureAtlas atlas;
     private OrthographicCamera gameCam;
     private Viewport gamePort;
-    private HUD hud;
 
     // Tiled map variables
     private TmxMapLoader maploader;
@@ -55,10 +53,6 @@ public class PlayScreen implements Screen {
         gameCam = new OrthographicCamera();
         gamePort = new FitViewport(TimesUpTeamGame.V_WIDTH / TimesUpTeamGame.PPM, TimesUpTeamGame.V_HEIGHT / TimesUpTeamGame.PPM, gameCam);
 
-        // Initialize the HUD for key count, timer,
-        hud = new HUD(game.batch);
-
-        // Load and render the map
         maploader = new TmxMapLoader();
         map = maploader.load("level_1.tmx");
         renderer = new OrthogonalTiledMapRenderer(map, 1 / TimesUpTeamGame.PPM);
@@ -146,9 +140,6 @@ public class PlayScreen implements Screen {
         gameCam.position.x = currentPositionX;
         gameCam.position.y = currentPositionY;
 
-        // Update HUD
-        hud.update(dt);
-
         // Update our game-cam with correct coordinates after changes
         gameCam.update();
 
@@ -191,10 +182,6 @@ public class PlayScreen implements Screen {
         player.draw(game.batch);
 
         game.batch.end();
-
-        // Draw the HUD
-        game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
-        hud.stage.draw();
     }
 
     @Override
@@ -223,11 +210,6 @@ public class PlayScreen implements Screen {
         renderer.dispose();
         world.dispose();
         b2dr.dispose();
-        hud.dispose();
-    }
-
-    public HUD getHud() {
-        return hud;
     }
 
     /**

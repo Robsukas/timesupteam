@@ -182,6 +182,12 @@ public class PlayScreen implements Screen {
         player.draw(game.batch);
 
         game.batch.end();
+
+        // Game over logic
+        if (false) {  // replace with real logic
+            game.setScreen(new GameOverScreen(game, "Y'all dead."));
+            dispose();
+        }
     }
 
     @Override

@@ -46,6 +46,7 @@ public class PlayScreen implements Screen {
 //    private HackLight fogLight, libgdxLight;
 
     private RayHandler rayHandler;
+    private ConeLight testLight2;
 
     // Multiplayer variables
     public MainClient client;
@@ -85,6 +86,17 @@ public class PlayScreen implements Screen {
 
         // Lighting
         rayHandler = new RayHandler(world);
+//        rayHandler.setCombinedMatrix(gameCam.combined);
+//        player.b2Body.
+        rayHandler.useDiffuseLight(true);
+//        rayHandler.setAmbientLight(Color.ROYAL);
+        PointLight testLight = new PointLight(rayHandler, 100, Color.WHITE, 50 / TimesUpTeamGame.PPM, player.b2Body.getPosition().x, player.b2Body.getPosition().y);
+        testLight.attachToBody(player.b2Body);
+        testLight.setXray(true);
+
+        testLight2 = new ConeLight(rayHandler, 100, Color.RED, 70 / TimesUpTeamGame.PPM, 0, 0, 120, 60);
+        testLight2.attachToBody(player.b2Body);
+//        testLight2.setXray(true);
 //        rayHandler.setAmbientLight(0.5f);
 //        rayHandler.setBlurNum(3);
 
@@ -93,11 +105,11 @@ public class PlayScreen implements Screen {
 //
 //        pl.attachToBody(player.b2Body);
 
-
-        PointLight light = new PointLight(rayHandler, 120, Color.WHITE, 7, 10, 10);
-        light.setSoftnessLength(0f);
-        light.setXray(false);
-        light.attachToBody(player.b2Body);
+//        player.b2Body =
+//        PointLight light = new PointLight(rayHandler, 120, Color.WHITE, 7, 10, 10);
+//        light.setSoftnessLength(0f);
+//        light.setXray(false);
+//        light.attachToBody(player.b2Body);
 
 //        rayHandler.setShadows(true);
 //        pl.setStaticLight(false);
@@ -124,6 +136,12 @@ public class PlayScreen implements Screen {
         // Do nothing if player hasn't moved
         if (!moveRight && !moveUp && !moveLeft && !moveDown) {
             return;
+        }
+
+
+        if (moveUp) {
+            testLight2.setDirection(0f);
+//            testLight2.setDistance(20);
         }
 
         // Otherwise, calculate & apply force to player body
@@ -185,6 +203,9 @@ public class PlayScreen implements Screen {
             player.lastX = currentPositionX;
             player.lastY = currentPositionY;
         }
+//
+//        // Lighting
+//        rayHandler.update();
 
         // Take a time step (actually simulate movement, collision detection, etc.)
         world.step(1 / 60f, 6, 2);
@@ -196,6 +217,8 @@ public class PlayScreen implements Screen {
 
         Gdx.gl.glClearColor(135 / 255f, 206 / 255f, 235 / 255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+
 
         // Render our game map
         renderer.render();
@@ -215,8 +238,10 @@ public class PlayScreen implements Screen {
 
         game.batch.end();
 
+//        game.batch.setProjectionMatrix(gameCam.combined);
         // Lighting
-        rayHandler.setCombinedMatrix(gameCam.combined);
+        rayHandler.setCombinedMatrix(gameCam);
+//        rayHandler.render();
         rayHandler.updateAndRender();  // this stretches???
     }
 
@@ -226,6 +251,7 @@ public class PlayScreen implements Screen {
 //            return;
 
         gamePort.update(width, height);
+//        rayHandler.update(width, height);
     }
 
     @Override
@@ -249,6 +275,7 @@ public class PlayScreen implements Screen {
         renderer.dispose();
         world.dispose();
         b2dr.dispose();
+        rayHandler.dispose();
     }
 
     /**

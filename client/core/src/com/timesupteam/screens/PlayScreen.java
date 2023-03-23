@@ -1,9 +1,13 @@
 package com.timesupteam.screens;
 
+import box2dLight.ConeLight;
+import box2dLight.RayHandler;
+import box2dLight.PointLight;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -36,6 +40,12 @@ public class PlayScreen implements Screen {
     private World world;
     private Box2DDebugRenderer b2dr;
     public Character player;
+
+    // Lighting variables
+//    private HackLightEngine lightEngine;
+//    private HackLight fogLight, libgdxLight;
+
+    private RayHandler rayHandler;
 
     // Multiplayer variables
     public MainClient client;
@@ -72,6 +82,28 @@ public class PlayScreen implements Screen {
         client = new MainClient(this);
 
         world.setContactListener(new WorldContactListener());
+
+        // Lighting
+        rayHandler = new RayHandler(world);
+//        rayHandler.setAmbientLight(0.5f);
+//        rayHandler.setBlurNum(3);
+
+//        PointLight pl = new PointLight(rayHandler, 128, new Color(0.2f, 1, 1, 1f), 10, -5, 2);
+//        PointLight pl2 = new PointLight(rayHandler, 128, new Color(1, 0, 1, 1f), 10, 5, 2);
+//
+//        pl.attachToBody(player.b2Body);
+
+
+        PointLight light = new PointLight(rayHandler, 120, Color.WHITE, 7, 10, 10);
+        light.setSoftnessLength(0f);
+        light.setXray(false);
+        light.attachToBody(player.b2Body);
+
+//        rayHandler.setShadows(true);
+//        pl.setStaticLight(false);
+//        pl.setSoft(true);
+
+
     }
 
     public TextureAtlas getAtlas() {
@@ -182,10 +214,17 @@ public class PlayScreen implements Screen {
         player.draw(game.batch);
 
         game.batch.end();
+
+        // Lighting
+        rayHandler.setCombinedMatrix(gameCam.combined);
+        rayHandler.updateAndRender();  // this stretches???
     }
 
     @Override
     public void resize(int width, int height) {
+//        if (width == 0 || height == 0)
+//            return;
+
         gamePort.update(width, height);
     }
 
@@ -228,6 +267,7 @@ public class PlayScreen implements Screen {
     /**
      * Move second player directly to given coordinates.
      * Set last x and y for animation purposes (done in Character).
+     *
      * @param x x
      * @param y y
      */

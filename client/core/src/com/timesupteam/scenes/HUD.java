@@ -1,9 +1,12 @@
 package com.timesupteam.scenes;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeType;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -44,13 +47,20 @@ public class HUD implements Disposable {
         table.top();
         table.setFillParent(true);
 
+        // Create our desired font
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/NEON.otf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = 16;
+        BitmapFont font12 = generator.generateFont(parameter);
+        generator.dispose();
+
         //define our labels using the String, and a Label style consisting of a font and color
-        countdownLabel = new Label(String.format("%02d", worldTimer), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        keyCountLabel =new Label(String.format("%01d", keyCount), new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        timeLabel = new Label("TIME", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        levelLabel = new Label("1-1", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        worldLabel = new Label("LEVEL", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
-        characterLabel = new Label("KEY COUNT", new Label.LabelStyle(new BitmapFont(), Color.WHITE));
+        countdownLabel = new Label(String.format("%02d", worldTimer), new Label.LabelStyle(font12, Color.WHITE));
+        keyCountLabel =new Label(String.format("%01d", keyCount), new Label.LabelStyle(font12, Color.WHITE));
+        timeLabel = new Label("TIME", new Label.LabelStyle(font12, Color.WHITE));
+        levelLabel = new Label("1-1", new Label.LabelStyle(font12, Color.WHITE));
+        worldLabel = new Label("LEVEL", new Label.LabelStyle(font12, Color.WHITE));
+        characterLabel = new Label("KEY COUNT", new Label.LabelStyle(font12, Color.WHITE));
 
         //add our labels to our table, padding the top, and giving them all equal width with expandX
         table.add(characterLabel).expandX().padTop(10);

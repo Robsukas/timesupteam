@@ -1,6 +1,7 @@
 package com.timesupteam.screens;
 
 import box2dLight.ConeLight;
+import box2dLight.Light;
 import box2dLight.RayHandler;
 import box2dLight.PointLight;
 import com.badlogic.gdx.Gdx;
@@ -86,16 +87,20 @@ public class PlayScreen implements Screen {
 
         // Lighting
         rayHandler = new RayHandler(world);
+//        rayHandler.useCustomViewport(gamePort.getScreenX(), gamePort.getScreenY(), gamePort.getScreenWidth(), gamePort.getScreenHeight());
 //        rayHandler.setCombinedMatrix(gameCam.combined);
-//        player.b2Body.
-        rayHandler.useDiffuseLight(true);
-//        rayHandler.setAmbientLight(Color.ROYAL);
-        PointLight testLight = new PointLight(rayHandler, 100, Color.WHITE, 50 / TimesUpTeamGame.PPM, player.b2Body.getPosition().x, player.b2Body.getPosition().y);
+        RayHandler.useDiffuseLight(true);
+
+
+        PointLight testLight = new PointLight(rayHandler, 100, Color.WHITE, 30 / TimesUpTeamGame.PPM, player.b2Body.getPosition().x, player.b2Body.getPosition().y);
         testLight.attachToBody(player.b2Body);
         testLight.setXray(true);
 
-        testLight2 = new ConeLight(rayHandler, 100, Color.RED, 70 / TimesUpTeamGame.PPM, 0, 0, 120, 60);
-        testLight2.attachToBody(player.b2Body);
+        testLight2 = new ConeLight(rayHandler, 100, Color.WHITE, 70 / TimesUpTeamGame.PPM, 0, 0, 0, 60);
+        testLight2.attachToBody(player.b2Body, 0, 0, 0);
+
+        testLight2.setSoftnessLength(0f);
+        testLight2.setXray(true);
 //        testLight2.setXray(true);
 //        rayHandler.setAmbientLight(0.5f);
 //        rayHandler.setBlurNum(3);
@@ -139,9 +144,15 @@ public class PlayScreen implements Screen {
         }
 
 
+
         if (moveUp) {
-            testLight2.setDirection(0f);
-//            testLight2.setDistance(20);
+            player.b2Body.setTransform(player.b2Body.getPosition(), (float) Math.toRadians(90.0f));
+        } else if (moveDown) {
+            player.b2Body.setTransform(player.b2Body.getPosition(), (float) Math.toRadians(270.0f));
+        } else if (moveLeft) {
+            player.b2Body.setTransform(player.b2Body.getPosition(), (float) Math.toRadians(180.0f));
+        } else if (moveRight) {
+            player.b2Body.setTransform(player.b2Body.getPosition(), (float) Math.toRadians(0.0f));
         }
 
         // Otherwise, calculate & apply force to player body
@@ -238,7 +249,6 @@ public class PlayScreen implements Screen {
 
         game.batch.end();
 
-//        game.batch.setProjectionMatrix(gameCam.combined);
         // Lighting
         rayHandler.setCombinedMatrix(gameCam);
 //        rayHandler.render();
@@ -251,7 +261,6 @@ public class PlayScreen implements Screen {
 //            return;
 
         gamePort.update(width, height);
-//        rayHandler.update(width, height);
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.timesupteam.sprites;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
 import com.timesupteam.TimesUpTeamGame;
@@ -42,5 +43,11 @@ public class InteractiveTileObject {
     public void onLeftHit() {}
 
     public void onRightHit() {}
+
+    public TiledMapTileLayer.Cell getCell(){
+        TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(1);
+        return layer.getCell((int)(body.getPosition().x * TimesUpTeamGame.PPM / 16),
+                (int)(body.getPosition().y * TimesUpTeamGame.PPM / 16));
+    }
 
 }

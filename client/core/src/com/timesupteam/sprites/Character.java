@@ -17,6 +17,8 @@ public class Character extends Sprite {
     public State previousState;
     public World world;
     public Body b2Body;
+    public PlayScreen screen;
+
     private TextureRegion characterIdleDown;
     private TextureRegion characterIdleLeft;
     private TextureRegion characterIdleRight;
@@ -34,6 +36,7 @@ public class Character extends Sprite {
     public Character(World world, PlayScreen screen, boolean isMainCharacter) {
         super(screen.getAtlas().findRegion("000"));
         this.world = world;
+        this.screen = screen;
         this.isMainCharacter = isMainCharacter;
 
         defineCharacter();
@@ -125,57 +128,63 @@ public class Character extends Sprite {
     }
 
     public State getState() {
-
+        // Set transform to change flashlight direction
         if (isMainCharacter) {
-            if (b2Body.getLinearVelocity().y > 0) {
-                return State.RUNNINGUP;
-            } else if (b2Body.getLinearVelocity().y < 0) {
-                return State.RUNNINGDOWN;
-            } else if (b2Body.getLinearVelocity().x > 0) {
-                return State.RUNNINGRIGHT;
-            } else if (b2Body.getLinearVelocity().x < 0) {
+            if (b2Body.getLinearVelocity().x < 0) {
+                this.b2Body.setTransform(this.b2Body.getPosition(), (float) Math.toRadians(180));
                 return State.RUNNINGLEFT;
-            } else {
-                if (previousState == State.RUNNINGUP) {
-                    return State.IDLEUP;
-                } else if (previousState == State.RUNNINGLEFT) {
-                    return State.IDLELEFT;
-                } else if (previousState == State.RUNNINGRIGHT) {
-                    return State.IDLERIGHT;
-                } else if (previousState == State.RUNNINGDOWN) {
-                    return State.IDLEDOWN;
-                } else {
-                    return previousState;
-                }
+            }
+
+            if (b2Body.getLinearVelocity().x > 0) {
+                this.b2Body.setTransform(this.b2Body.getPosition(), (float) Math.toRadians(0));
+                return State.RUNNINGRIGHT;
+            }
+
+            if (b2Body.getLinearVelocity().y > 0) {
+                this.b2Body.setTransform(this.b2Body.getPosition(), (float) Math.toRadians(90));
+                return State.RUNNINGUP;
+            }
+
+            if (b2Body.getLinearVelocity().y < 0) {
+                this.b2Body.setTransform(this.b2Body.getPosition(), (float) Math.toRadians(270));
+                return State.RUNNINGDOWN;
+            }
+        } else {
+            if (b2Body.getPosition().x < lastX) {
+                this.b2Body.setTransform(this.b2Body.getPosition(), (float) Math.toRadians(180));
+                lastX = b2Body.getPosition().x;
+                return State.RUNNINGLEFT;
+            }
+
+            if (b2Body.getPosition().x > lastX) {
+                this.b2Body.setTransform(this.b2Body.getPosition(), (float) Math.toRadians(0));
+                lastX = b2Body.getPosition().x;
+                return State.RUNNINGRIGHT;
+            }
+
+            if (b2Body.getPosition().y > lastY) {
+                this.b2Body.setTransform(this.b2Body.getPosition(), (float) Math.toRadians(90));
+                lastY = b2Body.getPosition().y;
+                return State.RUNNINGUP;
+            }
+
+            if (b2Body.getPosition().y < lastY) {
+                this.b2Body.setTransform(this.b2Body.getPosition(), (float) Math.toRadians(270));
+                lastY = b2Body.getPosition().y;
+                return State.RUNNINGDOWN;
             }
         }
 
-        // A bit different logic for animating the other player
-        if (b2Body.getPosition().x < lastX) {
-            lastX = b2Body.getPosition().x;
-            return State.RUNNINGLEFT;
-        } else if (b2Body.getPosition().x > lastX) {
-            lastX = b2Body.getPosition().x;
-            return State.RUNNINGRIGHT;
-        } else if (b2Body.getPosition().y > lastY) {
-            lastY = b2Body.getPosition().y;
-            return State.RUNNINGUP;
-        } else if (b2Body.getPosition().y < lastY) {
-            lastY = b2Body.getPosition().y;
-            return State.RUNNINGDOWN;
-        } else {
-            if (previousState == State.RUNNINGUP) {
-                return State.IDLEUP;
-            } else if (previousState == State.RUNNINGLEFT) {
-                return State.IDLELEFT;
-            } else if (previousState == State.RUNNINGRIGHT) {
-                return State.IDLERIGHT;
-            } else if (previousState == State.RUNNINGDOWN) {
-                return State.IDLEDOWN;
-            } else {
-                return previousState;
-            }
-        }
+        if (previousState == State.RUNNINGUP)
+            return State.IDLEUP;
+        if (previousState == State.RUNNINGLEFT)
+            return State.IDLELEFT;
+        if (previousState == State.RUNNINGRIGHT)
+            return State.IDLERIGHT;
+        if (previousState == State.RUNNINGDOWN)
+            return State.IDLEDOWN;
+
+        return previousState;
     }
 
     public void defineCharacter() {
@@ -194,7 +203,7 @@ public class Character extends Sprite {
             // Don't use collision box for second player, since their position is updated directly
             // (avoid unnecessary calculations)
             return;
-            // fdef.isSensor = true;  // it's another player, disable their collisions with the world
+        // fdef.isSensor = true;  // it's another player, disable their collisions with the world
 
         FixtureDef fdef = new FixtureDef();
         PolygonShape shape = new PolygonShape();

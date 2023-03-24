@@ -1,7 +1,6 @@
 package com.timesupteam.screens;
 
 import box2dLight.ConeLight;
-import box2dLight.Light;
 import box2dLight.RayHandler;
 import box2dLight.PointLight;
 import com.badlogic.gdx.Gdx;
@@ -43,16 +42,17 @@ public class PlayScreen implements Screen {
     public Character player;
 
     // Lighting variables
-//    private HackLightEngine lightEngine;
-//    private HackLight fogLight, libgdxLight;
-
     private RayHandler rayHandler;
-    private ConeLight testLight2;
+    private ConeLight flashlight;
+    private PointLight circularLight;
 
     // Multiplayer variables
     public MainClient client;
     public Character player2;
     private float player2X, player2Y;
+    private ConeLight flashlight2;
+    private PointLight circularLight2;
+
 
     public PlayScreen(TimesUpTeamGame game) {
         // Initialize texture
@@ -85,42 +85,22 @@ public class PlayScreen implements Screen {
 
         world.setContactListener(new WorldContactListener());
 
-        // Lighting
+        // Initialize lighting
         rayHandler = new RayHandler(world);
-//        rayHandler.useCustomViewport(gamePort.getScreenX(), gamePort.getScreenY(), gamePort.getScreenWidth(), gamePort.getScreenHeight());
-//        rayHandler.setCombinedMatrix(gameCam.combined);
+        rayHandler.useCustomViewport(gamePort.getScreenX(), gamePort.getScreenY(), gamePort.getScreenWidth(), gamePort.getScreenHeight());
+
         RayHandler.useDiffuseLight(true);
+        rayHandler.setBlurNum(2);
 
+        // Lights for main character
+        circularLight = new PointLight(rayHandler, 100, Color.WHITE, 30 / TimesUpTeamGame.PPM, 0, 0);
+        circularLight.attachToBody(player.b2Body);
+        circularLight.setXray(true);
 
-        PointLight testLight = new PointLight(rayHandler, 100, Color.WHITE, 30 / TimesUpTeamGame.PPM, player.b2Body.getPosition().x, player.b2Body.getPosition().y);
-        testLight.attachToBody(player.b2Body);
-        testLight.setXray(true);
-
-        testLight2 = new ConeLight(rayHandler, 100, Color.WHITE, 70 / TimesUpTeamGame.PPM, 0, 0, 0, 60);
-        testLight2.attachToBody(player.b2Body, 0, 0, 0);
-
-        testLight2.setSoftnessLength(0f);
-        testLight2.setXray(true);
-//        testLight2.setXray(true);
-//        rayHandler.setAmbientLight(0.5f);
-//        rayHandler.setBlurNum(3);
-
-//        PointLight pl = new PointLight(rayHandler, 128, new Color(0.2f, 1, 1, 1f), 10, -5, 2);
-//        PointLight pl2 = new PointLight(rayHandler, 128, new Color(1, 0, 1, 1f), 10, 5, 2);
-//
-//        pl.attachToBody(player.b2Body);
-
-//        player.b2Body =
-//        PointLight light = new PointLight(rayHandler, 120, Color.WHITE, 7, 10, 10);
-//        light.setSoftnessLength(0f);
-//        light.setXray(false);
-//        light.attachToBody(player.b2Body);
-
-//        rayHandler.setShadows(true);
-//        pl.setStaticLight(false);
-//        pl.setSoft(true);
-
-
+        flashlight = new ConeLight(rayHandler, 100, Color.WHITE, 70 / TimesUpTeamGame.PPM, 0, 0, 0, 60);
+        flashlight.attachToBody(player.b2Body, 0, 0, 0);
+        flashlight.setXray(true);
+        flashlight.setSoft(false);
     }
 
     public TextureAtlas getAtlas() {
@@ -138,21 +118,9 @@ public class PlayScreen implements Screen {
         boolean moveDown = Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyPressed(Input.Keys.DOWN);
         boolean moveRight = Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT);
 
-        // Do nothing if player hasn't moved
+        // Do nothing if player hasn't pressed any keys
         if (!moveRight && !moveUp && !moveLeft && !moveDown) {
             return;
-        }
-
-
-
-        if (moveUp) {
-            player.b2Body.setTransform(player.b2Body.getPosition(), (float) Math.toRadians(90.0f));
-        } else if (moveDown) {
-            player.b2Body.setTransform(player.b2Body.getPosition(), (float) Math.toRadians(270.0f));
-        } else if (moveLeft) {
-            player.b2Body.setTransform(player.b2Body.getPosition(), (float) Math.toRadians(180.0f));
-        } else if (moveRight) {
-            player.b2Body.setTransform(player.b2Body.getPosition(), (float) Math.toRadians(0.0f));
         }
 
         // Otherwise, calculate & apply force to player body
@@ -186,7 +154,7 @@ public class PlayScreen implements Screen {
         if (player2 != null) {
             player2.lastX = player2.b2Body.getPosition().x;
             player2.lastY = player2.b2Body.getPosition().y;
-            player2.b2Body.setTransform(new Vector2(player2X, player2Y), 0f);
+            player2.b2Body.setTransform(new Vector2(player2X, player2Y), player2.b2Body.getAngle());
         }
 
         // Update player(s)'s sprite location
@@ -209,14 +177,11 @@ public class PlayScreen implements Screen {
 
         // SERVER: if player position has changed since last update, send the new position to server for broadcasting
         if (currentPositionX != player.lastX || currentPositionY != player.lastY) {
-            client.sendPosition(currentPositionX, currentPositionY);
-
             player.lastX = currentPositionX;
             player.lastY = currentPositionY;
+
+            client.sendPosition(currentPositionX, currentPositionY);
         }
-//
-//        // Lighting
-//        rayHandler.update();
 
         // Take a time step (actually simulate movement, collision detection, etc.)
         world.step(1 / 60f, 6, 2);
@@ -229,13 +194,12 @@ public class PlayScreen implements Screen {
         Gdx.gl.glClearColor(135 / 255f, 206 / 255f, 235 / 255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-
-
         // Render our game map
         renderer.render();
 
         // DEBUG BOX LINES: render our Box2DDebugLines
-        b2dr.render(world, gameCam.combined);
+        if (TimesUpTeamGame.DEBUG.get("Box2DDebugLines"))
+            b2dr.render(world, gameCam.combined);
 
         // Give sprite a game batch to draw itself on
         game.batch.setProjectionMatrix(gameCam.combined);
@@ -246,21 +210,22 @@ public class PlayScreen implements Screen {
             player2.draw(game.batch);
         }
         player.draw(game.batch);
-
         game.batch.end();
 
         // Lighting
-        rayHandler.setCombinedMatrix(gameCam);
-//        rayHandler.render();
-        rayHandler.updateAndRender();  // this stretches???
+        if (TimesUpTeamGame.DEBUG.get("lights")) {
+            rayHandler.setCombinedMatrix(gameCam);
+            rayHandler.updateAndRender();
+        }
     }
 
     @Override
     public void resize(int width, int height) {
-//        if (width == 0 || height == 0)
-//            return;
+        if (width == 0 || height == 0)
+            return;
 
         gamePort.update(width, height);
+        rayHandler.useCustomViewport(gamePort.getScreenX(), gamePort.getScreenY(), gamePort.getScreenWidth(), gamePort.getScreenHeight());
     }
 
     @Override
@@ -297,7 +262,18 @@ public class PlayScreen implements Screen {
      */
     public void createSecondPlayer(float x, float y) {
         player2 = new Character(world, this, false);
+
         moveSecondPlayer(x, y);
+
+        // Create lights around 2nd player
+        circularLight2 = new PointLight(rayHandler, 100, Color.WHITE, 30 / TimesUpTeamGame.PPM, 0, 0);
+        circularLight2.attachToBody(player2.b2Body);
+        circularLight2.setXray(true);
+
+        flashlight2 = new ConeLight(rayHandler, 100, Color.WHITE, 70 / TimesUpTeamGame.PPM, 0, 0, 0, 60);
+        flashlight2.attachToBody(player2.b2Body, 0, 0, 0);
+        flashlight2.setXray(true);
+        flashlight2.setSoft(false);
     }
 
     /**

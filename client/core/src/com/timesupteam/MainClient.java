@@ -95,9 +95,9 @@ public class MainClient {
         msg.x = x;
         msg.y = y;
 
-        System.out.println();
-        System.out.printf("--- Sending my new position to the server... (id: %d, x: %f, y: %f)\n", msg.id, msg.x, msg.y);
-        System.out.println();
+//        System.out.println();
+//        System.out.printf("--- Sending my new position to the server... (id: %d, x: %f, y: %f)\n", msg.id, msg.x, msg.y);
+//        System.out.println();
 
         client.sendTCP(msg);
     }

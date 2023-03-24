@@ -17,6 +17,8 @@ import com.timesupteam.MainClient;
 import com.timesupteam.TimesUpTeamGame;
 import com.timesupteam.scenes.HUD;
 import com.timesupteam.sprites.Character;
+import com.timesupteam.sprites.InteractiveTileObject;
+import com.timesupteam.sprites.Keys;
 import com.timesupteam.tools.B2WorldCreator;
 import com.timesupteam.tools.WorldContactListener;
 
@@ -162,6 +164,14 @@ public class PlayScreen implements Screen {
             player.lastX = currentPositionX;
             player.lastY = currentPositionY;
         }
+
+
+        // Keys
+        for (InteractiveTileObject key : Keys.toBeDestroyed) {
+            world.destroyBody(key.body);
+            hud.addKeyCount(1);
+        }
+        Keys.toBeDestroyed.clear();
 
         // Take a time step (actually simulate movement, collision detection, etc.)
         world.step(1 / 60f, 6, 2);

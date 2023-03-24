@@ -166,8 +166,11 @@ public class PlayScreen implements Screen {
         }
 
 
-        // Keys
-        for (InteractiveTileObject key : Keys.toBeDestroyed) {
+        // Keys - destroy picked up key objects from world & increase key count
+        for (Keys key : Keys.toBeDestroyed) {
+            // TODO: send KeyPicked event to the server -> MainServer forwards -> listener to MainClient
+            // TODO: when receive KeyPicked from server, do the same actions as below (add to same list?)
+
             world.destroyBody(key.body);
             hud.addKeyCount(1);
         }

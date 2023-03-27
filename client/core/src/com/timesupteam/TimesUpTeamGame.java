@@ -15,7 +15,7 @@ public class TimesUpTeamGame extends Game {
 
     {
         DEBUG.put("zoom", false);
-        DEBUG.put("lights", true);
+        DEBUG.put("lights", false);
         DEBUG.put("Box2DDebugLines", true);
     }
 

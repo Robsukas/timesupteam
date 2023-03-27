@@ -21,6 +21,7 @@ import com.timesupteam.MainClient;
 import com.timesupteam.TimesUpTeamGame;
 import com.timesupteam.scenes.HUD;
 import com.timesupteam.sprites.Character;
+import com.timesupteam.sprites.Guard;
 import com.timesupteam.tools.B2WorldCreator;
 import com.timesupteam.tools.WorldContactListener;
 
@@ -41,7 +42,10 @@ public class PlayScreen implements Screen {
     // Box2d variables
     private World world;
     private Box2DDebugRenderer b2dr;
+
+    // Sprites
     public Character player;
+    public Guard guard;
 
     // Lighting variables
     private RayHandler rayHandler;
@@ -107,6 +111,9 @@ public class PlayScreen implements Screen {
         flashlight.attachToBody(player.b2Body, 0, 0, 0);
         flashlight.setXray(true);
         flashlight.setSoft(false);
+
+        // Initialize guard
+        guard = new Guard(this, 5.7f, 7.1f);
     }
 
     public TextureAtlas getAtlas() {
@@ -165,6 +172,7 @@ public class PlayScreen implements Screen {
 
         // Update player(s)'s sprite location
         player.update(dt);
+        guard.update(dt);
 
         if (player2 != null)
             player2.update(dt);
@@ -219,6 +227,7 @@ public class PlayScreen implements Screen {
             player2.draw(game.batch);
         }
         player.draw(game.batch);
+        //guard.draw(game.batch);
         game.batch.end();
 
         // Lighting

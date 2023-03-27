@@ -207,34 +207,34 @@ public class Character extends Sprite {
 
         FixtureDef fdef = new FixtureDef();
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(7 / TimesUpTeamGame.PPM, 8 / TimesUpTeamGame.PPM);
+        shape.setAsBox(8 / TimesUpTeamGame.PPM, 8 / TimesUpTeamGame.PPM);
         fdef.shape = shape;
         b2Body.createFixture(fdef);
 
         // Initialize character edgeshape for the top part of the collision hitbox.
         EdgeShape top = new EdgeShape();
-        top.set(new Vector2(-6 / TimesUpTeamGame.PPM, 8 / TimesUpTeamGame.PPM), new Vector2(6 / TimesUpTeamGame.PPM, 8 / TimesUpTeamGame.PPM));
+        top.set(new Vector2(-7 / TimesUpTeamGame.PPM, 8 / TimesUpTeamGame.PPM), new Vector2(7 / TimesUpTeamGame.PPM, 8 / TimesUpTeamGame.PPM));
         fdef.shape = top;
         fdef.isSensor = true;
         b2Body.createFixture(fdef).setUserData("top");
 
         // Initialize character edgeshape for the bottom part of the collision hitbox.
         EdgeShape bottom = new EdgeShape();
-        bottom.set(new Vector2(-6 / TimesUpTeamGame.PPM, -8 / TimesUpTeamGame.PPM), new Vector2(6 / TimesUpTeamGame.PPM, -8 / TimesUpTeamGame.PPM));
+        bottom.set(new Vector2(-7 / TimesUpTeamGame.PPM, -8 / TimesUpTeamGame.PPM), new Vector2(7 / TimesUpTeamGame.PPM, -8 / TimesUpTeamGame.PPM));
         fdef.shape = bottom;
         fdef.isSensor = true;
         b2Body.createFixture(fdef).setUserData("bottom");
 
         // Initialize character edgeshape for the left part of the collision hitbox.
         EdgeShape left = new EdgeShape();
-        left.set(new Vector2(-7 / TimesUpTeamGame.PPM, 7 / TimesUpTeamGame.PPM), new Vector2(-7 / TimesUpTeamGame.PPM, -7 / TimesUpTeamGame.PPM));
+        left.set(new Vector2(-8 / TimesUpTeamGame.PPM, 7 / TimesUpTeamGame.PPM), new Vector2(-8 / TimesUpTeamGame.PPM, -7 / TimesUpTeamGame.PPM));
         fdef.shape = left;
         fdef.isSensor = true;
         b2Body.createFixture(fdef).setUserData("left");
 
         // Initialize character edgeshape for the right part of the collision hitbox.
         EdgeShape right = new EdgeShape();
-        right.set(new Vector2(7 / TimesUpTeamGame.PPM, 7 / TimesUpTeamGame.PPM), new Vector2(7 / TimesUpTeamGame.PPM, -7 / TimesUpTeamGame.PPM));
+        right.set(new Vector2(8 / TimesUpTeamGame.PPM, 7 / TimesUpTeamGame.PPM), new Vector2(8 / TimesUpTeamGame.PPM, -7 / TimesUpTeamGame.PPM));
         fdef.shape = right;
         fdef.isSensor = true;
         b2Body.createFixture(fdef).setUserData("right");

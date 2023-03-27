@@ -241,7 +241,7 @@ public class PlayScreen implements Screen {
         hud.stage.draw();
 
         // Game over logic
-        if (false) {  // replace with real logic
+        if (hud.isTimeUp()) {  // replace with real logic
             game.setScreen(new GameOverScreen(game, "Y'all dead."));
             dispose();
         }

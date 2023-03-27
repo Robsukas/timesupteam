@@ -230,6 +230,12 @@ public class PlayScreen implements Screen {
         // Draw the HUD
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.stage.draw();
+
+        // Game over logic
+        if (false) {  // replace with real logic
+            game.setScreen(new GameOverScreen(game, "Y'all dead."));
+            dispose();
+        }
     }
 
     @Override

@@ -19,13 +19,17 @@ public class Guard extends Enemy {
     }
 
     public void update(float dt) {
+        // Update statetime
         stateTime += dt;
+
+        // Update body position (x, y)
         setPosition(b2Body.getPosition().x - getWidth() / 2, b2Body.getPosition().y - getHeight() / 2);
     }
+
     @Override
     protected void defineEnemy() {
         BodyDef bdef = new BodyDef();
-        bdef.position.set(5.7f, 7.1f);  // starting pos of enemy
+        bdef.position.set(5.7f, 7.1f);  // starting pos of enemy - THIS IS TEMPORARY
 
         bdef.type = BodyDef.BodyType.DynamicBody;
 
@@ -33,7 +37,7 @@ public class Guard extends Enemy {
 
         FixtureDef fdef = new FixtureDef();
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(7 / TimesUpTeamGame.PPM, 8 / TimesUpTeamGame.PPM);
+        shape.setAsBox(8 / TimesUpTeamGame.PPM, 8 / TimesUpTeamGame.PPM);
         fdef.shape = shape;
         b2Body.createFixture(fdef);
     }

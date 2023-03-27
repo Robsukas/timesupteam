@@ -1,6 +1,5 @@
 package com.timesupteam;
 
-import com.badlogic.gdx.Net;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
@@ -13,7 +12,7 @@ public class MainClient {
 
     private final Client client;
 
-    private final String SERVER_IP = "localhost"; // "193.40.156.59"
+    private final String SERVER_IP =  "localhost"; // "193.40.156.59";
     private final int TCP_PORT = 8080;  // must be the same on server
     private final int UDP_PORT = 8081;  // must be the same on server
 

@@ -20,11 +20,16 @@ public class KeysManager {
 
     private List<Keys> keys = new ArrayList<>();
     private List<Keys> keysToBeDestroyed = new ArrayList<>();
+    private static int keyId = 0;  // each key has a unique id, so we can send KeyPicked event to the server with key id
 
     public KeysManager(PlayScreen screen) {
         this.world = screen.getWorld();
         this.hud = screen.getHud();
         this.client = screen.getClient();
+    }
+
+    public int getKeyIdAndIncrement() {
+        return keyId++;
     }
 
     public void addKey(Keys key) {
@@ -34,7 +39,7 @@ public class KeysManager {
     }
 
     /**
-     * Add a Keys object to be destroyed in the next update cycle.
+     * Add a Keys object to be destroyed in the next update cycle, and send KeyPicked event to the server.
      * Shall be called when this player picked the key.
      *
      * @param key Keys object to be destroyed
@@ -42,6 +47,7 @@ public class KeysManager {
     public void addKeyToBeDestroyed(Keys key) {
         if (!keysToBeDestroyed.contains(key)) {
             keysToBeDestroyed.add(key);
+
             client.sendKeyPicked(key.getId());
         }
     }
@@ -64,7 +70,7 @@ public class KeysManager {
     }
 
     /**
-     * Destroy all keys in list & clear list, update keys count.
+     * Destroy all keys in to be destroyed list & clear the list. Update keys count.
      * Shall be called from PlayScreen.update()
      */
     public void update() {

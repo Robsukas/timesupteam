@@ -17,15 +17,17 @@ public class Keys extends InteractiveTileObject {
         fixture.setUserData(this);
     }
 
+    /**
+     * Get unique id of the key.
+     */
     public int getId() {
         return id;
     }
 
     /**
-     * On any hit.
+     * On any hit (TODO: make sure that it's player, not guard colliding etc.), add the key to be destroyed list.
      */
     private void onHit() {
-        getCell().setTile(null);
         keysManager.addKeyToBeDestroyed(this);
     }
 

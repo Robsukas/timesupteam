@@ -1,5 +1,6 @@
 package com.timesupteam;
 
+import com.badlogic.gdx.Net;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
@@ -12,7 +13,7 @@ public class MainClient {
 
     private final Client client;
 
-    private final String SERVER_IP = "193.40.156.59"; //"localhost"; //   // "localhost"
+    private final String SERVER_IP = "localhost"; // "193.40.156.59"
     private final int TCP_PORT = 8080;  // must be the same on server
     private final int UDP_PORT = 8081;  // must be the same on server
 
@@ -69,6 +70,16 @@ public class MainClient {
 
                     System.out.println();
                 }
+
+                if (object instanceof Network.KeyPicked) {
+                    Network.KeyPicked msg = (Network.KeyPicked) object;
+
+                    System.out.println();
+                    System.out.println("--- Received KeyPicked event from server.");
+                    System.out.printf("--- (id: %d, key id: %d)\n", msg.id, msg.keyId);
+
+                    screen.getKeysManager().addKeyToBeDestroyed(msg.keyId);
+                }
             }
         }));
 
@@ -98,6 +109,20 @@ public class MainClient {
 //        System.out.println();
 //        System.out.printf("--- Sending my new position to the server... (id: %d, x: %f, y: %f)\n", msg.id, msg.x, msg.y);
 //        System.out.println();
+
+        client.sendTCP(msg);
+    }
+
+    /**
+     * Send key picked up event to the server, so the server can forward it to other players.
+     */
+    public void sendKeyPicked(int keyId) {
+        Network.KeyPicked msg = new Network.KeyPicked();
+
+        msg.id = client.getID();
+        msg.keyId = keyId;
+
+        System.out.printf("--- Sending key picked event to the server... (id: %d, key id: %d)\n", msg.id, msg.keyId);
 
         client.sendTCP(msg);
     }

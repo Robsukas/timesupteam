@@ -69,6 +69,17 @@ public class MainServer {
 
                     server.sendToAllExceptTCP(msg.id, msg);
                 }
+
+                if (object instanceof Network.KeyPicked) {
+                    Network.KeyPicked msg = (Network.KeyPicked) object;
+
+                    System.out.println();
+                    System.out.println("--- Received KeyPicked event from a player; sending that to all other players.");
+                    System.out.printf("--- (id: %d, key id: %d)\n", msg.id, msg.keyId);
+                    System.out.println();
+
+                    server.sendToAllExceptTCP(msg.id, msg);
+                }
             }
         });
 

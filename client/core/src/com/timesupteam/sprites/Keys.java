@@ -4,45 +4,52 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.World;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.timesupteam.tools.KeysManager;
 
 public class Keys extends InteractiveTileObject {
+    private final KeysManager keysManager;
+    private final int id;
 
-    public static List<Keys> toBeDestroyed = new ArrayList<>();
-
-    public Keys(World world, TiledMap map, Rectangle bounds) {
+    public Keys(World world, TiledMap map, Rectangle bounds, KeysManager keysManager, int id) {
         super(world, map, bounds);
+        this.keysManager = keysManager;
+        this.id = id;
         fixture.setUserData(this);
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    /**
+     * On any hit.
+     */
+    private void onHit() {
+        getCell().setTile(null);
+        keysManager.addKeyToBeDestroyed(this);
     }
 
     @Override
     public void onTopHit() {
         Gdx.app.log("Keys", "Collision on Top");
-        getCell().setTile(null);
-        toBeDestroyed.add(this);
-
+        onHit();
     }
 
     @Override
     public void onBottomHit() {
         Gdx.app.log("Keys", "Collision on Bottom");
-        getCell().setTile(null);
-        toBeDestroyed.add(this);
+        onHit();
     }
 
     @Override
     public void onLeftHit() {
         Gdx.app.log("Keys", "Collision on Left");
-        getCell().setTile(null);
-        toBeDestroyed.add(this);
+        onHit();
     }
 
     @Override
     public void onRightHit() {
         Gdx.app.log("Keys", "Collision on Right");
-        getCell().setTile(null);
-        toBeDestroyed.add(this);
+        onHit();
     }
 }

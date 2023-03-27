@@ -7,10 +7,13 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
 import com.timesupteam.TimesUpTeamGame;
+import com.timesupteam.screens.PlayScreen;
 import com.timesupteam.sprites.Walls;
 
 public class B2WorldCreator {
-    public B2WorldCreator(World world, TiledMap map) {
+    public B2WorldCreator(PlayScreen screen) {
+        World world = screen.getWorld();
+        TiledMap map = screen.getMap();
         BodyDef bdef = new BodyDef();
         PolygonShape shape = new PolygonShape();
         FixtureDef fdef = new FixtureDef();
@@ -18,7 +21,7 @@ public class B2WorldCreator {
         // Create fixtures for walls
         for (RectangleMapObject object : map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = object.getRectangle();
-            new Walls(world, map, rect);
+            new Walls(screen , rect);
         }
 
     }

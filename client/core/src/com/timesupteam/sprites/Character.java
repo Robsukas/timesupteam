@@ -33,9 +33,9 @@ public class Character extends Sprite {
     private boolean isMainCharacter;
     public float lastX, lastY;
 
-    public Character(World world, PlayScreen screen, boolean isMainCharacter) {
+    public Character(PlayScreen screen, boolean isMainCharacter) {
         super(screen.getAtlas().findRegion("000"));
-        this.world = world;
+        this.world = screen.getWorld();
         this.screen = screen;
         this.isMainCharacter = isMainCharacter;
 

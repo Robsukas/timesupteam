@@ -81,10 +81,10 @@ public class PlayScreen implements Screen {
         world = new World(Vector2.Zero, true);
         b2dr = new Box2DDebugRenderer();
 
-        new B2WorldCreator(world, map);
+        new B2WorldCreator(this);
 
         // Create main character in to the world
-        player = new Character(world, this, true);
+        player = new Character(this, true);
 
         // Try to create a client, add listeners, connect to the server
         client = new MainClient(this);
@@ -241,6 +241,13 @@ public class PlayScreen implements Screen {
         rayHandler.useCustomViewport(gamePort.getScreenX(), gamePort.getScreenY(), gamePort.getScreenWidth(), gamePort.getScreenHeight());
     }
 
+    public TiledMap getMap() {
+        return map;
+    }
+
+    public World getWorld() {
+        return world;
+    }
     @Override
     public void pause() {
 
@@ -279,7 +286,7 @@ public class PlayScreen implements Screen {
      * @param y y
      */
     public void createSecondPlayer(float x, float y) {
-        player2 = new Character(world, this, false);
+        player2 = new Character(this, false);
 
         moveSecondPlayer(x, y);
 

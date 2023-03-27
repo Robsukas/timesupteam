@@ -92,7 +92,7 @@ public class PlayScreen implements Screen {
 
         // Create walls, keys
         keysManager = new KeysManager(this);
-        new B2WorldCreator(world, map, keysManager);
+        new B2WorldCreator(this, keysManager);
 
         // Create main character in to the world
         player = new Character(this, true);
@@ -123,6 +123,9 @@ public class PlayScreen implements Screen {
 
     public World getWorld() {
         return world;
+    }
+    public TiledMap getMap() {
+        return map;
     }
 
     public MainClient getClient() {
@@ -272,13 +275,6 @@ public class PlayScreen implements Screen {
         rayHandler.useCustomViewport(gamePort.getScreenX(), gamePort.getScreenY(), gamePort.getScreenWidth(), gamePort.getScreenHeight());
     }
 
-    public TiledMap getMap() {
-        return map;
-    }
-
-    public World getWorld() {
-        return world;
-    }
     @Override
     public void pause() {
 

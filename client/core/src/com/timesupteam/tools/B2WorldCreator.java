@@ -12,8 +12,7 @@ import com.timesupteam.screens.PlayScreen;
 import com.timesupteam.sprites.Walls;
 
 public class B2WorldCreator {
-    public B2WorldCreator(World world, TiledMap map, KeysManager keysManager) {
-    public B2WorldCreator(PlayScreen screen) {
+    public B2WorldCreator(PlayScreen screen, KeysManager keysManager) {
         World world = screen.getWorld();
         TiledMap map = screen.getMap();
         BodyDef bdef = new BodyDef();
@@ -29,7 +28,7 @@ public class B2WorldCreator {
         // Create fixtures for keys, and add each key to KeysManager
         for (RectangleMapObject object : map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = object.getRectangle();
-            keysManager.addKey(new Keys(world, map, rect, keysManager, keysManager.getKeyIdAndIncrement()));
+            keysManager.addKey(new Keys(screen, rect, keysManager, keysManager.getKeyIdAndIncrement()));
         }
     }
 }

@@ -17,11 +17,14 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.esotericsoftware.kryonet.Client;
 import com.timesupteam.MainClient;
 import com.timesupteam.TimesUpTeamGame;
 import com.timesupteam.scenes.HUD;
 import com.timesupteam.sprites.Character;
+import com.timesupteam.sprites.Keys;
 import com.timesupteam.tools.B2WorldCreator;
+import com.timesupteam.tools.KeysManager;
 import com.timesupteam.tools.WorldContactListener;
 
 public class PlayScreen implements Screen {
@@ -43,6 +46,8 @@ public class PlayScreen implements Screen {
     private Box2DDebugRenderer b2dr;
     public Character player;
 
+    private KeysManager keysManager;
+
     // Lighting variables
     private RayHandler rayHandler;
     private ConeLight flashlight;
@@ -63,11 +68,14 @@ public class PlayScreen implements Screen {
         // Initialize game
         this.game = game;
 
+        // Try to create a client, add listeners, connect to the server
+        client = new MainClient(this);
+
         // Initialize gameCam
         gameCam = new OrthographicCamera();
         gamePort = new FitViewport(TimesUpTeamGame.V_WIDTH / TimesUpTeamGame.PPM, TimesUpTeamGame.V_HEIGHT / TimesUpTeamGame.PPM, gameCam);
 
-        // Initialize the HUD for key count, timer,
+        // Initialize the HUD for key count, timer
         hud = new HUD(game.batch);
 
         // Load and render the map
@@ -78,16 +86,16 @@ public class PlayScreen implements Screen {
         // Set gamecam position to center
         gameCam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
 
+        // Initialize world, debug lines renderer
         world = new World(Vector2.Zero, true);
         b2dr = new Box2DDebugRenderer();
 
-        new B2WorldCreator(this);
+        // Create walls, keys
+        keysManager = new KeysManager(this);
+        new B2WorldCreator(world, map, keysManager);
 
         // Create main character in to the world
         player = new Character(this, true);
-
-        // Try to create a client, add listeners, connect to the server
-        client = new MainClient(this);
 
         world.setContactListener(new WorldContactListener());
 
@@ -111,6 +119,18 @@ public class PlayScreen implements Screen {
 
     public TextureAtlas getAtlas() {
         return atlas;
+    }
+
+    public World getWorld() {
+        return world;
+    }
+
+    public MainClient getClient() {
+        return client;
+    }
+
+    public KeysManager getKeysManager() {
+        return keysManager;
     }
 
     @Override
@@ -192,7 +212,12 @@ public class PlayScreen implements Screen {
             client.sendPosition(currentPositionX, currentPositionY);
         }
 
+
+        // Keys - destroy picked up key objects from world & increase key count
+        keysManager.update();
+
         // Take a time step (actually simulate movement, collision detection, etc.)
+        // World is locked during step, can't transform/destroy/... bodies at the same time
         world.step(1 / 60f, 6, 2);
     }
 

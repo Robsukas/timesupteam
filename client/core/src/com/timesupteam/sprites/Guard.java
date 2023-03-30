@@ -7,20 +7,15 @@ import com.timesupteam.TimesUpTeamGame;
 import com.timesupteam.screens.PlayScreen;
 
 public class Guard extends Enemy {
-    private float stateTime;
-    private TextureRegion texture;
 
     float x, y;
 
     public Guard(PlayScreen screen, float x, float y) {
         super(screen, x, y);
-        setBounds(getX(), getY(), 16 / TimesUpTeamGame.PPM, 16 / TimesUpTeamGame.PPM);
-        stateTime = 0;
+//        setBounds(getX(), getY(), 16 / TimesUpTeamGame.PPM, 16 / TimesUpTeamGame.PPM);
     }
 
     public void update(float dt) {
-        // Update statetime
-        stateTime += dt;
 
         // Update body position (x, y)
         setPosition(b2Body.getPosition().x - getWidth() / 2, b2Body.getPosition().y - getHeight() / 2);

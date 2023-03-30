@@ -12,7 +12,7 @@ public class MainClient {
 
     private final Client client;
 
-    private final String SERVER_IP = "193.40.156.59"; // "localhost";
+    private final String SERVER_IP = "localhost"; // "193.40.156.59"; //
     private final int TCP_PORT = 8080;  // must be the same on server
     private final int UDP_PORT = 8081;  // must be the same on server
 
@@ -65,6 +65,20 @@ public class MainClient {
                         System.out.println("- player2 exists, moving them...");
                         screen.moveSecondPlayer(msg.x, msg.y);
                         // ...
+                    }
+
+                    System.out.println();
+                }
+
+                if (object instanceof Network.MoveGuard) {
+                    Network.MoveGuard msg = (Network.MoveGuard) object;
+
+                    if (screen.guard == null) {
+                        System.out.println("- guard is null, creating guard");
+                        screen.createGuard(msg.x, msg.y);
+                    } else {
+                        System.out.printf("- moving guard (%f, %f)\n", msg.x, msg.y);
+                        screen.moveGuard(msg.x, msg.y);
                     }
 
                     System.out.println();

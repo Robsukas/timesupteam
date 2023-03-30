@@ -2,6 +2,7 @@ package com.timesupteam;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.timesupteam.screens.PlayScreen;
 
 import java.util.HashMap;
@@ -17,6 +18,7 @@ public class TimesUpTeamGame extends Game {
         DEBUG.put("zoom", false);
         DEBUG.put("lights", false);
         DEBUG.put("Box2DDebugLines", true);
+        DEBUG.put("kill when timer finishes", false);
     }
 
 

@@ -46,6 +46,7 @@ public class PlayScreen implements Screen {
     // Sprites
     public Character player;
     public Guard guard;
+    private float guardX, guardY;
 
     // Lighting variables
     private RayHandler rayHandler;
@@ -77,6 +78,7 @@ public class PlayScreen implements Screen {
         // Load and render the map
         maploader = new TmxMapLoader();
         map = maploader.load("level_1.tmx");
+//        map = maploader.load("ai_test_map.tmx");
         renderer = new OrthogonalTiledMapRenderer(map, 1 / TimesUpTeamGame.PPM);
 
         // Set gamecam position to center
@@ -111,9 +113,6 @@ public class PlayScreen implements Screen {
         flashlight.attachToBody(player.b2Body, 0, 0, 0);
         flashlight.setXray(true);
         flashlight.setSoft(false);
-
-        // Initialize guard
-        guard = new Guard(this, 5.7f, 7.1f);
     }
 
     public TextureAtlas getAtlas() {
@@ -170,9 +169,12 @@ public class PlayScreen implements Screen {
             player2.b2Body.setTransform(new Vector2(player2X, player2Y), player2.b2Body.getAngle());
         }
 
-        // Update player(s)'s sprite location
+        // Update player(s)'s (and guards') sprite location
+        if (guard != null)
+            guard.b2Body.setTransform(new Vector2(guardX, guardY), 0);
+//            guard.update(dt);
+
         player.update(dt);
-        guard.update(dt);
 
         if (player2 != null)
             player2.update(dt);
@@ -223,6 +225,11 @@ public class PlayScreen implements Screen {
         game.batch.begin();
 
         // Draw players, with our main character on top
+        if (guard != null) {
+//            guard.draw(game.batch); // must have texture!
+            ;
+        }
+
         if (player2 != null) {
             player2.draw(game.batch);
         }
@@ -241,9 +248,11 @@ public class PlayScreen implements Screen {
         hud.stage.draw();
 
         // Game over logic
-        if (hud.isTimeUp()) {  // replace with real logic
-            game.setScreen(new GameOverScreen(game, "Y'all dead."));
-            dispose();
+        if (TimesUpTeamGame.DEBUG.get("kill when timer finishes")) {
+            if (hud.isTimeUp()) {  // replace with real logic
+                game.setScreen(new GameOverScreen(game, "Y'all dead."));
+                dispose();
+            }
         }
     }
 
@@ -263,6 +272,7 @@ public class PlayScreen implements Screen {
     public World getWorld() {
         return world;
     }
+
     @Override
     public void pause() {
 
@@ -326,5 +336,16 @@ public class PlayScreen implements Screen {
     public void moveSecondPlayer(float x, float y) {
         player2X = x;
         player2Y = y;
+    }
+
+    public void createGuard(float x, float y) {
+        guard = new Guard(this, x, y);
+
+        moveGuard(x, y);
+    }
+
+    public void moveGuard(float x, float y) {
+        guardX = x;
+        guardY = y;
     }
 }

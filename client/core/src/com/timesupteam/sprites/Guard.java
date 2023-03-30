@@ -1,6 +1,5 @@
 package com.timesupteam.sprites;
 
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
@@ -11,6 +10,7 @@ public class Guard extends Enemy {
     private float stateTime;
     private TextureRegion texture;
 
+    float x, y;
 
     public Guard(PlayScreen screen, float x, float y) {
         super(screen, x, y);
@@ -31,7 +31,7 @@ public class Guard extends Enemy {
         BodyDef bdef = new BodyDef();
         bdef.position.set(5.7f, 7.1f);  // starting pos of enemy - THIS IS TEMPORARY
 
-        bdef.type = BodyDef.BodyType.DynamicBody;
+        bdef.type = BodyDef.BodyType.StaticBody;
 
         b2Body = world.createBody(bdef);
 

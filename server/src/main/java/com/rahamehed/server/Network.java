@@ -10,11 +10,16 @@ public class Network {
     static public void register(EndPoint endPoint) {
         Kryo kryo = endPoint.getKryo();
         kryo.register(MovePlayer.class);
-
+        kryo.register(MoveGuard.class);
     }
 
     static public class MovePlayer {
         public int id;
+        public float x, y;
+    }
+
+    static public class MoveGuard {
+        public int guardId;
         public float x, y;
     }
 }

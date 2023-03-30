@@ -7,6 +7,8 @@ import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.minlog.Log;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainServer {
 
@@ -14,6 +16,8 @@ public class MainServer {
     // Ports must be the same in clients
     private final int TCP_PORT = 8080;
     private final int UDP_PORT = 8081;
+
+    List<Integer> players = new ArrayList<>();
 
     public static void main(String[] args) throws IOException {
         new MainServer();
@@ -30,7 +34,7 @@ public class MainServer {
         // Add listener to tell the server, what to do after something is sent over the network
         server.addListener(new Listener() {
             public void connected(Connection c) {
-//                players.put(c.getID(), new Player());
+                players.add(c.getID());
 
                 System.out.println();
                 System.out.println("!-- Player connected.");
@@ -38,10 +42,15 @@ public class MainServer {
                 System.out.println("--- UDP: " + c.getRemoteAddressUDP().toString());
                 System.out.println("--- TCP: " + c.getRemoteAddressTCP().toString());
                 System.out.println();
+
+                if (players.size() >= 2) {
+                    TimerLogic.main(server);
+                    ;
+                }
             }
 
             public void disconnected(Connection c) {
-//                players.remove(c.getID());
+                players.remove((Integer) c.getID());
 
                 System.out.println();
                 System.out.println("!-- Player disconnected.");

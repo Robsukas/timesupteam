@@ -2,6 +2,7 @@ package com.timesupteam;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.timesupteam.screens.MenuScreen;
 import com.timesupteam.screens.PlayScreen;
 
 import java.util.HashMap;
@@ -39,7 +40,7 @@ public class TimesUpTeamGame extends Game {
     @Override
     public void create() {
         batch = new SpriteBatch();
-        setScreen(new PlayScreen(this));
+        setScreen(new MenuScreen(this));
     }
 
     @Override

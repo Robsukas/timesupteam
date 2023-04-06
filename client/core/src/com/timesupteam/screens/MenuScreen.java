@@ -13,7 +13,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.timesupteam.TimesUpTeamGame;
 
 public class MenuScreen implements Screen {
@@ -34,7 +33,7 @@ public class MenuScreen implements Screen {
         skin = new Skin(Gdx.files.internal("skins/uiskin.json")); // Make sure to have a UI skin JSON file in your assets folder
 
         // Create background image
-        Texture backgroundTexture = new Texture(Gdx.files.internal("skins/minecraft.png"));
+        Texture backgroundTexture = new Texture(Gdx.files.internal("skins/background22.png"));
         Image backgroundImage = new Image(backgroundTexture);
         backgroundImage.setSize(stage.getWidth(), stage.getHeight());
         stage.addActor(backgroundImage);

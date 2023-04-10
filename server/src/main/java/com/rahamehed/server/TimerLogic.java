@@ -8,16 +8,20 @@ import java.util.TimerTask;
 
 public class TimerLogic {
 
-    private Server server;
-//    private boolean isRunning = false;
+    private MainServer server;
 
     private int cycleLength = 250; // ms
-    private int secondsPerLevel = 15;
+    private int secondsPerLevel = 150;
     private int cyclesLeft;
 
+    int[][] a = new int[10][10];
 
-    public TimerLogic(Server server) {
+    public TimerLogic(MainServer server) {
         this.server = server;
+    }
+
+    private void readInMap() {
+
     }
 
     /**
@@ -26,10 +30,6 @@ public class TimerLogic {
      * Run until time is up, then send game end event.
      */
     public void start() {
-//        // Ensure start is called only once
-//        if (isRunning) return;
-//        isRunning = true;
-
         gameStart();
         cyclesLeft = (secondsPerLevel * 1000) / cycleLength;
 
@@ -56,7 +56,7 @@ public class TimerLogic {
         Network.GameStart msg = new Network.GameStart();
         msg.time = secondsPerLevel;
 
-        server.sendToAllTCP(msg);
+        server.server.sendToAllTCP(msg);
     }
 
     /**
@@ -65,7 +65,7 @@ public class TimerLogic {
     private void gameOver() {
         Network.GameOver msg = new Network.GameOver();
 
-        server.sendToAllTCP(msg);
+        server.server.sendToAllTCP(msg);
     }
 
     /**
@@ -74,9 +74,18 @@ public class TimerLogic {
     private void moveGuard() {
         Network.MoveGuard msg = new Network.MoveGuard();
         msg.guardId = 0;
-        msg.x = (float) (Math.random() * 2 + 5f);
-        msg.y = (float) (Math.random() * 2 + 5f);
 
-        server.sendToAllTCP(msg);
+        if (msg.x == 0 && msg.y == 0) {
+            msg.x = 3.315605f;
+            msg.y = 2.889148f;
+        }
+
+        // Calculate guard's new position
+        // ...
+        float goalX = server.players.entrySet().iterator().next().getValue().get(0);
+        float goalY = server.players.entrySet().iterator().next().getValue().get(1);
+
+
+        server.server.sendToAllTCP(msg);
     }
 }

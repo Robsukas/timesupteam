@@ -6,7 +6,6 @@ import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
-import com.timesupteam.TimesUpTeamGame;
 import com.timesupteam.screens.PlayScreen;
 import com.timesupteam.sprites.Walls;
 

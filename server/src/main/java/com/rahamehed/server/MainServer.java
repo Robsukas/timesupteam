@@ -18,6 +18,7 @@ public class MainServer {
     private final int UDP_PORT = 8081;
 
     List<Integer> players = new ArrayList<>();
+    TimerLogic timer;
 
     public static void main(String[] args) throws IOException {
         new MainServer();
@@ -31,6 +32,9 @@ public class MainServer {
         server = new Server();
         Network.register(server);
 
+        // Initialize timer
+        timer = new TimerLogic(server);
+
         // Add listener to tell the server, what to do after something is sent over the network
         server.addListener(new Listener() {
             public void connected(Connection c) {
@@ -43,9 +47,9 @@ public class MainServer {
                 System.out.println("--- TCP: " + c.getRemoteAddressTCP().toString());
                 System.out.println();
 
+                // If both players have joined, start the timer loop
                 if (players.size() >= 2) {
-                    TimerLogic.main(server);
-                    ;
+                    timer.start();
                 }
             }
 
@@ -70,6 +74,8 @@ public class MainServer {
 
                 if (object instanceof Network.MovePlayer) {
                     Network.MovePlayer msg = (Network.MovePlayer) object;
+
+
 
                     System.out.println();
                     System.out.println("--- Received MovePlayer event from a player; sending that to all other players.");

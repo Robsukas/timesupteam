@@ -1,5 +1,6 @@
 package com.timesupteam;
 
+import com.badlogic.gdx.Net;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
@@ -47,7 +48,25 @@ public class MainClient {
                     return;
                 }
 
-                if (object instanceof Network.MovePlayer) {
+                if (object instanceof Network.GameStart) {
+                    // Another player has joined, start game timer and open door
+                    Network.GameStart msg = (Network.GameStart) object;
+                    screen.getHud().setWorldTimer(msg.time);
+
+                    TimesUpTeamGame.isRunning = true;
+                }
+
+                else if (object instanceof Network.GameOver) {
+                    // Another player has joined, start game timer and open door
+//                    Network.GameOver msg = (Network.GameOver) object;
+//                    screen.getHud().setWorldTimer(0);
+                    TimesUpTeamGame.isRunning = false;
+                    TimesUpTeamGame.isTimeUp = true;
+
+//                    client.stop(); // disconnect player from server
+                }
+
+                else if (object instanceof Network.MovePlayer) {
                     // Another player has moved
                     Network.MovePlayer msg = (Network.MovePlayer) object;
 
@@ -70,7 +89,7 @@ public class MainClient {
                     System.out.println();
                 }
 
-                if (object instanceof Network.MoveGuard) {
+                else if (object instanceof Network.MoveGuard) {
                     Network.MoveGuard msg = (Network.MoveGuard) object;
 
                     if (screen.guard == null) {

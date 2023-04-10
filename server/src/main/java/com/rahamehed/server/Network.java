@@ -11,6 +11,8 @@ public class Network {
         Kryo kryo = endPoint.getKryo();
         kryo.register(MovePlayer.class);
         kryo.register(MoveGuard.class);
+        kryo.register(GameStart.class);
+        kryo.register(GameOver.class);
     }
 
     static public class MovePlayer {
@@ -21,5 +23,13 @@ public class Network {
     static public class MoveGuard {
         public int guardId;
         public float x, y;
+    }
+
+    static public class GameStart {
+        public int time;  // seconds
+    }
+
+    static public class GameOver {
+//        public int time;  // seconds
     }
 }

@@ -72,7 +72,7 @@ public class PlayScreen implements Screen {
         gameCam = new OrthographicCamera();
         gamePort = new FitViewport(TimesUpTeamGame.V_WIDTH / TimesUpTeamGame.PPM, TimesUpTeamGame.V_HEIGHT / TimesUpTeamGame.PPM, gameCam);
 
-        // Initialize the HUD for key count, timer,
+        // Initialize the HUD for visual key count, timer
         hud = new HUD(game.batch);
 
         // Load and render the map
@@ -185,8 +185,9 @@ public class PlayScreen implements Screen {
         gameCam.position.x = currentPositionX;
         gameCam.position.y = currentPositionY;
 
-        // Update HUD
-        hud.update(dt);
+        // Update HUD timer, if game is running (both players have joined)
+        if (TimesUpTeamGame.isRunning)
+            hud.update(dt);
 
         // Update our game-cam with correct coordinates after changes
         gameCam.update();
@@ -249,7 +250,7 @@ public class PlayScreen implements Screen {
 
         // Game over logic
         if (TimesUpTeamGame.DEBUG.get("kill when timer finishes")) {
-            if (hud.isTimeUp()) {  // replace with real logic
+            if (TimesUpTeamGame.isTimeUp) {  // replace with real logic
                 game.setScreen(new GameOverScreen(game, "Y'all dead."));
                 dispose();
             }

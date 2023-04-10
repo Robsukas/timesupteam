@@ -63,6 +63,7 @@ public class MainClient {
                     TimesUpTeamGame.isRunning = false;
                     TimesUpTeamGame.isTimeUp = true;
 
+                    // :D
 //                    client.stop(); // disconnect player from server
                 }
 

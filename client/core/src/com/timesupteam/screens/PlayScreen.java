@@ -78,7 +78,7 @@ public class PlayScreen implements Screen {
         // Load and render the map
         maploader = new TmxMapLoader();
 //        map = maploader.load("level_1.tmx");
-        map = maploader.load("ai_test_map2.tmx");
+        map = maploader.load("level_1_col.tmx");
         renderer = new OrthogonalTiledMapRenderer(map, 1 / TimesUpTeamGame.PPM);
 
         // Set gamecam position to center

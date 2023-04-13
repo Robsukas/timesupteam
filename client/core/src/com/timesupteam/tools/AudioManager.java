@@ -29,7 +29,7 @@ public class AudioManager {
     }
     public void playGameOverMusic() {
         stopAllMusic();
-        gameOverMusic.setLooping(true);
+        gameOverMusic.setLooping(false);
         gameOverMusic.play();
     }
 

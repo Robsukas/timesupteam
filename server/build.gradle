@@ -13,7 +13,13 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
 
+//    Networking
     implementation "com.esotericsoftware:kryonet:2.22.0-RC1"
+
+//    Reading .tmx files
+    implementation 'org.mapeditor:libtiled:1.4.2'
+    implementation "jakarta.xml.bind:jakarta.xml.bind-api:2.3.2"
+    implementation "org.glassfish.jaxb:jaxb-runtime:2.3.2"
 }
 
 test {

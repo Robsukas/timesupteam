@@ -1,5 +1,6 @@
 package com.rahamehed.server;
 
+import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -26,6 +27,18 @@ public class TimerLogic {
      */
     public void start() {
         // Both players have joined
+        // Load map into memory
+        TmxMapLoader mapLoader = new TmxMapLoader();
+        try {
+            map = mapLoader.readInMap("ai_test_map2.tmx", "top");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        System.out.println(Arrays.deepToString(map));
+
+        System.exit(0);
+
         // Send game start event to all players
         gameStart();
 

@@ -8,4 +8,8 @@ public class StartDoor extends InteractiveTileObject{
         super(screen, bounds);
         fixture.setUserData(this);
     }
+
+    public void destroyDoor() {
+
+    }
 }

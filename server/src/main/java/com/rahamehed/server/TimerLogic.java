@@ -1,7 +1,5 @@
 package com.rahamehed.server;
 
-import com.esotericsoftware.kryonet.Server;
-
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -11,18 +9,15 @@ public class TimerLogic {
     private MainServer server;
 
     private int cycleLength = 250; // ms
-    private int secondsPerLevel = 150;
+    private int secondsPerLevel = 20;
     private int cyclesLeft;
 
-    int[][] a = new int[10][10];
+    private boolean[][] map;  // holds walls pos
 
     public TimerLogic(MainServer server) {
         this.server = server;
     }
 
-    private void readInMap() {
-
-    }
 
     /**
      * Start level and its timer.
@@ -30,18 +25,23 @@ public class TimerLogic {
      * Run until time is up, then send game end event.
      */
     public void start() {
+        // Both players have joined
+        // Send game start event to all players
         gameStart();
-        cyclesLeft = (secondsPerLevel * 1000) / cycleLength;
 
+        // Do stuff (move guard) every cycleLength milliseconds
         Timer timer = new Timer();
+        cyclesLeft = (secondsPerLevel * 1000) / cycleLength;
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
                 if (cyclesLeft <= 0) {
+                    // Time is up, send game over event to all players
                     timer.cancel();
                     gameOver();
                 }
 
+                // Update guard's position and send it to all players
                 moveGuard();
 
                 cyclesLeft--;
@@ -75,16 +75,18 @@ public class TimerLogic {
         Network.MoveGuard msg = new Network.MoveGuard();
         msg.guardId = 0;
 
-        if (msg.x == 0 && msg.y == 0) {
-            msg.x = 3.315605f;
-            msg.y = 2.889148f;
-        }
+//        // If beginning, set guard's position to zero
+//        if (msg.x == 0 && msg.y == 0) {
+//            msg.x = 3.315605f;
+//            msg.y = 2.889148f;
+//        }
 
         // Calculate guard's new position
         // ...
         float goalX = server.players.entrySet().iterator().next().getValue().get(0);
         float goalY = server.players.entrySet().iterator().next().getValue().get(1);
-
+        msg.x = goalX;
+        msg.y = goalY;
 
         server.server.sendToAllTCP(msg);
     }

@@ -9,7 +9,4 @@ public class StartDoor extends InteractiveTileObject{
         fixture.setUserData(this);
     }
 
-    public void destroyDoor() {
-
-    }
 }

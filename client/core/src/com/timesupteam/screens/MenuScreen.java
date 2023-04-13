@@ -91,6 +91,7 @@ public class MenuScreen implements Screen {
 
     @Override
     public void show() {
+        game.audioManager.playMenuMusic();
         // Called when the screen becomes the current screen
     }
 

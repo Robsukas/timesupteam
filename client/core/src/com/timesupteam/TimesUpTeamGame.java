@@ -3,13 +3,15 @@ package com.timesupteam;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.timesupteam.screens.MenuScreen;
-import com.timesupteam.screens.PlayScreen;
+import com.timesupteam.tools.AudioManager;
 
 import java.util.HashMap;
 import java.util.Map;
 
 
 public class TimesUpTeamGame extends Game {
+
+    public AudioManager audioManager;
 
     // Enable to disable lighting effects, zoom out, enable visible collision boxes etc.
     public static Map<String, Boolean> DEBUG = new HashMap<>();
@@ -39,6 +41,7 @@ public class TimesUpTeamGame extends Game {
 
     @Override
     public void create() {
+        audioManager = new AudioManager();
         batch = new SpriteBatch();
         setScreen(new MenuScreen(this));
     }
@@ -50,6 +53,7 @@ public class TimesUpTeamGame extends Game {
 
     @Override
     public void dispose() {
+        audioManager.dispose();
         // Exit application when game window closed. That way everything gets exited, like networking
         System.exit(0);
     }

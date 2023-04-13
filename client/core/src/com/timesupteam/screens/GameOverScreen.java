@@ -14,6 +14,8 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.timesupteam.TimesUpTeamGame;
 
+import java.sql.Time;
+
 /**
  * Screen to display when game is over (guards caught player/time is up).
  */
@@ -21,12 +23,12 @@ public class GameOverScreen implements Screen {
     private Viewport viewport;
     private Stage stage;
 
-    private Game game;
+    private TimesUpTeamGame game;
 
-    public GameOverScreen(Game game, String text) {
+    public GameOverScreen(TimesUpTeamGame game, String text) {
         this.game = game;
         viewport = new FitViewport(TimesUpTeamGame.V_WIDTH, TimesUpTeamGame.V_HEIGHT, new OrthographicCamera());
-        stage = new Stage(viewport, ((TimesUpTeamGame) game).batch);
+        stage = new Stage(viewport, game.batch);
 
         Label.LabelStyle font = new Label.LabelStyle((new BitmapFont()), Color.WHITE);
 
@@ -45,6 +47,8 @@ public class GameOverScreen implements Screen {
      */
     @Override
     public void show() {
+        game.audioManager.playGameOverMusic();
+
 
     }
 

@@ -138,6 +138,7 @@ public class PlayScreen implements Screen {
 
     @Override
     public void show() {
+        game.audioManager.playPlayScreenMusic();
 
     }
 

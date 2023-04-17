@@ -54,7 +54,7 @@ public class HUD implements Disposable {
 
         // Define our labels using the String, and a Label style consisting of a font and color
         countdownLabel = new Label("--", new Label.LabelStyle(font12, Color.WHITE));
-        keyCountLabel = new Label(String.format("%01d", keyCount), new Label.LabelStyle(font12, Color.WHITE));
+        keyCountLabel = new Label(String.format("%01d/3", keyCount), new Label.LabelStyle(font12, Color.WHITE));
         timeLabel = new Label("TIME", new Label.LabelStyle(font12, Color.WHITE));
         levelLabel = new Label("1-1", new Label.LabelStyle(font12, Color.WHITE));
         worldLabel = new Label("LEVEL", new Label.LabelStyle(font12, Color.WHITE));

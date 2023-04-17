@@ -11,7 +11,6 @@ import com.timesupteam.screens.PlayScreen;
 public class InteractiveTileObject {
     protected World world;
     protected TiledMap map;
-    protected TiledMapTile tile;
     protected Rectangle bounds;
     public Body body;
     protected Fixture fixture;
@@ -45,10 +44,10 @@ public class InteractiveTileObject {
 
     public void onRightHit() {}
 
-    public TiledMapTileLayer.Cell getCell(){
-        TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(1);
-        return layer.getCell((int)(body.getPosition().x * TimesUpTeamGame.PPM / 16),
-                (int)(body.getPosition().y * TimesUpTeamGame.PPM / 16));
+    public TiledMapTileLayer.Cell getCell(String layerName){
+        TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(layerName);
+        return layer.getCell((int)(body.getPosition().x * TimesUpTeamGame.PPM / layer.getTileWidth()),
+                (int)(body.getPosition().y * TimesUpTeamGame.PPM / layer.getTileHeight()));
     }
 
 }

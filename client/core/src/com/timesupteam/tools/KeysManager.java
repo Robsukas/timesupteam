@@ -75,7 +75,7 @@ public class KeysManager {
      */
     public void update() {
         for (Keys key : keysToBeDestroyed) {
-            key.getCell().setTile(null);
+            key.getCell("keylayer").setTile(null);
             world.destroyBody(key.body);
             hud.addKeyCount(1);
         }

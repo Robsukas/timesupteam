@@ -30,7 +30,7 @@ public class TimerLogic {
         // Load map into memory
         TmxMapLoader mapLoader = new TmxMapLoader();
         try {
-            map = mapLoader.readInMap("ai_test_map2.tmx", "top");
+            map = mapLoader.readInMap("ai_test_map.tmx", "top");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

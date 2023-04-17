@@ -23,9 +23,6 @@ public class DoorManager {
         }
     }
 
-    public void deleteStartDoors() {
-        for (StartDoor door : startDoorList) {
-
-        }
+    public void deleteStartDoor() {
     }
 }

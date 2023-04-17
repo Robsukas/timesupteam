@@ -1,5 +1,6 @@
 package com.timesupteam;
 
+import com.badlogic.gdx.Net;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
@@ -12,7 +13,7 @@ public class MainClient {
 
     private final Client client;
 
-    private final String SERVER_IP = "localhost"; // "193.40.156.59";
+    private final String SERVER_IP = "193.40.156.59"; // "localhost";
     private final int TCP_PORT = 8080;  // must be the same on server
     private final int UDP_PORT = 8081;  // must be the same on server
 
@@ -47,7 +48,26 @@ public class MainClient {
                     return;
                 }
 
-                if (object instanceof Network.MovePlayer) {
+                if (object instanceof Network.GameStart) {
+                    // Another player has joined, start game timer and open door
+                    Network.GameStart msg = (Network.GameStart) object;
+                    screen.getHud().setWorldTimer(msg.time);
+
+                    TimesUpTeamGame.isRunning = true;
+                }
+
+                else if (object instanceof Network.GameOver) {
+                    // Another player has joined, start game timer and open door
+//                    Network.GameOver msg = (Network.GameOver) object;
+//                    screen.getHud().setWorldTimer(0);
+                    TimesUpTeamGame.isRunning = false;
+                    TimesUpTeamGame.isTimeUp = true;
+
+                    // :D
+//                    client.stop(); // disconnect player from server
+                }
+
+                else if (object instanceof Network.MovePlayer) {
                     // Another player has moved
                     Network.MovePlayer msg = (Network.MovePlayer) object;
 
@@ -70,7 +90,21 @@ public class MainClient {
                     System.out.println();
                 }
 
-                if (object instanceof Network.KeyPicked) {
+                else if (object instanceof Network.MoveGuard) {
+                    Network.MoveGuard msg = (Network.MoveGuard) object;
+
+                    if (screen.guard == null) {
+                        System.out.println("- guard is null, creating guard");
+                        screen.createGuard(msg.x, msg.y);
+                    } else {
+                        System.out.printf("- moving guard (%f, %f)\n", msg.x, msg.y);
+                        screen.moveGuard(msg.x, msg.y);
+                    }
+
+                    System.out.println();
+                }
+
+                else if (object instanceof Network.KeyPicked) {
                     Network.KeyPicked msg = (Network.KeyPicked) object;
 
                     System.out.println();

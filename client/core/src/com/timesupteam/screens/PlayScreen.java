@@ -22,6 +22,7 @@ import com.timesupteam.MainClient;
 import com.timesupteam.TimesUpTeamGame;
 import com.timesupteam.scenes.HUD;
 import com.timesupteam.sprites.Character;
+import com.timesupteam.sprites.Guard;
 import com.timesupteam.sprites.Keys;
 import com.timesupteam.tools.B2WorldCreator;
 import com.timesupteam.tools.KeysManager;
@@ -44,7 +45,11 @@ public class PlayScreen implements Screen {
     // Box2d variables
     private World world;
     private Box2DDebugRenderer b2dr;
+
+    // Sprites
     public Character player;
+    public Guard guard;
+    private float guardX, guardY;
 
     private KeysManager keysManager;
 
@@ -75,12 +80,13 @@ public class PlayScreen implements Screen {
         gameCam = new OrthographicCamera();
         gamePort = new FitViewport(TimesUpTeamGame.V_WIDTH / TimesUpTeamGame.PPM, TimesUpTeamGame.V_HEIGHT / TimesUpTeamGame.PPM, gameCam);
 
-        // Initialize the HUD for key count, timer
+        // Initialize the HUD for visual key count, timer
         hud = new HUD(game.batch);
 
         // Load and render the map
         maploader = new TmxMapLoader();
-        map = maploader.load("level_1.tmx");
+//        map = maploader.load("level_1.tmx");
+        map = maploader.load("ai_test_map2.tmx");
         renderer = new OrthogonalTiledMapRenderer(map, 1 / TimesUpTeamGame.PPM);
 
         // Set gamecam position to center
@@ -96,6 +102,9 @@ public class PlayScreen implements Screen {
 
         // Create main character in to the world
         player = new Character(this, true);
+
+        // Try to create a client, add listeners, connect to the server
+        client = new MainClient(this);
 
         world.setContactListener(new WorldContactListener());
 
@@ -187,7 +196,11 @@ public class PlayScreen implements Screen {
             player2.b2Body.setTransform(new Vector2(player2X, player2Y), player2.b2Body.getAngle());
         }
 
-        // Update player(s)'s sprite location
+        // Update player(s)'s (and guards') sprite location
+        if (guard != null)
+            guard.b2Body.setTransform(new Vector2(guardX, guardY), 0);
+//            guard.update(dt);
+
         player.update(dt);
 
         if (player2 != null)
@@ -199,8 +212,9 @@ public class PlayScreen implements Screen {
         gameCam.position.x = currentPositionX;
         gameCam.position.y = currentPositionY;
 
-        // Update HUD
-        hud.update(dt);
+        // Update HUD timer, if game is running (both players have joined)
+        if (TimesUpTeamGame.isRunning)
+            hud.update(dt);
 
         // Update our game-cam with correct coordinates after changes
         gameCam.update();
@@ -244,10 +258,16 @@ public class PlayScreen implements Screen {
         game.batch.begin();
 
         // Draw players, with our main character on top
+        if (guard != null) {
+//            guard.draw(game.batch); // must have texture!
+            ;
+        }
+
         if (player2 != null) {
             player2.draw(game.batch);
         }
         player.draw(game.batch);
+        //guard.draw(game.batch);
         game.batch.end();
 
         // Lighting
@@ -261,9 +281,11 @@ public class PlayScreen implements Screen {
         hud.stage.draw();
 
         // Game over logic
-        if (hud.isTimeUp()) {  // replace with real logic
-            game.setScreen(new GameOverScreen(game, "Y'all dead."));
-            dispose();
+        if (TimesUpTeamGame.DEBUG.get("kill when timer finishes")) {
+            if (TimesUpTeamGame.isTimeUp) {  // replace with real logic
+                game.setScreen(new GameOverScreen(game, "Y'all dead."));
+                dispose();
+            }
         }
     }
 
@@ -339,5 +361,16 @@ public class PlayScreen implements Screen {
     public void moveSecondPlayer(float x, float y) {
         player2X = x;
         player2Y = y;
+    }
+
+    public void createGuard(float x, float y) {
+        guard = new Guard(this, x, y);
+
+        moveGuard(x, y);
+    }
+
+    public void moveGuard(float x, float y) {
+        guardX = x;
+        guardY = y;
     }
 }

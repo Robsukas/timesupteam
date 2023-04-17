@@ -189,7 +189,7 @@ public class Character extends Sprite {
 
     public void defineCharacter() {
         BodyDef bdef = new BodyDef();
-        bdef.position.set(5.68f, 5.87f);  // starting pos of characters
+        bdef.position.set(5.13f, 3.0f);  // starting pos of characters
 
         lastX = bdef.position.x;
         lastY = bdef.position.y;

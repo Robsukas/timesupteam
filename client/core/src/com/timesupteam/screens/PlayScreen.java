@@ -73,9 +73,6 @@ public class PlayScreen implements Screen {
         // Initialize game
         this.game = game;
 
-        // Try to create a client, add listeners, connect to the server
-        client = new MainClient(this);
-
         // Initialize gameCam
         gameCam = new OrthographicCamera();
         gamePort = new FitViewport(TimesUpTeamGame.V_WIDTH / TimesUpTeamGame.PPM, TimesUpTeamGame.V_HEIGHT / TimesUpTeamGame.PPM, gameCam);
@@ -86,7 +83,7 @@ public class PlayScreen implements Screen {
         // Load and render the map
         maploader = new TmxMapLoader();
 //        map = maploader.load("level_1.tmx");
-        map = maploader.load("ai_test_map2.tmx");
+        map = maploader.load("ai_test_map.tmx");
         renderer = new OrthogonalTiledMapRenderer(map, 1 / TimesUpTeamGame.PPM);
 
         // Set gamecam position to center

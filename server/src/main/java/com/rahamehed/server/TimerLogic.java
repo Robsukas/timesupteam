@@ -37,7 +37,6 @@ public class TimerLogic {
 
         System.out.println(Arrays.deepToString(map));
 
-        System.exit(0);
 
         // Send game start event to all players
         gameStart();
@@ -96,10 +95,10 @@ public class TimerLogic {
 
         // Calculate guard's new position
         // ...
-        float goalX = server.players.entrySet().iterator().next().getValue().get(0);
-        float goalY = server.players.entrySet().iterator().next().getValue().get(1);
-        msg.x = goalX;
-        msg.y = goalY;
+       // float goalX = server.players.entrySet().iterator().next().getValue().get(0);
+       // float goalY = server.players.entrySet().iterator().next().getValue().get(1);
+       // msg.x = goalX;
+       // msg.y = goalY;
 
         server.server.sendToAllTCP(msg);
     }

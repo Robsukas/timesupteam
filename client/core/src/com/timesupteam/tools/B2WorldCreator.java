@@ -40,10 +40,10 @@ public class B2WorldCreator {
             }
         }
 
-        // Create fixtures for keys, and add each key to KeysManager
-        for (RectangleMapObject object : map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)) {
-            Rectangle rect = object.getRectangle();
-            keysManager.addKey(new Keys(screen, rect, keysManager, keysManager.getKeyIdAndIncrement()));
-        }
+        //// Create fixtures for keys, and add each key to KeysManager
+        //for (RectangleMapObject object : map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)) {
+        //    Rectangle rect = object.getRectangle();
+        //    keysManager.addKey(new Keys(screen, rect, keysManager, keysManager.getKeyIdAndIncrement()));
+        //}
     }
 }

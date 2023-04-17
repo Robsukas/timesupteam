@@ -42,6 +42,18 @@ public class B2WorldCreator {
             }
         }
 
+        TiledMapTileLayer keylayer = (TiledMapTileLayer) map.getLayers().get("keylayer");
+        for (int x = 0; x < keylayer.getWidth(); x++) {
+            for (int y = 0; y < keylayer.getHeight(); y++) {
+                if (keylayer.getCell(x, y) == null) continue;
+
+                Rectangle rect = new Rectangle(
+                        x * keylayer.getTileWidth(), y * keylayer.getTileHeight(),
+                        keylayer.getTileWidth(), keylayer.getTileHeight());
+                keysManager.addKey(new Keys(screen, rect, keysManager, keysManager.getKeyIdAndIncrement()));
+            }
+        }
+
         // Doors
         // todo: change .get(number) to .get(string)
 //        for (RectangleMapObject object : map.getLayers().get(4).getObjects().getByType(RectangleMapObject.class)) {

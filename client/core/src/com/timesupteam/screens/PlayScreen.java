@@ -72,6 +72,9 @@ public class PlayScreen implements Screen {
         // Initialize game
         this.game = game;
 
+        // Try to create a client, add listeners, connect to the server
+        client = new MainClient(this);
+
         // Initialize gameCam
         gameCam = new OrthographicCamera();
         gamePort = new FitViewport(TimesUpTeamGame.V_WIDTH / TimesUpTeamGame.PPM, TimesUpTeamGame.V_HEIGHT / TimesUpTeamGame.PPM, gameCam);
@@ -98,9 +101,6 @@ public class PlayScreen implements Screen {
 
         // Create main character in to the world
         player = new Character(this, true);
-
-        // Try to create a client, add listeners, connect to the server
-        client = new MainClient(this);
 
         world.setContactListener(new WorldContactListener());
 

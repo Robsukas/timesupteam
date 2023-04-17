@@ -8,6 +8,8 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
 import com.timesupteam.screens.PlayScreen;
+import com.timesupteam.sprites.EndDoor;
+import com.timesupteam.sprites.StartDoor;
 import com.timesupteam.sprites.Walls;
 
 public class B2WorldCreator {
@@ -19,20 +21,20 @@ public class B2WorldCreator {
         FixtureDef fdef = new FixtureDef();
         Body body;
 
-            // Create fixtures for walls
-            for (RectangleMapObject object : map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)) {
-                Rectangle rect = object.getRectangle();
-                new Walls(screen , rect);
-            }
-
-        for (RectangleMapObject object : map.getLayers().get(4).getObjects().getByType(RectangleMapObject.class)) {
+        // Create fixtures for walls
+        for (RectangleMapObject object : map.getLayers().get(2).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = object.getRectangle();
             new Walls(screen , rect);
         }
 
+        for (RectangleMapObject object : map.getLayers().get(4).getObjects().getByType(RectangleMapObject.class)) {
+            Rectangle rect = object.getRectangle();
+            new StartDoor(screen , rect);
+        }
+
         for (RectangleMapObject object : map.getLayers().get(5).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = object.getRectangle();
-            new Walls(screen , rect);
+            new EndDoor(screen , rect);
         }
 
         //// Iterate over each tile and create a wall if it exists

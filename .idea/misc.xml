@@ -5,6 +5,9 @@
     <file type="web" url="file://$PROJECT_DIR$/client" />
     <file type="web" url="file://$PROJECT_DIR$/server" />
   </component>
+  <component name="LibGDXSkins">
+    <file url="file://$PROJECT_DIR$/client/assets/skins/uiskin.json" />
+  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>

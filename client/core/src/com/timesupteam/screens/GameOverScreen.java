@@ -14,8 +14,6 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.timesupteam.TimesUpTeamGame;
 
-import java.sql.Time;
-
 /**
  * Screen to display when game is over (guards caught player/time is up).
  */
@@ -65,27 +63,19 @@ public class GameOverScreen implements Screen {
         stage.draw();
     }
 
-    /**
-     * @param width
-     * @param height
-     * @see ApplicationListener#resize(int, int)
-     */
+
     @Override
     public void resize(int width, int height) {
 
     }
 
-    /**
-     * @see ApplicationListener#pause()
-     */
+
     @Override
     public void pause() {
 
     }
 
-    /**
-     * @see ApplicationListener#resume()
-     */
+
     @Override
     public void resume() {
 

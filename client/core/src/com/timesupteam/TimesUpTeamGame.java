@@ -32,13 +32,6 @@ public class TimesUpTeamGame extends Game {
     public static int V_WIDTH = 512;
     public static int V_HEIGHT = 288;
 
-    {
-        if (DEBUG.get("zoom")) {
-            V_WIDTH /= 2;
-            V_HEIGHT /= 2;
-        }
-    }
-
     // PPM - pixels per meter
     public static final float PPM = 100;
 

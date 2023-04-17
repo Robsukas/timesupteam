@@ -49,10 +49,10 @@ public class MainClient {
                 }
 
                 if (object instanceof Network.GameStart) {
-                    // Another player has joined, start game timer and open door
+                    // Another player has joined, start game timer and open start door
                     Network.GameStart msg = (Network.GameStart) object;
                     screen.getHud().setWorldTimer(msg.time);
-
+                    screen.getDoorsManager().openStartDoor();
                     TimesUpTeamGame.isRunning = true;
                 }
 

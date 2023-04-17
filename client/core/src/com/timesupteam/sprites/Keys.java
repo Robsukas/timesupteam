@@ -2,6 +2,7 @@ package com.timesupteam.sprites;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.World;
 import com.timesupteam.screens.PlayScreen;
@@ -11,8 +12,8 @@ public class Keys extends InteractiveTileObject {
     private final KeysManager keysManager;
     private final int id;
 
-    public Keys(PlayScreen screen, Rectangle bounds, KeysManager keysManager, int id) {
-        super(screen, bounds);
+    public Keys(PlayScreen screen, Rectangle bounds, TiledMapTileLayer.Cell cell, KeysManager keysManager, int id) {
+        super(screen, bounds, cell);
         this.keysManager = keysManager;
         this.id = id;
         fixture.setUserData(this);

@@ -9,8 +9,8 @@ public class TimerLogic {
 
     private MainServer server;
 
-    private int cycleLength = 250; // ms
-    private int secondsPerLevel = 20;
+    private final int cycleLength = 250; // ms
+    private final int secondsPerLevel = 300;
     private int cyclesLeft;
 
     private boolean[][] map;  // holds walls pos
@@ -30,7 +30,7 @@ public class TimerLogic {
         // Load map into memory
         TmxMapLoader mapLoader = new TmxMapLoader();
         try {
-            map = mapLoader.readInMap("ai_test_map.tmx", "top");
+            map = mapLoader.readInMap("level_1.tmx", "top");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

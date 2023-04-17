@@ -1,57 +1,77 @@
 package com.timesupteam.tools;
 
-import com.badlogic.gdx.maps.MapObject;
-import com.badlogic.gdx.maps.objects.PolygonMapObject;
-import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.physics.box2d.*;
-import com.timesupteam.sprites.Keys;
-import com.timesupteam.TimesUpTeamGame;
 import com.timesupteam.screens.PlayScreen;
 import com.timesupteam.sprites.EndDoor;
+import com.timesupteam.sprites.Keys;
 import com.timesupteam.sprites.StartDoor;
 import com.timesupteam.sprites.Walls;
 
 public class B2WorldCreator {
-    public B2WorldCreator(PlayScreen screen, KeysManager keysManager) {
+    public B2WorldCreator(PlayScreen screen, KeysManager keysManager, DoorsManager doorsManager) {
         TiledMap map = screen.getMap();
 
-        // Iterate over each tile and create a wall if it exists
-        TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get("top");
-        for (int x = 0; x < layer.getWidth(); x++) {
-            for (int y = 0; y < layer.getHeight(); y++) {
-                if (layer.getCell(x, y) == null) continue;
+        // Create wall collisions
+        TiledMapTileLayer wallsLayer = (TiledMapTileLayer) map.getLayers().get("top");
+        for (int x = 0; x < wallsLayer.getWidth(); x++) {
+            for (int y = 0; y < wallsLayer.getHeight(); y++) {
+                if (wallsLayer.getCell(x, y) == null) continue;
 
                 Rectangle rect = new Rectangle(
-                        x * layer.getTileWidth(), y * layer.getTileHeight(),
-                        layer.getTileWidth(), layer.getTileHeight());
-                new Walls(screen, rect);
+                        x * wallsLayer.getTileWidth(), y * wallsLayer.getTileHeight(),
+                        wallsLayer.getTileWidth(), wallsLayer.getTileHeight());
+                TiledMapTileLayer.Cell cell = wallsLayer.getCell(x, y);
+
+                new Walls(screen, rect, cell);
             }
         }
 
-        TiledMapTileLayer keylayer = (TiledMapTileLayer) map.getLayers().get("keylayer");
-        for (int x = 0; x < keylayer.getWidth(); x++) {
-            for (int y = 0; y < keylayer.getHeight(); y++) {
-                if (keylayer.getCell(x, y) == null) continue;
+        // Create key collisions
+        TiledMapTileLayer keysLayer = (TiledMapTileLayer) map.getLayers().get("keys");
+        for (int x = 0; x < keysLayer.getWidth(); x++) {
+            for (int y = 0; y < keysLayer.getHeight(); y++) {
+                if (keysLayer.getCell(x, y) == null) continue;
 
                 Rectangle rect = new Rectangle(
-                        x * keylayer.getTileWidth(), y * keylayer.getTileHeight(),
-                        keylayer.getTileWidth(), keylayer.getTileHeight());
-                keysManager.addKey(new Keys(screen, rect, keysManager, keysManager.getKeyIdAndIncrement()));
+                        x * keysLayer.getTileWidth(), y * keysLayer.getTileHeight(),
+                        keysLayer.getTileWidth(), keysLayer.getTileHeight());
+                TiledMapTileLayer.Cell cell = keysLayer.getCell(x, y);
+
+                keysManager.addKey(new Keys(screen, rect, cell, keysManager, keysManager.getKeyIdAndIncrement()));
             }
         }
 
-        // Doors
-        // todo: change .get(number) to .get(string)
-//        for (RectangleMapObject object : map.getLayers().get(4).getObjects().getByType(RectangleMapObject.class)) {
-//            Rectangle rect = object.getRectangle();
-//            new StartDoor(screen , rect);
-//        }
-//        for (RectangleMapObject object : map.getLayers().get(5).getObjects().getByType(RectangleMapObject.class)) {
-//            Rectangle rect = object.getRectangle();
-//            new EndDoor(screen , rect);
-//        }
+        // Create door collisions
+        TiledMapTileLayer startDoorLayer = (TiledMapTileLayer) map.getLayers().get("startdoor");
+        for (int x = 0; x < startDoorLayer.getWidth(); x++) {
+            for (int y = 0; y < startDoorLayer.getHeight(); y++) {
+                if (startDoorLayer.getCell(x, y) == null) continue;
+
+                Rectangle rect = new Rectangle(
+                        x * startDoorLayer.getTileWidth(), y * startDoorLayer.getTileHeight(),
+                        startDoorLayer.getTileWidth(), startDoorLayer.getTileHeight());
+
+                TiledMapTileLayer.Cell cell = startDoorLayer.getCell(x, y);
+
+                doorsManager.addStartDoor(new StartDoor(screen, rect, cell));
+            }
+        }
+
+        TiledMapTileLayer endDoorLayer = (TiledMapTileLayer) map.getLayers().get("enddoor");
+        for (int x = 0; x < endDoorLayer.getWidth(); x++) {
+            for (int y = 0; y < endDoorLayer.getHeight(); y++) {
+                if (endDoorLayer.getCell(x, y) == null) continue;
+
+                Rectangle rect = new Rectangle(
+                        x * endDoorLayer.getTileWidth(), y * endDoorLayer.getTileHeight(),
+                        endDoorLayer.getTileWidth(), endDoorLayer.getTileHeight());
+
+                TiledMapTileLayer.Cell cell = endDoorLayer.getCell(x, y);
+
+                doorsManager.addEndDoor(new EndDoor(screen, rect, cell));
+            }
+        }
     }
 }

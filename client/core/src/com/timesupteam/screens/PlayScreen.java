@@ -22,8 +22,8 @@ import com.timesupteam.TimesUpTeamGame;
 import com.timesupteam.scenes.HUD;
 import com.timesupteam.sprites.Character;
 import com.timesupteam.sprites.Guard;
-import com.timesupteam.sprites.Keys;
 import com.timesupteam.tools.B2WorldCreator;
+import com.timesupteam.tools.DoorsManager;
 import com.timesupteam.tools.KeysManager;
 import com.timesupteam.tools.WorldContactListener;
 
@@ -50,7 +50,9 @@ public class PlayScreen implements Screen {
     public Guard guard;
     private float guardX, guardY;
 
+    // Keys & doors
     private KeysManager keysManager;
+    private DoorsManager doorsManager;
 
     // Lighting variables
     private RayHandler rayHandler;
@@ -76,16 +78,16 @@ public class PlayScreen implements Screen {
         client = new MainClient(this);
 
         // Initialize gameCam
+        float zoom = TimesUpTeamGame.DEBUG.get("zoom") ? 1.5f : 1f;
         gameCam = new OrthographicCamera();
-        gamePort = new FitViewport(TimesUpTeamGame.V_WIDTH / TimesUpTeamGame.PPM, TimesUpTeamGame.V_HEIGHT / TimesUpTeamGame.PPM, gameCam);
+        gamePort = new FitViewport(TimesUpTeamGame.V_WIDTH / TimesUpTeamGame.PPM / zoom, TimesUpTeamGame.V_HEIGHT / TimesUpTeamGame.PPM / zoom, gameCam);
 
         // Initialize the HUD for visual key count, timer
         hud = new HUD(game.batch);
 
         // Load and render the map
         maploader = new TmxMapLoader();
-//        map = maploader.load("level_1.tmx");
-        map = maploader.load("ai_test_map.tmx");
+        map = maploader.load("level_1.tmx");
         renderer = new OrthogonalTiledMapRenderer(map, 1 / TimesUpTeamGame.PPM);
 
         // Set gamecam position to center
@@ -97,7 +99,8 @@ public class PlayScreen implements Screen {
 
         // Create walls, keys
         keysManager = new KeysManager(this);
-        new B2WorldCreator(this, keysManager);
+        doorsManager = new DoorsManager(this);
+        new B2WorldCreator(this, keysManager, doorsManager);
 
         // Create main character in to the world
         player = new Character(this, true);
@@ -112,11 +115,11 @@ public class PlayScreen implements Screen {
         rayHandler.setBlurNum(2);
 
         // Lights for main character
-        circularLight = new PointLight(rayHandler, 100, Color.WHITE, 30 / TimesUpTeamGame.PPM, 0, 0);
+        circularLight = new PointLight(rayHandler, 100, Color.WHITE, 50 / TimesUpTeamGame.PPM, 0, 0);
         circularLight.attachToBody(player.b2Body);
         circularLight.setXray(true);
 
-        flashlight = new ConeLight(rayHandler, 100, Color.WHITE, 70 / TimesUpTeamGame.PPM, 0, 0, 0, 60);
+        flashlight = new ConeLight(rayHandler, 100, Color.WHITE, 100 / TimesUpTeamGame.PPM, 0, 0, 0, 60);
         flashlight.attachToBody(player.b2Body, 0, 0, 0);
         flashlight.setXray(true);
         flashlight.setSoft(false);
@@ -129,6 +132,7 @@ public class PlayScreen implements Screen {
     public World getWorld() {
         return world;
     }
+
     public TiledMap getMap() {
         return map;
     }
@@ -139,6 +143,14 @@ public class PlayScreen implements Screen {
 
     public KeysManager getKeysManager() {
         return keysManager;
+    }
+
+    public HUD getHud() {
+        return hud;
+    }
+
+    public DoorsManager getDoorsManager() {
+        return doorsManager;
     }
 
     @Override
@@ -230,6 +242,9 @@ public class PlayScreen implements Screen {
         // Keys - destroy picked up key objects from world & increase key count
         keysManager.update();
 
+        // Doors - open or destroy doors as needed
+        doorsManager.update();
+
         // Take a time step (actually simulate movement, collision detection, etc.)
         // World is locked during step, can't transform/destroy/... bodies at the same time
         world.step(1 / 60f, 6, 2);
@@ -317,10 +332,6 @@ public class PlayScreen implements Screen {
         b2dr.dispose();
         rayHandler.dispose();
         hud.dispose();
-    }
-
-    public HUD getHud() {
-        return hud;
     }
 
     /**

@@ -15,10 +15,13 @@ public class InteractiveTileObject {
     public Body body;
     protected Fixture fixture;
 
-    public InteractiveTileObject(PlayScreen screen, Rectangle bounds) {
+    private TiledMapTileLayer.Cell cell;
+
+    public InteractiveTileObject(PlayScreen screen, Rectangle bounds, TiledMapTileLayer.Cell cell) {
         this.world = screen.getWorld();
         this.map = screen.getMap();
         this.bounds = bounds;
+        this.cell = cell;
 
         BodyDef bdef = new BodyDef();
         FixtureDef fdef = new FixtureDef();
@@ -44,10 +47,11 @@ public class InteractiveTileObject {
 
     public void onRightHit() {}
 
-    public TiledMapTileLayer.Cell getCell(String layerName){
-        TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(layerName);
-        return layer.getCell((int)(body.getPosition().x * TimesUpTeamGame.PPM / layer.getTileWidth()),
-                (int)(body.getPosition().y * TimesUpTeamGame.PPM / layer.getTileHeight()));
+    public TiledMapTileLayer.Cell getCell(/*String layerName*/){
+//        TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(layerName);
+//        return layer.getCell((int)(body.getPosition().x * TimesUpTeamGame.PPM / layer.getTileWidth()),
+//                (int)(body.getPosition().y * TimesUpTeamGame.PPM / layer.getTileHeight()));
+        return cell;
     }
 
 }

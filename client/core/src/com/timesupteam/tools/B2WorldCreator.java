@@ -10,6 +10,8 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.timesupteam.sprites.Keys;
 import com.timesupteam.TimesUpTeamGame;
 import com.timesupteam.screens.PlayScreen;
+import com.timesupteam.sprites.EndDoor;
+import com.timesupteam.sprites.StartDoor;
 import com.timesupteam.sprites.Walls;
 
 public class B2WorldCreator {
@@ -39,6 +41,17 @@ public class B2WorldCreator {
                 new Walls(screen, rect);
             }
         }
+
+        // Doors
+        // todo: change .get(number) to .get(string)
+//        for (RectangleMapObject object : map.getLayers().get(4).getObjects().getByType(RectangleMapObject.class)) {
+//            Rectangle rect = object.getRectangle();
+//            new StartDoor(screen , rect);
+//        }
+//        for (RectangleMapObject object : map.getLayers().get(5).getObjects().getByType(RectangleMapObject.class)) {
+//            Rectangle rect = object.getRectangle();
+//            new EndDoor(screen , rect);
+//        }
 
         //// Create fixtures for keys, and add each key to KeysManager
         //for (RectangleMapObject object : map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)) {

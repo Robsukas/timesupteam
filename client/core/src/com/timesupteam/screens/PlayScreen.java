@@ -17,7 +17,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.esotericsoftware.kryonet.Client;
 import com.timesupteam.MainClient;
 import com.timesupteam.TimesUpTeamGame;
 import com.timesupteam.scenes.HUD;

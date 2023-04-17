@@ -35,7 +35,7 @@ public class MainServer {
 
         // Initialize timer
         timer = new TimerLogic(this);
-        timer.start();
+//        timer.start();
 
         // Add listener to tell the server, what to do after something is sent over the network
         server.addListener(new Listener() {

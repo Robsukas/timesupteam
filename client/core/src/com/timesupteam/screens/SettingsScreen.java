@@ -3,13 +3,11 @@ package com.timesupteam.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Slider;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -29,6 +27,12 @@ public class SettingsScreen implements Screen {
         Gdx.input.setInputProcessor(stage);
 
         skin = new Skin(Gdx.files.internal("skins/uiskin.json"));
+
+        // Create background image
+        Texture backgroundTexture = new Texture(Gdx.files.internal("skins/dunsettings.png"));
+        Image backgroundImage = new Image(backgroundTexture);
+        backgroundImage.setSize(stage.getWidth(), stage.getHeight());
+        stage.addActor(backgroundImage);
 
         Label titleLabel = new Label("Settings", skin);
         titleLabel.setPosition(stage.getWidth() / 2 - titleLabel.getWidth() / 2, stage.getHeight() * 0.8f);
@@ -53,6 +57,7 @@ public class SettingsScreen implements Screen {
         backButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                game.audioManager.playClickSound();
                 game.setScreen(new MenuScreen(game));
             }
         });

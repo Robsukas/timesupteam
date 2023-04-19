@@ -2,6 +2,7 @@ package com.timesupteam.tools;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 
 public class AudioManager {
     public Music playScreenMusic;
@@ -9,11 +10,14 @@ public class AudioManager {
 
     public Music gameOverMusic;
 
+    public Sound clickSound;
+
 
     public AudioManager() {
         playScreenMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/playScreenMusic.mp3"));
         menuMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/menuMusic.mp3"));
         gameOverMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/gameOverMusic.mp3"));
+        clickSound = Gdx.audio.newSound(Gdx.files.internal("audio/clickSound.mp3"));
     }
 
     public void playMenuMusic() {
@@ -31,6 +35,9 @@ public class AudioManager {
         stopAllMusic();
         gameOverMusic.setLooping(false);
         gameOverMusic.play();
+    }
+    public void playClickSound() {
+        clickSound.play();
     }
 
     private void stopAllMusic() {
@@ -54,5 +61,6 @@ public class AudioManager {
         playScreenMusic.dispose();
         menuMusic.dispose();
         gameOverMusic.dispose();
+        clickSound.dispose();
     }
 }

@@ -10,7 +10,7 @@ public class TimerLogic {
     private MainServer server;
 
     private final int cycleLength = 250; // ms
-    private final int secondsPerLevel = 300;
+    private final int secondsPerLevel = 15;
     private int cyclesLeft;
 
     private boolean[][] map;  // holds walls pos

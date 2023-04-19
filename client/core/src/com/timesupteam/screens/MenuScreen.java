@@ -64,6 +64,7 @@ public class MenuScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 // Switch to the settings screen or perform other actions
+                game.setScreen(new SettingsScreen(game));
             }
         });
 
@@ -89,8 +90,10 @@ public class MenuScreen implements Screen {
 
     @Override
     public void show() {
-        game.audioManager.playMenuMusic();
         // Called when the screen becomes the current screen
+        if (!game.audioManager.isMenuMusicPlaying()) {
+            game.audioManager.playMenuMusic();
+        }
     }
 
     @Override

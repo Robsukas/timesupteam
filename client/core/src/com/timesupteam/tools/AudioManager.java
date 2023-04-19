@@ -39,9 +39,20 @@ public class AudioManager {
         gameOverMusic.stop();
     }
 
+    public boolean isMenuMusicPlaying() {
+        return menuMusic != null && menuMusic.isPlaying();
+    }
+
+    public void setAllMusicVolume(float volume) {
+        menuMusic.setVolume(volume);
+        playScreenMusic.setVolume(volume);
+        gameOverMusic.setVolume(volume);
+    }
 
 
     public void dispose() {
         playScreenMusic.dispose();
+        menuMusic.dispose();
+        gameOverMusic.dispose();
     }
 }

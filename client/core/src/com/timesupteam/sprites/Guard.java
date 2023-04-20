@@ -12,7 +12,7 @@ public class Guard extends Enemy {
 
     public Guard(PlayScreen screen, float x, float y) {
         super(screen, x, y);
-//        setBounds(getX(), getY(), 16 / TimesUpTeamGame.PPM, 16 / TimesUpTeamGame.PPM);
+        setBounds(getX(), getY(), 16 / TimesUpTeamGame.PPM, 16 / TimesUpTeamGame.PPM);
     }
 
     public void update(float dt) {

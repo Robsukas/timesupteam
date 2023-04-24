@@ -74,9 +74,6 @@ public class PlayScreen implements Screen {
         // Initialize game
         this.game = game;
 
-        // Try to create a client, add listeners, connect to the server
-        client = new MainClient(this);
-
         // Initialize gameCam
         float zoom = TimesUpTeamGame.DEBUG.get("zoom") ? 1.5f : 1f;
         gameCam = new OrthographicCamera();
@@ -123,6 +120,9 @@ public class PlayScreen implements Screen {
         flashlight.attachToBody(player.b2Body, 0, 0, 0);
         flashlight.setXray(true);
         flashlight.setSoft(false);
+
+        // Try to create a client, add listeners, connect to the server
+        client = new MainClient(this);
     }
 
     public TextureAtlas getAtlas() {

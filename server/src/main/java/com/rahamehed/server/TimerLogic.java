@@ -1,6 +1,5 @@
 package com.rahamehed.server;
 
-import java.util.Arrays;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -8,17 +7,23 @@ import java.util.TimerTask;
 public class TimerLogic {
 
     private MainServer server;
+    private MapHandler mapHandler;
 
     private final int cycleLength = 250; // ms
     private final int secondsPerLevel = 300;
     private int cyclesLeft;
 
-    private boolean[][] map;  // holds walls pos
 
-    public TimerLogic(MainServer server) {
+    private int player1LastX;
+    private int player1LastY;
+
+    private int guardX;
+    private int guardY;
+
+    public TimerLogic(MainServer server, MapHandler mapHandler) {
         this.server = server;
+        this.mapHandler = mapHandler;
     }
-
 
     /**
      * Start level and its timer.
@@ -27,16 +32,6 @@ public class TimerLogic {
      */
     public void start() {
         // Both players have joined
-        // Load map into memory
-        TmxMapLoader mapLoader = new TmxMapLoader();
-        try {
-            map = mapLoader.readInMap("level_1.tmx", "top");
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-        System.out.println(Arrays.deepToString(map));
-
 
         // Send game start event to all players
         gameStart();
@@ -87,18 +82,28 @@ public class TimerLogic {
         Network.MoveGuard msg = new Network.MoveGuard();
         msg.guardId = 0;
 
-//        // If beginning, set guard's position to zero
-//        if (msg.x == 0 && msg.y == 0) {
-//            msg.x = 3.315605f;
-//            msg.y = 2.889148f;
-//        }
+//        int player1Id = server.players.entrySet().iterator().next().getKey();
+        int player1X = server.players.entrySet().iterator().next().getValue()[0];
+        int player1Y = server.players.entrySet().iterator().next().getValue()[1];
+
+        // Remove player's old position from map
+        if (player1LastX != 0) {
+            mapHandler.setValueInMap(player1LastX, player1LastY, 0);
+        }
+        player1LastX = player1X;
+        player1LastY = player1Y;
+
+        // Set new player's position to the map
+        mapHandler.setValueInMap(player1X, player1Y, 2);
+
+        // DEBUG: print map
+        System.out.println("\n\n-----------\n\n");
+        mapHandler.printMap();
+        System.out.println("\n\n-----------\n\n");
+
 
         // Calculate guard's new position
         // ...
-       // float goalX = server.players.entrySet().iterator().next().getValue().get(0);
-       // float goalY = server.players.entrySet().iterator().next().getValue().get(1);
-       // msg.x = goalX;
-       // msg.y = goalY;
 
         server.server.sendToAllTCP(msg);
     }

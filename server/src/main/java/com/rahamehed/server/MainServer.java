@@ -18,8 +18,9 @@ public class MainServer {
     private final int TCP_PORT = 8080;
     private final int UDP_PORT = 8081;
 
-    public Map<Integer, List<Float>> players = new HashMap<>();  // <player ID, <x, y>>
+    public Map<Integer, Integer[]> players = new HashMap<>();  // <player ID, <x, y>>
     private TimerLogic timer;
+    private MapHandler mapHandler;
 
     public static void main(String[] args) throws IOException {
         new MainServer();
@@ -33,8 +34,14 @@ public class MainServer {
         server = new Server();
         Network.register(server);
 
-        // Initialize timer
-        timer = new TimerLogic(this);
+        // Initialize timer, read in level 1 map
+        mapHandler = new MapHandler();
+        timer = new TimerLogic(this, mapHandler);
+        try {
+            mapHandler.readInMap("level_1.tmx", "top");
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 //        timer.start();
 
         // Add listener to tell the server, what to do after something is sent over the network
@@ -47,8 +54,8 @@ public class MainServer {
                 System.out.println("--- TCP: " + c.getRemoteAddressTCP().toString());
                 System.out.println();
 
-                // Add new joined player to players map with coordinates (0, 0)
-                players.put(c.getID(), List.of(0f, 0f));
+                // Add new joined player to players map
+                players.put(c.getID(), mapHandler.playerPositionToInts(10f, 2.83f));  // ! hard-coded, see client/.../Character.java
 
                 // If both players have joined, start the timer loop
                 if (players.size() >= 2) {
@@ -78,13 +85,14 @@ public class MainServer {
                 if (object instanceof Network.MovePlayer) {
                     Network.MovePlayer msg = (Network.MovePlayer) object;
 
-                    System.out.println();
-                    System.out.println("--- Received MovePlayer event from a player; sending that to all other players.");
-                    System.out.printf("--- (id: %d, x: %f, y: %f)\n", msg.id, msg.x, msg.y);
-                    System.out.println();
+//                    System.out.println();
+//                    System.out.println("--- Received MovePlayer event from a player; sending that to all other players.");
+//                    System.out.printf("--- (id: %d, x: %f, y: %f)\n", msg.id, msg.x, msg.y);
+//                    System.out.println();
 
                     // Update player's location (server-side representation) in players map
-                    players.replace(msg.id, List.of(msg.x, msg.y));
+//                    players.replace(msg.id, List.of(msg.x, msg.y));
+                    players.replace(msg.id, mapHandler.playerPositionToInts(msg.x, msg.y));
 
                     // Forward the MovePlayer message to other player(s)
                     server.sendToAllExceptTCP(msg.id, msg);

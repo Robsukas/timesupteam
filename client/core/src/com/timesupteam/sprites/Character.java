@@ -206,10 +206,11 @@ public class Character extends Sprite {
         // fdef.isSensor = true;  // it's another player, disable their collisions with the world
 
         FixtureDef fdef = new FixtureDef();
-        PolygonShape shape = new PolygonShape();
-        shape.setAsBox(8 / TimesUpTeamGame.PPM, 8 / TimesUpTeamGame.PPM);
+        CircleShape shape = new CircleShape();
+        shape.setRadius(8 / TimesUpTeamGame.PPM);
         fdef.shape = shape;
         b2Body.createFixture(fdef);
+
 
         // Initialize character edgeshape for the top part of the collision hitbox.
         EdgeShape top = new EdgeShape();

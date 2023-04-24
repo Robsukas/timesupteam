@@ -47,10 +47,7 @@ public class InteractiveTileObject {
 
     public void onRightHit() {}
 
-    public TiledMapTileLayer.Cell getCell(/*String layerName*/){
-//        TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(layerName);
-//        return layer.getCell((int)(body.getPosition().x * TimesUpTeamGame.PPM / layer.getTileWidth()),
-//                (int)(body.getPosition().y * TimesUpTeamGame.PPM / layer.getTileHeight()));
+    public TiledMapTileLayer.Cell getCell(){
         return cell;
     }
 

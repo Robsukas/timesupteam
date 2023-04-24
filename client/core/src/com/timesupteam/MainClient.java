@@ -1,6 +1,5 @@
 package com.timesupteam;
 
-import com.badlogic.gdx.Net;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
@@ -16,8 +15,10 @@ public class MainClient {
     private final String SERVER_IP = "localhost"; //"193.40.156.59"; // "localhost";
     private final int TCP_PORT = 8080;  // must be the same on server
     private final int UDP_PORT = 8081;  // must be the same on server
+    private final PlayScreen screen;
 
     public MainClient(final PlayScreen screen) {
+        this.screen = screen;
         // Set logging level
         Log.set(Log.LEVEL_INFO);
 
@@ -50,6 +51,7 @@ public class MainClient {
 
                 if (object instanceof Network.GameStart) {
                     // Another player has joined, start game timer and open start door
+                    System.out.println("game start!");
                     Network.GameStart msg = (Network.GameStart) object;
                     screen.getHud().setWorldTimer(msg.time);
                     screen.getDoorsManager().openStartDoor();
@@ -57,6 +59,7 @@ public class MainClient {
                 }
 
                 else if (object instanceof Network.GameOver) {
+                    System.out.println("game over!");
                     // Another player has joined, start game timer and open door
 //                    Network.GameOver msg = (Network.GameOver) object;
 //                    screen.getHud().setWorldTimer(0);
@@ -97,7 +100,7 @@ public class MainClient {
                         System.out.println("- guard is null, creating guard");
                         screen.createGuard(msg.x, msg.y);
                     } else {
-                        System.out.printf("- moving guard (%f, %f)\n", msg.x, msg.y);
+//                        System.out.printf("- moving guard (%f, %f)\n", msg.x, msg.y);
                         screen.moveGuard(msg.x, msg.y);
                     }
 

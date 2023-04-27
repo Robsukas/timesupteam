@@ -2,6 +2,12 @@ package com.rahamehed.server.ai;
 
 import java.util.Arrays;
 
+//   A B C
+// A x
+// B   x
+// C    x
+
+
 public class AStar {
     /**
      * Finds the shortest distance between two nodes using the A-star algorithm
@@ -12,7 +18,7 @@ public class AStar {
      * @return The shortest distance to the goal node. Can be easily modified to return the path.
      * */
     public static double aStar(int[][] graph, double[][] heuristic, int start, int goal) {
-
+        // https://www.algorithms-and-technologies.com/a_star/java
 
         //This contains the distances from the start node to all other nodes
         int[] distances = new int[graph.length];

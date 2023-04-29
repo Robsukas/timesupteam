@@ -7,8 +7,8 @@ import com.esotericsoftware.kryonet.Server;
 import com.esotericsoftware.minlog.Log;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class MainServer {
@@ -18,13 +18,9 @@ public class MainServer {
     private final int TCP_PORT = 8080;
     private final int UDP_PORT = 8081;
 
-    public Map<Integer, Integer[]> players = new HashMap<>();  // <player ID, <x, y>>
+    public Map<Integer, int[]> players = new HashMap<>();  // <player ID, <x, y>>
     private TimerLogic timer;
     private MapHandler mapHandler;
-
-    public static void main(String[] args) throws IOException {
-        new MainServer();
-    }
 
     public MainServer() throws IOException {
         // Set logging level
@@ -42,7 +38,6 @@ public class MainServer {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-//        timer.start();
 
         // Add listener to tell the server, what to do after something is sent over the network
         server.addListener(new Listener() {
@@ -91,7 +86,7 @@ public class MainServer {
 //                    System.out.println();
 
                     // Update player's location (server-side representation) in players map
-//                    players.replace(msg.id, List.of(msg.x, msg.y));
+//                    players.replace(msg.id, mapHandler.playerPositionToInts(msg.x, msg.y));
                     players.replace(msg.id, mapHandler.playerPositionToInts(msg.x, msg.y));
 
                     // Forward the MovePlayer message to other player(s)
@@ -114,5 +109,9 @@ public class MainServer {
         // Start the server
         server.bind(TCP_PORT, UDP_PORT);
         server.start();
+    }
+
+    public static void main(String[] args) throws IOException {
+        new MainServer();
     }
 }

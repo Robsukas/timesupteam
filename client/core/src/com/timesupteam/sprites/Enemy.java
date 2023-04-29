@@ -10,6 +10,7 @@ public abstract class Enemy extends Sprite {
     protected PlayScreen screen;
     public Body b2Body;
     public Enemy(PlayScreen screen, float x, float y) {
+        super(screen.getAtlas().findRegion("000"));
         this.world = screen.getWorld();
         this.screen = screen;
         setPosition(x, y);

@@ -22,7 +22,7 @@ public class MapHandler {
         map = new TMXMapReader().readMap(path);
         System.out.println("Map width: " + map.getWidth());
         System.out.println("Map height: " + map.getHeight());
-        System.out.println("Map layers count: " +map.getLayerCount());
+        System.out.println("Map layers count: " + map.getLayerCount());
 
         for (MapLayer layer : map.getLayers()) {
             System.out.println("- Layer: " + layer.getName());
@@ -61,43 +61,42 @@ public class MapHandler {
         }
     }
 
-    public int getValueInMap(int x, int y) {
-        return mapArray[y][x];
-    }
-
-    public void setValueInMap(int x, int y, int value) {
-        mapArray[y][x] = value;
-    }
-
-//    /**
-//     * Set player
-//     * @param x
-//     * @param y
-//     * @param playerValue
-//     */
-//    public void setPlayerPositionToMap(float x, float y, int playerValue) {
-//        Integer[] XY = playerPositionToInts(x, y);
-//        int serverX = XY[0];
-//        int serverY = XY[1];
-//
-//        setValueInMap(serverX, serverY, playerValue);
-//    }
-
     /**
      * Convert player client-side position (floats) to server-side position (ints) on tilemap.
+     *
      * @param x client-side x
      * @param y client-side y
-     * @return {x, y} - Integer array of size 2
+     * @return {x, y} - int array of size 2
      */
-    public Integer[] playerPositionToInts(float x, float y) {
+    public int[] playerPositionToInts(float x, float y) {
         int PPM = 100;
         int TILE_WIDTH = 16;
-        int serverX = (int)(x * PPM / TILE_WIDTH);
-        int serverY = (int)(y * PPM / TILE_WIDTH);
+        int serverX = (int) (x * PPM / TILE_WIDTH);
+        int serverY = (int) (y * PPM / TILE_WIDTH);
 
         serverY = map.getHeight() - 1 - serverY;  // flip player Y, since client puts origin in lower-left corner
 
-        return new Integer[] {serverX, serverY};
+        return new int[]{serverX, serverY};
+    }
+
+    /**
+     * Convert guard server-side position (ints, in cell) to client-side position (floats for setTransform).
+     *
+     * @param x server-side x
+     * @param y server-side y
+     * @return {x, y} - float array of size 2
+     */
+    public float[] guardPositionToFloats(int x, int y) {
+        int PPM = 100;
+        int TILE_WIDTH = 16;
+
+        float clientX = x * TILE_WIDTH / (float) PPM;
+        clientX += TILE_WIDTH / 2f / PPM;
+
+        float clientY = (y - map.getHeight() + 1) * TILE_WIDTH / (float) -PPM;
+        clientY += TILE_WIDTH / 2f / PPM;
+
+        return new float[]{clientX, clientY};
     }
 
     /**

@@ -16,15 +16,14 @@ public class Guard extends Enemy {
     }
 
     public void update(float dt) {
-
-        // Update body position (x, y)
+        // Set the position of the sprite on the b2body center
         setPosition(b2Body.getPosition().x - getWidth() / 2, b2Body.getPosition().y - getHeight() / 2);
     }
 
     @Override
     protected void defineEnemy() {
         BodyDef bdef = new BodyDef();
-        bdef.position.set(5.7f, 7.1f);  // starting pos of enemy - THIS IS TEMPORARY
+        bdef.position.set(9.049289f, 3.764999f);  // starting pos of enemy - THIS IS TEMPORARY
 
         bdef.type = BodyDef.BodyType.StaticBody;
 

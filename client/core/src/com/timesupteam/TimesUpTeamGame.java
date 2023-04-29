@@ -18,10 +18,12 @@ public class TimesUpTeamGame extends Game {
     // Enable to disable lighting effects, zoom out, enable visible collision boxes etc.
     public static Map<String, Boolean> DEBUG = new HashMap<>();
     static {
-        DEBUG.put("zoom", true);
-        DEBUG.put("lights", true);
+        DEBUG.put("zoom", false);
+        DEBUG.put("lights", false);
         DEBUG.put("Box2DDebugLines", true);
         DEBUG.put("kill when timer finishes", false);
+        DEBUG.put("music", false);
+        DEBUG.put("open door", true);
     }
 
     // Whether game is running

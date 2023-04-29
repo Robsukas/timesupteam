@@ -7,12 +7,13 @@ import com.esotericsoftware.minlog.Log;
 import com.timesupteam.screens.PlayScreen;
 
 import java.io.IOException;
+import java.sql.Time;
 
 public class MainClient {
 
     private final Client client;
 
-    private final String SERVER_IP = "193.40.156.59"; // "localhost";
+    private final String SERVER_IP = "localhost"; // "193.40.156.59"; //
     private final int TCP_PORT = 8080;  // must be the same on server
     private final int UDP_PORT = 8081;  // must be the same on server
     private final PlayScreen screen;
@@ -26,6 +27,10 @@ public class MainClient {
         client = new Client();
         client.start();
         Network.register(client);
+
+//        if (TimesUpTeamGame.DEBUG.get("open door")) {
+//            screen.getDoorsManager().openStartDoor();
+//        }
 
         // ThreadedListener runs the listener methods on a different thread, so non-blocking
         client.addListener(new Listener.ThreadedListener(new Listener() {
@@ -100,7 +105,7 @@ public class MainClient {
                         System.out.println("- guard is null, creating guard");
                         screen.createGuard(msg.x, msg.y);
                     } else {
-//                        System.out.printf("- moving guard (%f, %f)\n", msg.x, msg.y);
+                        System.out.printf("- moving guard (%f, %f)\n", msg.x, msg.y);
                         screen.moveGuard(msg.x, msg.y);
                     }
 
@@ -142,9 +147,9 @@ public class MainClient {
         msg.x = x;
         msg.y = y;
 
-//        System.out.println();
-//        System.out.printf("--- Sending my new position to the server... (id: %d, x: %f, y: %f)\n", msg.id, msg.x, msg.y);
-//        System.out.println();
+        System.out.println();
+        System.out.printf("--- Sending my new position to the server... (id: %d, x: %f, y: %f)\n", msg.id, msg.x, msg.y);
+        System.out.println();
 
         client.sendTCP(msg);
     }

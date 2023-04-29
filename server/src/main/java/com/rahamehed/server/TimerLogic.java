@@ -1,24 +1,27 @@
 package com.rahamehed.server;
 
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 
 public class TimerLogic {
 
+    private final int cycleLength = 500; // ms
+    private final int secondsPerLevel = 300;
     private MainServer server;
     private MapHandler mapHandler;
-
-    private final int cycleLength = 250; // ms
-    private final int secondsPerLevel = 300;
     private int cyclesLeft;
-
 
     private int player1LastX;
     private int player1LastY;
 
-    private int guardX;
-    private int guardY;
+    // Set initial guard position (cells) here
+    private int guardX = 53;
+    private int guardY = 35;
+
+    private List<int[]> currentGuardPath;
+    private int pathCounter = 0;
 
     public TimerLogic(MainServer server, MapHandler mapHandler) {
         this.server = server;
@@ -46,6 +49,10 @@ public class TimerLogic {
                     // Time is up, send game over event to all players
                     timer.cancel();
                     gameOver();
+                }
+
+                if (server.players.size() == 0) {
+                    return;
                 }
 
                 // Update guard's position and send it to all players
@@ -82,28 +89,47 @@ public class TimerLogic {
         Network.MoveGuard msg = new Network.MoveGuard();
         msg.guardId = 0;
 
-//        int player1Id = server.players.entrySet().iterator().next().getKey();
         int player1X = server.players.entrySet().iterator().next().getValue()[0];
         int player1Y = server.players.entrySet().iterator().next().getValue()[1];
 
-        // Remove player's old position from map
-        if (player1LastX != 0) {
-            mapHandler.setValueInMap(player1LastX, player1LastY, 0);
+        // Get the closest player
+        int h = Integer.MAX_VALUE;
+        for (int[] p : server.players.values()) {
+            int newH = AStarMazeSolver.getHeuristic(new int[]{guardY, guardX}, new int[]{p[1], p[0]});
+            if (newH < h) {
+                h = newH;
+                player1X = p[0];
+                player1Y = p[1];
+            }
         }
-        player1LastX = player1X;
-        player1LastY = player1Y;
 
-        // Set new player's position to the map
-        mapHandler.setValueInMap(player1X, player1Y, 2);
+        // Player has moved, recalculate path to them
+        if (player1X != player1LastX || player1Y != player1LastY) {
+            player1LastX = player1X;
+            player1LastY = player1Y;
 
-        // DEBUG: print map
-        System.out.println("\n\n-----------\n\n");
-        mapHandler.printMap();
-        System.out.println("\n\n-----------\n\n");
+            pathCounter = 1;
+            currentGuardPath = AStarMazeSolver.solveMaze(mapHandler.mapArray, new int[]{guardY, guardX}, new int[]{player1Y, player1X});
+        }
 
+        currentGuardPath.forEach(p -> System.out.println(p[0] + ", " + p[1]));
+        if (pathCounter < currentGuardPath.size()) {
+            int[] nextCell = currentGuardPath.get(pathCounter);
 
-        // Calculate guard's new position
-        // ...
+            guardY = nextCell[0];
+            guardX = nextCell[1];
+
+            pathCounter++;
+
+            // Convert back to client-side positions
+            float[] realNextCell = mapHandler.guardPositionToFloats(nextCell[1], nextCell[0]);
+
+            msg.x = realNextCell[0];
+            msg.y = realNextCell[1];
+        }
+
+        System.out.println("- player: " + player1X + ", " + player1Y);
+        System.out.println("- moving guard to " + msg.x + ", " + msg.y);
 
         server.server.sendToAllTCP(msg);
     }

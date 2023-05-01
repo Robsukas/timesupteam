@@ -74,11 +74,9 @@ public class PlayScreen implements Screen {
         // Initialize game
         this.game = game;
 
-        // Try to create a client, add listeners, connect to the server
-        client = new MainClient(this);
-
         // Initialize gameCam
         float zoom = TimesUpTeamGame.DEBUG.get("zoom") ? 1.5f : 1f;
+//        zoom = 0.3f;
         gameCam = new OrthographicCamera();
         gamePort = new FitViewport(TimesUpTeamGame.V_WIDTH / TimesUpTeamGame.PPM / zoom, TimesUpTeamGame.V_HEIGHT / TimesUpTeamGame.PPM / zoom, gameCam);
 
@@ -123,6 +121,9 @@ public class PlayScreen implements Screen {
         flashlight.attachToBody(player.b2Body, 0, 0, 0);
         flashlight.setXray(true);
         flashlight.setSoft(false);
+
+        // Try to create a client, add listeners, connect to the server
+        client = new MainClient(this);
     }
 
     public TextureAtlas getAtlas() {
@@ -205,9 +206,10 @@ public class PlayScreen implements Screen {
         }
 
         // Update player(s)'s (and guards') sprite location
-        if (guard != null)
+        if (guard != null) {
             guard.b2Body.setTransform(new Vector2(guardX, guardY), 0);
-//            guard.update(dt);
+            guard.update(dt);
+        }
 
         player.update(dt);
 
@@ -270,7 +272,7 @@ public class PlayScreen implements Screen {
 
         // Draw players, with our main character on top
         if (guard != null) {
-//            guard.draw(game.batch); // must have texture!
+            guard.draw(game.batch); // must have texture!
             ;
         }
 

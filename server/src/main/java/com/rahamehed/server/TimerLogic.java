@@ -1,24 +1,32 @@
 package com.rahamehed.server;
 
-import java.util.Arrays;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 
 public class TimerLogic {
 
+    private final int cycleLength = 500; // ms
+    private final int secondsPerLevel = 300;
     private MainServer server;
-
-    private final int cycleLength = 250; // ms
-    private final int secondsPerLevel = 15;
+    private MapHandler mapHandler;
     private int cyclesLeft;
 
-    private boolean[][] map;  // holds walls pos
+    private int player1LastX;
+    private int player1LastY;
 
-    public TimerLogic(MainServer server) {
+    // Set initial guard position (cells) here
+    private int guardX = 53;
+    private int guardY = 35;
+
+    private List<int[]> currentGuardPath;
+    private int pathCounter = 0;
+
+    public TimerLogic(MainServer server, MapHandler mapHandler) {
         this.server = server;
+        this.mapHandler = mapHandler;
     }
-
 
     /**
      * Start level and its timer.
@@ -27,16 +35,6 @@ public class TimerLogic {
      */
     public void start() {
         // Both players have joined
-        // Load map into memory
-        TmxMapLoader mapLoader = new TmxMapLoader();
-        try {
-            map = mapLoader.readInMap("level_1.tmx", "top");
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-        System.out.println(Arrays.deepToString(map));
-
 
         // Send game start event to all players
         gameStart();
@@ -51,6 +49,10 @@ public class TimerLogic {
                     // Time is up, send game over event to all players
                     timer.cancel();
                     gameOver();
+                }
+
+                if (server.players.size() == 0) {
+                    return;
                 }
 
                 // Update guard's position and send it to all players
@@ -87,18 +89,47 @@ public class TimerLogic {
         Network.MoveGuard msg = new Network.MoveGuard();
         msg.guardId = 0;
 
-//        // If beginning, set guard's position to zero
-//        if (msg.x == 0 && msg.y == 0) {
-//            msg.x = 3.315605f;
-//            msg.y = 2.889148f;
-//        }
+        int player1X = server.players.entrySet().iterator().next().getValue()[0];
+        int player1Y = server.players.entrySet().iterator().next().getValue()[1];
 
-        // Calculate guard's new position
-        // ...
-       // float goalX = server.players.entrySet().iterator().next().getValue().get(0);
-       // float goalY = server.players.entrySet().iterator().next().getValue().get(1);
-       // msg.x = goalX;
-       // msg.y = goalY;
+        // Get the closest player
+        int h = Integer.MAX_VALUE;
+        for (int[] p : server.players.values()) {
+            int newH = AStarMazeSolver.getHeuristic(new int[]{guardY, guardX}, new int[]{p[1], p[0]});
+            if (newH < h) {
+                h = newH;
+                player1X = p[0];
+                player1Y = p[1];
+            }
+        }
+
+        // Player has moved, recalculate path to them
+        if (player1X != player1LastX || player1Y != player1LastY) {
+            player1LastX = player1X;
+            player1LastY = player1Y;
+
+            pathCounter = 1;
+            currentGuardPath = AStarMazeSolver.solveMaze(mapHandler.mapArray, new int[]{guardY, guardX}, new int[]{player1Y, player1X});
+        }
+
+        currentGuardPath.forEach(p -> System.out.println(p[0] + ", " + p[1]));
+        if (pathCounter < currentGuardPath.size()) {
+            int[] nextCell = currentGuardPath.get(pathCounter);
+
+            guardY = nextCell[0];
+            guardX = nextCell[1];
+
+            pathCounter++;
+
+            // Convert back to client-side positions
+            float[] realNextCell = mapHandler.guardPositionToFloats(nextCell[1], nextCell[0]);
+
+            msg.x = realNextCell[0];
+            msg.y = realNextCell[1];
+        }
+
+        System.out.println("- player: " + player1X + ", " + player1Y);
+        System.out.println("- moving guard to " + msg.x + ", " + msg.y);
 
         server.server.sendToAllTCP(msg);
     }

@@ -3,6 +3,7 @@ package com.timesupteam.tools;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.timesupteam.TimesUpTeamGame;
 
 public class AudioManager {
     public Music playScreenMusic;
@@ -21,20 +22,26 @@ public class AudioManager {
     }
 
     public void playMenuMusic() {
-        stopAllMusic();
-        menuMusic.setLooping(true);
-        menuMusic.play();
+        if (TimesUpTeamGame.DEBUG.get("music")) {
+            stopAllMusic();
+            menuMusic.setLooping(true);
+            menuMusic.play();
+        }
     }
 
     public void playPlayScreenMusic() {
-        stopAllMusic();
-        playScreenMusic.setLooping(true);
-        playScreenMusic.play();
+        if (TimesUpTeamGame.DEBUG.get("music")) {
+            stopAllMusic();
+            playScreenMusic.setLooping(true);
+            playScreenMusic.play();
+        }
     }
     public void playGameOverMusic() {
-        stopAllMusic();
-        gameOverMusic.setLooping(false);
-        gameOverMusic.play();
+        if (TimesUpTeamGame.DEBUG.get("music")) {
+            stopAllMusic();
+            gameOverMusic.setLooping(false);
+            gameOverMusic.play();
+        }
     }
     public void playClickSound() {
         clickSound.play();

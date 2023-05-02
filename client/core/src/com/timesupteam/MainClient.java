@@ -7,7 +7,6 @@ import com.esotericsoftware.minlog.Log;
 import com.timesupteam.screens.PlayScreen;
 
 import java.io.IOException;
-import java.sql.Time;
 
 public class MainClient {
 
@@ -65,7 +64,6 @@ public class MainClient {
 
                 else if (object instanceof Network.GameOver) {
                     System.out.println("game over!");
-                    // Another player has joined, start game timer and open door
 //                    Network.GameOver msg = (Network.GameOver) object;
 //                    screen.getHud().setWorldTimer(0);
                     TimesUpTeamGame.isRunning = false;
@@ -147,9 +145,9 @@ public class MainClient {
         msg.x = x;
         msg.y = y;
 
-        System.out.println();
-        System.out.printf("--- Sending my new position to the server... (id: %d, x: %f, y: %f)\n", msg.id, msg.x, msg.y);
-        System.out.println();
+//        System.out.println();
+//        System.out.printf("--- Sending my new position to the server... (id: %d, x: %f, y: %f)\n", msg.id, msg.x, msg.y);
+//        System.out.println();
 
         client.sendTCP(msg);
     }

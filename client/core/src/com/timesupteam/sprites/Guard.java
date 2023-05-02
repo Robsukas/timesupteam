@@ -1,10 +1,10 @@
 package com.timesupteam.sprites;
 
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.*;
 import com.timesupteam.TimesUpTeamGame;
 import com.timesupteam.screens.PlayScreen;
+
+import java.sql.Time;
 
 public class Guard extends Enemy {
 
@@ -33,6 +33,13 @@ public class Guard extends Enemy {
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(8 / TimesUpTeamGame.PPM, 8 / TimesUpTeamGame.PPM);
         fdef.shape = shape;
-        b2Body.createFixture(fdef);
+
+        b2Body.createFixture(fdef).setUserData(this);
+        fdef.isSensor = true;
+    }
+
+    public void onHit() {
+        // Guard has hit player
+//        TimesUpTeamGame.isTimeUp = true;
     }
 }

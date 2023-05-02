@@ -128,6 +128,11 @@ public class TimerLogic {
             msg.y = realNextCell[1];
         }
 
+        // If guard is on the same tile as player, end game
+        if (guardX == player1X && guardY == player1Y) {
+            gameOver();
+        }
+
         System.out.println("- player: " + player1X + ", " + player1Y);
         System.out.println("- moving guard to " + msg.x + ", " + msg.y);
 

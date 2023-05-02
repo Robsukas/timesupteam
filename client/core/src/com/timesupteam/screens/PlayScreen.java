@@ -32,6 +32,7 @@ public class PlayScreen implements Screen {
     // Main variables
     private TimesUpTeamGame game;
     private TextureAtlas atlas;
+    private TextureAtlas enemyAtlas;
     private OrthographicCamera gameCam;
     private Viewport gamePort;
     private HUD hud;
@@ -70,6 +71,9 @@ public class PlayScreen implements Screen {
     public PlayScreen(TimesUpTeamGame game) {
         // Initialize texture
         atlas = new TextureAtlas("Character.pack");
+
+        // Initialize enemy texture
+        enemyAtlas = new TextureAtlas("Enemy.pack");
 
         // Initialize game
         this.game = game;
@@ -131,6 +135,8 @@ public class PlayScreen implements Screen {
     public TextureAtlas getAtlas() {
         return atlas;
     }
+
+    public TextureAtlas getEnemyAtlas() {return enemyAtlas;}
 
     public World getWorld() {
         return world;

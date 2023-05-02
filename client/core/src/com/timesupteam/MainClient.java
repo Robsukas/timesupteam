@@ -45,7 +45,9 @@ public class MainClient {
                 System.out.println();
 
                 // When connection lost to the server, exit game
-                System.exit(0);
+//                System.exit(0);
+                TimesUpTeamGame.isRunning = false;
+                TimesUpTeamGame.isTimeUp = true;
             }
 
             public void received(Connection connection, Object object) {
@@ -69,8 +71,8 @@ public class MainClient {
                     TimesUpTeamGame.isRunning = false;
                     TimesUpTeamGame.isTimeUp = true;
 
-                    // :D
-//                    client.stop(); // disconnect player from server
+//                     :D
+                    client.stop(); // disconnect player from server?
                 }
 
                 else if (object instanceof Network.MovePlayer) {

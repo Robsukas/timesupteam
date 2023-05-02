@@ -130,6 +130,10 @@ public class PlayScreen implements Screen {
         keysManager = new KeysManager(this);
         doorsManager = new DoorsManager(this);
         new B2WorldCreator(this, keysManager, doorsManager);
+
+        if (TimesUpTeamGame.DEBUG.get("open door")) {
+            doorsManager.openStartDoor();
+        }
     }
 
     public TextureAtlas getAtlas() {

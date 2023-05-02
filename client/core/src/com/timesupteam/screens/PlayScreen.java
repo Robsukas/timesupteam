@@ -95,10 +95,7 @@ public class PlayScreen implements Screen {
         world = new World(Vector2.Zero, true);
         b2dr = new Box2DDebugRenderer();
 
-        // Create walls, keys
-        keysManager = new KeysManager(this);
-        doorsManager = new DoorsManager(this);
-        new B2WorldCreator(this, keysManager, doorsManager);
+
 
         // Create main character in to the world
         player = new Character(this, true);
@@ -124,6 +121,11 @@ public class PlayScreen implements Screen {
 
         // Try to create a client, add listeners, connect to the server
         client = new MainClient(this);
+
+        // Create walls, keys
+        keysManager = new KeysManager(this);
+        doorsManager = new DoorsManager(this);
+        new B2WorldCreator(this, keysManager, doorsManager);
     }
 
     public TextureAtlas getAtlas() {

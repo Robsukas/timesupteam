@@ -8,7 +8,7 @@ import java.util.TimerTask;
 public class TimerLogic {
 
     private final int cycleLength = 500; // ms
-    private final int secondsPerLevel = 300;
+    private final int secondsPerLevel = 60;
     private MainServer server;
     private MapHandler mapHandler;
     private int cyclesLeft;

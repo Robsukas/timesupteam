@@ -42,12 +42,14 @@ public class SettingsScreen implements Screen {
 
         Slider volumeSlider = new Slider(0f, 1f, 0.1f, false, skin);
         volumeSlider.setPosition(stage.getWidth() / 2 - volumeSlider.getWidth() / 2, stage.getHeight() * 0.5f);
+        volumeSlider.setValue(game.audioManager.getCurrentMusicVolume());
 
         volumeSlider.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 float volume = ((Slider) actor).getValue();
                 game.audioManager.setAllMusicVolume(volume);
+                game.audioManager.setAllSoundVolume(volume);
             }
         });
 

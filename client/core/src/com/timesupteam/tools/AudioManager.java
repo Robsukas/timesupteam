@@ -13,6 +13,8 @@ public class AudioManager {
 
     public Sound clickSound;
 
+    private float soundVolume = 1.0f;
+
 
     public AudioManager() {
         playScreenMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/playScreenMusic.mp3"));
@@ -44,7 +46,7 @@ public class AudioManager {
         }
     }
     public void playClickSound() {
-        clickSound.play();
+        clickSound.play(soundVolume);
     }
 
     private void stopAllMusic() {
@@ -61,6 +63,13 @@ public class AudioManager {
         menuMusic.setVolume(volume);
         playScreenMusic.setVolume(volume);
         gameOverMusic.setVolume(volume);
+    }
+    public void setAllSoundVolume(float volume) {
+        soundVolume = volume;
+    }
+
+    public float getCurrentMusicVolume() {
+        return menuMusic.getVolume();
     }
 
 

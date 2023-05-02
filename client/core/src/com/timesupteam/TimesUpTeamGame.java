@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.timesupteam.screens.MenuScreen;
 import com.timesupteam.tools.AudioManager;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.timesupteam.screens.PlayScreen;
 
 import java.util.HashMap;
 import java.util.Map;

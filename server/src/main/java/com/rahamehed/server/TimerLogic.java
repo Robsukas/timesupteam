@@ -49,6 +49,7 @@ public class TimerLogic {
                     // Time is up, send game over event to all players
                     timer.cancel();
                     gameOver();
+                    return;
                 }
 
                 if (server.players.size() == 0) {

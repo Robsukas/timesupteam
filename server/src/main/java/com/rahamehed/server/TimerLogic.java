@@ -49,6 +49,7 @@ public class TimerLogic {
                     // Time is up, send game over event to all players
                     timer.cancel();
                     gameOver();
+                    return;
                 }
 
                 if (server.players.size() == 0) {
@@ -126,6 +127,11 @@ public class TimerLogic {
 
             msg.x = realNextCell[0];
             msg.y = realNextCell[1];
+        }
+
+        // If guard is on the same tile as player, end game
+        if (guardX == player1X && guardY == player1Y) {
+            gameOver();
         }
 
         System.out.println("- player: " + player1X + ", " + player1Y);

@@ -42,6 +42,13 @@ public class MainServer {
         // Add listener to tell the server, what to do after something is sent over the network
         server.addListener(new Listener() {
             public void connected(Connection c) {
+                // Don't allow more than 2 players
+                if (players.size() == 2) {
+                    System.out.println("Already 2 players connected, disconnecting new connection.");
+                    c.close();
+                    return;
+                }
+
                 System.out.println();
                 System.out.println("!-- Player connected.");
                 System.out.println("--- Connection ID: " + c.getID());
@@ -53,7 +60,7 @@ public class MainServer {
                 players.put(c.getID(), mapHandler.playerPositionToInts(10f, 2.83f));  // ! hard-coded, see client/.../Character.java
 
                 // If both players have joined, start the timer loop
-                if (players.size() >= 2) {
+                if (players.size() == 2) {
                     timer.start();
                 }
             }
@@ -66,6 +73,19 @@ public class MainServer {
 
                 // Remove disconnected player from players map
                 players.remove(c.getID());
+
+                if (players.size() == 1) {
+                    // One player disconnected, disconnect the other one too
+                    Arrays.stream(server.getConnections()).iterator().next().close();
+//                    players.keySet().iterator().next()
+                }
+
+                if (players.size() == 0) {
+                    // Game is over, reset game state
+                    timer.reset();
+
+                    // Or one of two players left ... what then
+                }
             }
 
             public void received(Connection c, Object object) {

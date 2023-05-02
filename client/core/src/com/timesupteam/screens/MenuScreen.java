@@ -13,6 +13,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.timesupteam.TimesUpTeamGame;
 
+import java.sql.Time;
+
 public class MenuScreen implements Screen {
     private TimesUpTeamGame game;
     private Stage stage;
@@ -47,6 +49,7 @@ public class MenuScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 game.audioManager.playClickSound();
+                TimesUpTeamGame.isTimeUp = false;
                 game.setScreen(new PlayScreen(game));
                 dispose();
             }

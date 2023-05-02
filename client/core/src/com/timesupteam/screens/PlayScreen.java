@@ -96,7 +96,7 @@ public class PlayScreen implements Screen {
         gameCam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
 
         // Initialize world, debug lines renderer
-        world = new World(Vector2.Zero, true);
+            world = new World(Vector2.Zero, true);
         b2dr = new Box2DDebugRenderer();
 
 
@@ -130,6 +130,10 @@ public class PlayScreen implements Screen {
         keysManager = new KeysManager(this);
         doorsManager = new DoorsManager(this);
         new B2WorldCreator(this, keysManager, doorsManager);
+
+        if (TimesUpTeamGame.DEBUG.get("open door")) {
+            doorsManager.openStartDoor();
+        }
     }
 
     public TextureAtlas getAtlas() {

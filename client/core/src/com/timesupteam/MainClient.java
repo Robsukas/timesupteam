@@ -27,10 +27,6 @@ public class MainClient {
         client.start();
         Network.register(client);
 
-//        if (TimesUpTeamGame.DEBUG.get("open door")) {
-//            screen.getDoorsManager().openStartDoor();
-//        }
-
         // ThreadedListener runs the listener methods on a different thread, so non-blocking
         client.addListener(new Listener.ThreadedListener(new Listener() {
             public void connected(Connection connection) {
@@ -44,8 +40,9 @@ public class MainClient {
                 System.out.println("--- Our ID: " + connection.getID());
                 System.out.println();
 
-                // When connection lost to the server, exit game
-                System.exit(0);
+                // When connection lost, game is over
+                TimesUpTeamGame.isRunning = false;
+                TimesUpTeamGame.isTimeUp = true;
             }
 
             public void received(Connection connection, Object object) {
@@ -59,18 +56,12 @@ public class MainClient {
                     Network.GameStart msg = (Network.GameStart) object;
                     screen.getHud().setWorldTimer(msg.time);
                     screen.getDoorsManager().openStartDoor();
+                    TimesUpTeamGame.isTimeUp = false;
                     TimesUpTeamGame.isRunning = true;
                 }
 
                 else if (object instanceof Network.GameOver) {
-                    System.out.println("game over!");
-//                    Network.GameOver msg = (Network.GameOver) object;
-//                    screen.getHud().setWorldTimer(0);
-                    TimesUpTeamGame.isRunning = false;
-                    TimesUpTeamGame.isTimeUp = true;
-
-                    // :D
-//                    client.stop(); // disconnect player from server
+                    client.stop(); // disconnect player from server
                 }
 
                 else if (object instanceof Network.MovePlayer) {

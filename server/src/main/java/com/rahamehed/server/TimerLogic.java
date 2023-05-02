@@ -11,6 +11,7 @@ public class TimerLogic {
     private final int secondsPerLevel = 10;
     private MainServer server;
     private MapHandler mapHandler;
+    private Timer timer;
     private int cyclesLeft;
 
     private int player1LastX;
@@ -40,7 +41,7 @@ public class TimerLogic {
         gameStart();
 
         // Do stuff (move guard) every cycleLength milliseconds
-        Timer timer = new Timer();
+        timer = new Timer();
         cyclesLeft = (secondsPerLevel * 1000) / cycleLength;
         timer.schedule(new TimerTask() {
             @Override
@@ -113,7 +114,7 @@ public class TimerLogic {
             currentGuardPath = AStarMazeSolver.solveMaze(mapHandler.mapArray, new int[]{guardY, guardX}, new int[]{player1Y, player1X});
         }
 
-        currentGuardPath.forEach(p -> System.out.println(p[0] + ", " + p[1]));
+//        currentGuardPath.forEach(p -> System.out.println(p[0] + ", " + p[1]));
         if (pathCounter < currentGuardPath.size()) {
             int[] nextCell = currentGuardPath.get(pathCounter);
 
@@ -134,9 +135,15 @@ public class TimerLogic {
             gameOver();
         }
 
-        System.out.println("- player: " + player1X + ", " + player1Y);
-        System.out.println("- moving guard to " + msg.x + ", " + msg.y);
+//        System.out.println("- player: " + player1X + ", " + player1Y);
+//        System.out.println("- moving guard to " + msg.x + ", " + msg.y);
 
         server.server.sendToAllTCP(msg);
+    }
+
+    public void reset() {
+        timer.cancel();
+        guardX = 53;
+        guardY = 35;
     }
 }

@@ -22,12 +22,12 @@ public class TimesUpTeamGame extends Game {
         DEBUG.put("Box2DDebugLines", false);
         DEBUG.put("kill when timer finishes", true);
         DEBUG.put("music", true);
-        DEBUG.put("open door", true);
+        DEBUG.put("open door", false);
     }
 
     // Whether game is running
-    public static boolean isRunning = false;  // 2 players have joined
-    public static boolean isTimeUp = false;  // timers is up
+    public static boolean isRunning = false;  // true if 2 players have joined
+    public static boolean isTimeUp = false;  // true if timer is up
 
     // Virtual width and height (camera size = zoom-in level). The smaller, the more zoomed in
     public static int V_WIDTH = 512;

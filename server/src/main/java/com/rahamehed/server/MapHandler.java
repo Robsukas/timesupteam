@@ -5,9 +5,14 @@ import org.mapeditor.core.MapLayer;
 import org.mapeditor.core.TileLayer;
 import org.mapeditor.io.TMXMapReader;
 
+import java.io.File;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Path;
+import java.security.CodeSource;
+import java.util.Objects;
+
 
 public class MapHandler {
 
@@ -17,9 +22,19 @@ public class MapHandler {
 
     public void readInMap(String mapName, String wallsLayerName) throws Exception {
         System.out.println("Reading in new map...");
-        String path = getFilePathFromResources(mapName);
-        System.out.println("Path: " + path);
-        map = new TMXMapReader().readMap(path);
+
+        String protocol = this.getClass().getResource(this.getClass().getSimpleName() + ".class").getProtocol();
+        if(Objects.equals(protocol, "jar")){
+            System.out.println("Running inside a JAR...");
+            try (InputStream in = getClass().getResourceAsStream("/" + mapName)) {
+                map = new TMXMapReader().readMap(in);
+            }
+        } else {
+            System.out.println("Running inside IDE...");
+            String path = getFilePathFromResources(mapName);
+            map = new TMXMapReader().readMap(path);
+        }
+
         System.out.println("Map width: " + map.getWidth());
         System.out.println("Map height: " + map.getHeight());
         System.out.println("Map layers count: " + map.getLayerCount());
@@ -113,6 +128,7 @@ public class MapHandler {
             throw new RuntimeException("Can't find file '" + filename + "'. It should be in src/main/resources.");
         }
         try {
+            System.out.println("file path: ");
             return Path.of(url.toURI()).toString();
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);

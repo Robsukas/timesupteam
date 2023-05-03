@@ -130,6 +130,11 @@ public class TimerLogic {
             msg.y = realNextCell[1];
         }
 
+//        if ((Math.abs(guardX - player1X) == 1 && guardY == player1Y) ||
+//             Math.abs(guardY - player1Y) == 1 && guardX == player1X) {
+//
+//        }
+
         // If guard is on the same tile as player, end game
         if (guardX == player1X && guardY == player1Y) {
             gameOver();
@@ -142,7 +147,9 @@ public class TimerLogic {
     }
 
     public void reset() {
-        timer.cancel();
+        if (timer != null) {
+            timer.cancel();
+        }
         guardX = 53;
         guardY = 35;
     }

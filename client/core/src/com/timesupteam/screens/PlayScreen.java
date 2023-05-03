@@ -96,10 +96,8 @@ public class PlayScreen implements Screen {
         gameCam.position.set(gamePort.getWorldWidth() / 2, gamePort.getWorldHeight() / 2, 0);
 
         // Initialize world, debug lines renderer
-            world = new World(Vector2.Zero, true);
+        world = new World(Vector2.Zero, true);
         b2dr = new Box2DDebugRenderer();
-
-
 
         // Create main character in to the world
         player = new Character(this, true);
@@ -309,7 +307,7 @@ public class PlayScreen implements Screen {
         if (TimesUpTeamGame.DEBUG.get("kill when timer finishes")) {
             if (TimesUpTeamGame.isTimeUp) {  // replace with real logic
                 game.setScreen(new GameOverScreen(game, "Y'all dead."));
-                dispose();
+                this.dispose();
             }
         }
     }
@@ -346,6 +344,8 @@ public class PlayScreen implements Screen {
         b2dr.dispose();
         rayHandler.dispose();
         hud.dispose();
+        atlas.dispose();
+        enemyAtlas.dispose();
     }
 
     /**

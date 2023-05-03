@@ -164,10 +164,20 @@ public class PlayScreen implements Screen {
 
     @Override
     public void show() {
-        game.audioManager.playPlayScreenMusic();
-
+        game.audioManager.stopAllMusic();
+        game.audioManager.playViolinMusic();
+        // Set the volume of the violin music to 0, when the second player is not yet in the game
+        game.audioManager.setViolinMusic(0f);
+        // TODO: Set the volume of the clock music to 0, when the second player is not yet in the game and when connected, set volume back to normal.
+        game.audioManager.playClockMusic();
     }
 
+    public void setViolinVolumeWithProximity(float playerX, float guardX, float playerY, float guardY) {
+        // Calculate the distance from the player to the guard and using the exponential function, set the volume of the violin music.
+        float distance = (float) Math.sqrt(Math.pow(playerX - guardX, 2) + Math.pow(playerY - guardY, 2));
+        float volume = (float) Math.exp(-distance / 0.75f);
+        game.audioManager.setViolinMusic(volume);
+    }
     public void handleInput() {
         boolean moveUp = Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP);
         boolean moveLeft = Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT);
@@ -254,6 +264,12 @@ public class PlayScreen implements Screen {
 
         // Doors - open or destroy doors as needed
         doorsManager.update();
+
+        // Update violin sound volume
+        if (guard != null && player2 != null) {
+            setViolinVolumeWithProximity(player.b2Body.getPosition().x, guard.b2Body.getPosition().x,
+                    player.b2Body.getPosition().y, guard.b2Body.getPosition().y);
+        }
 
         // Take a time step (actually simulate movement, collision detection, etc.)
         // World is locked during step, can't transform/destroy/... bodies at the same time

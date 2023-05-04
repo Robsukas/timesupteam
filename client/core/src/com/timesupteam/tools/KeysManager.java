@@ -3,6 +3,7 @@ package com.timesupteam.tools;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.physics.box2d.World;
 import com.timesupteam.MainClient;
+import com.timesupteam.TimesUpTeamGame;
 import com.timesupteam.scenes.HUD;
 import com.timesupteam.screens.PlayScreen;
 import com.timesupteam.sprites.Keys;
@@ -30,6 +31,7 @@ public class KeysManager {
         this.world = screen.getWorld();
         this.hud = screen.getHud();
         this.client = screen.getClient();
+
     }
 
     public int getKeyIdAndIncrement() {
@@ -84,6 +86,8 @@ public class KeysManager {
             world.destroyBody(key.body);
             hud.addKeyCount(1);
             keysPickedUp++;
+            // Play the key pick up sound when a key is picked up.
+            screen.game.audioManager.playKeyPickedSound();
         }
         keysToBeDestroyed.clear();
 

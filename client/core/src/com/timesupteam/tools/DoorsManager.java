@@ -12,6 +12,7 @@ import java.util.List;
 
 public class DoorsManager {
 
+    private PlayScreen screen;
     private World world;
     private MainClient client;
 
@@ -24,6 +25,7 @@ public class DoorsManager {
     public DoorsManager(PlayScreen screen) {
         this.world = screen.getWorld();
         this.client = screen.getClient();
+        this.screen = screen;
     }
 
     public void addStartDoor(StartDoor door) {
@@ -58,6 +60,8 @@ public class DoorsManager {
             for (StartDoor door : startDoorsToBeDestroyed) {
                 door.getCell().setTile(null);
                 world.destroyBody(door.body);
+                // Play the open door sound when start door is opened.
+                screen.game.audioManager.playOpenDoorSound();
             }
             startDoorsToBeDestroyed.clear();
         }
@@ -66,8 +70,11 @@ public class DoorsManager {
             for (EndDoor door : endDoorsToBeDestroyed) {
                 door.getCell().setTile(null);
                 world.destroyBody(door.body);
+                // Play the open door sound when end door is opened.
+                screen.game.audioManager.playOpenDoorSound();
             }
             endDoorsToBeDestroyed.clear();
+
         }
     }
 }

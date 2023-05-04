@@ -6,6 +6,8 @@ import com.badlogic.gdx.audio.Sound;
 import com.timesupteam.TimesUpTeamGame;
 
 public class AudioManager {
+    public Sound openDoorSound;
+    public Sound keyPickedSound;
     public Music playScreenMusic;
     public Music menuMusic;
 
@@ -26,6 +28,8 @@ public class AudioManager {
         clickSound = Gdx.audio.newSound(Gdx.files.internal("audio/clickSound.mp3"));
         violinMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/violinMusic.mp3"));
         clockMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/clockMusic.mp3"));
+        keyPickedSound = Gdx.audio.newSound(Gdx.files.internal("audio/keyPickedSound.mp3"));
+        openDoorSound = Gdx.audio.newSound(Gdx.files.internal("audio/openDoorSound.mp3"));
     }
 
     public void playMenuMusic() {
@@ -57,6 +61,14 @@ public class AudioManager {
     }
     public void playClickSound() {
         clickSound.play(soundVolume);
+    }
+
+    public void playKeyPickedSound() {
+        keyPickedSound.play(soundVolume);
+    }
+
+    public void playOpenDoorSound() {
+        openDoorSound.play(soundVolume);
     }
 
     public void stopAllMusic() {

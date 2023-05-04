@@ -30,7 +30,7 @@ import com.timesupteam.tools.WorldContactListener;
 public class PlayScreen implements Screen {
 
     // Main variables
-    private TimesUpTeamGame game;
+    public TimesUpTeamGame game;
     private TextureAtlas atlas;
     private TextureAtlas enemyAtlas;
     private OrthographicCamera gameCam;

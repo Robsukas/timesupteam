@@ -177,7 +177,7 @@ public class PlayScreen implements Screen {
     public void setViolinVolumeWithProximity(float playerX, float guardX, float playerY, float guardY) {
         // Calculate the distance from the player to the guard and using the exponential function, set the volume of the violin music.
         float distance = (float) Math.sqrt(Math.pow(playerX - guardX, 2) + Math.pow(playerY - guardY, 2));
-        float volume = (float) Math.exp(-distance / 0.75f);
+        float volume = (float) Math.exp(-distance * 0.3f);
         game.audioManager.setViolinMusic(volume);
     }
     public void handleInput() {

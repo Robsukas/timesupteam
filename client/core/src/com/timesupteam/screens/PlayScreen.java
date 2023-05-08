@@ -373,6 +373,10 @@ public class PlayScreen implements Screen {
      * @param y y
      */
     public void createSecondPlayer(float x, float y) {
+        if (player2 != null) {
+            return;
+        }
+
         player2 = new Character(this, false);
 
         moveSecondPlayer(x, y);
@@ -401,6 +405,9 @@ public class PlayScreen implements Screen {
     }
 
     public void createGuard(float x, float y) {
+        if (guard != null) {
+            return;
+        }
         guard = new Guard(this, x, y);
 
         moveGuard(x, y);

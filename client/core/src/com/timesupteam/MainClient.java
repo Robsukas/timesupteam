@@ -1,5 +1,6 @@
 package com.timesupteam;
 
+import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
@@ -12,7 +13,7 @@ public class MainClient {
 
     private final Client client;
 
-    private final String SERVER_IP = "localhost"; //"193.40.156.59";  // "localhost";
+    private final String SERVER_IP = "193.40.156.59"; // "localhost";
     private final int TCP_PORT = 8080;  // must be the same on server
     private final int UDP_PORT = 8081;  // must be the same on server
     private final PlayScreen screen;
@@ -66,7 +67,7 @@ public class MainClient {
 
                 else if (object instanceof Network.MovePlayer) {
                     // Another player has moved
-                    Network.MovePlayer msg = (Network.MovePlayer) object;
+                    final Network.MovePlayer msg = (Network.MovePlayer) object;
 
                     System.out.println();
                     System.out.println("--- Received MovePlayer event from server.");
@@ -74,25 +75,34 @@ public class MainClient {
 
                     if (screen.player2 == null) {
                         System.out.println("- player2 is null, creating second player...");
-                        screen.createSecondPlayer(msg.x, msg.y);
-                        // ...
+                        Gdx.app.postRunnable(new Runnable() {
+                            @Override
+                            public void run() {
+                                screen.createSecondPlayer(msg.x, msg.y);
+                            }
+                        });
+
                         System.out.println("- Other player doesn't see us yet, send them MovePlayer with our current position...");
                         sendPosition(screen.player.b2Body.getPosition().x, screen.player.b2Body.getPosition().y);
                     } else {
                         System.out.println("- player2 exists, moving them...");
                         screen.moveSecondPlayer(msg.x, msg.y);
-                        // ...
                     }
 
                     System.out.println();
                 }
 
                 else if (object instanceof Network.MoveGuard) {
-                    Network.MoveGuard msg = (Network.MoveGuard) object;
+                    final Network.MoveGuard msg = (Network.MoveGuard) object;
 
                     if (screen.guard == null) {
                         System.out.println("- guard is null, creating guard");
-                        screen.createGuard(msg.x, msg.y);
+                        Gdx.app.postRunnable(new Runnable() {
+                            @Override
+                            public void run() {
+                                screen.createGuard(msg.x, msg.y);
+                            }
+                        });
                     } else {
                         System.out.printf("- moving guard (%f, %f)\n", msg.x, msg.y);
                         screen.moveGuard(msg.x, msg.y);

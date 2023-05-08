@@ -324,7 +324,7 @@ public class PlayScreen implements Screen {
         // Game over logic
         if (TimesUpTeamGame.DEBUG.get("kill when timer finishes")) {
             if (TimesUpTeamGame.isTimeUp) {  // replace with real logic
-                game.setScreen(new GameOverScreen(game, "Y'all dead."));
+                game.setScreen(new GameOverScreen(game, "Game over!"));
                 this.dispose();
 //                client.stop();
             }

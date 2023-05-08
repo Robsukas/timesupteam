@@ -63,6 +63,11 @@ public class MainClient {
 
                 else if (object instanceof Network.GameOver) {
                     client.stop(); // disconnect player from server
+                    try {
+                        client.dispose();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
 
                 else if (object instanceof Network.MovePlayer) {
@@ -135,6 +140,9 @@ public class MainClient {
         }
     }
 
+    public void stop() {
+        client.stop();
+    }
 
     /**
      * Send player's position (with their ID) to the server, so the server can forward it to other players.

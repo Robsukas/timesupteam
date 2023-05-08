@@ -96,4 +96,8 @@ public class KeysManager {
             screen.getDoorsManager().openEndDoor();
         }
     }
+
+    public void dispose() {
+        keyId = 0;
+    }
 }

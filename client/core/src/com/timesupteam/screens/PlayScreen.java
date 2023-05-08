@@ -363,6 +363,7 @@ public class PlayScreen implements Screen {
         hud.dispose();
         atlas.dispose();
         enemyAtlas.dispose();
+        keysManager.dispose();
     }
 
     /**

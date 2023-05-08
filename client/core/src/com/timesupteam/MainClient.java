@@ -62,6 +62,7 @@ public class MainClient {
                 }
 
                 else if (object instanceof Network.GameOver) {
+                    System.out.println("Game over");
                     client.stop(); // disconnect player from server
                     try {
                         client.dispose();
@@ -138,10 +139,6 @@ public class MainClient {
             e.printStackTrace();
             System.err.println("! Can't connect to server. Is a server instance running?");
         }
-    }
-
-    public void stop() {
-        client.stop();
     }
 
     /**

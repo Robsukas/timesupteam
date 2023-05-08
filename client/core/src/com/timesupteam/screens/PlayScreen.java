@@ -171,14 +171,17 @@ public class PlayScreen implements Screen {
         // Set the volume of the violin music to 0, when the second player is not yet in the game
         game.audioManager.setViolinMusic(0f);
         // TODO: Set the volume of the clock music to 0, when the second player is not yet in the game and when connected, set volume back to normal.
-        game.audioManager.playClockMusic();
     }
 
     public void setViolinVolumeWithProximity(float playerX, float guardX, float playerY, float guardY) {
         // Calculate the distance from the player to the guard and using the exponential function, set the volume of the violin music.
         float distance = (float) Math.sqrt(Math.pow(playerX - guardX, 2) + Math.pow(playerY - guardY, 2));
-        float volume = (float) Math.exp(-distance * 0.3f);
-        game.audioManager.setViolinMusic(volume);
+        if (distance < 3.2f) /* ~ 20 tiles */ {
+            float volume = (float) Math.exp(-distance * 0.75f);
+            game.audioManager.setViolinMusic(volume);
+        } else {
+            game.audioManager.setViolinMusic(0);
+        }
     }
     public void handleInput() {
         boolean moveUp = Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP);
@@ -214,7 +217,6 @@ public class PlayScreen implements Screen {
 
         if (player2 != null)
             player2.b2Body.setLinearVelocity(Vector2.Zero);
-
         // Apply main character's movement
         handleInput();
 
@@ -392,6 +394,9 @@ public class PlayScreen implements Screen {
         flashlight2.attachToBody(player2.b2Body, 0, 0, 0);
         flashlight2.setXray(true);
         flashlight2.setSoft(false);
+
+        // Start bg music
+        game.audioManager.playClockMusic();
     }
 
     /**

@@ -49,22 +49,13 @@ public class DoorsManager {
 
 
     /**
-     * Destroys the end door (puts in queue).
+     * Destroys the next end door (puts in queue).
      */
     public void openEndDoor() {
-//        endDoorsToBeDestroyed = endDoors;
-        System.out.println(endDoors.size());
-
-        EndDoor door1 = null;
-        EndDoor door2 = null;
-        EndDoor door3 = null;
-        EndDoor door4 = null;
-
-        door1 = endDoors.get(0);
-        door2 = endDoors.get(1);
-        door3 = endDoors.get(2);
-        door4 = endDoors.get(3);
-
+        EndDoor door1 = endDoors.get(0);
+        EndDoor door2 = endDoors.get(1);
+        EndDoor door3 = endDoors.get(2);
+        EndDoor door4 = endDoors.get(3);
 
         endDoorsToBeDestroyed.add(door1);
         endDoorsToBeDestroyed.add(door2);

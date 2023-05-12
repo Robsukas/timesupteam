@@ -63,14 +63,26 @@ public class TimerLogic {
 
                 // Check if players are in the end room
                 if (playersInEndRoom()) {
-                    if (currentLevel == 1) {
+                    if (currentLevel == 2) {  // todo: change to 3 when level 3 exists
                         gameWin();
                         timer.cancel();
-                        return;
                     } else {
                         currentLevel++;
-                        // ... more logic
+                        if (currentLevel == 2) {
+                            secondsPerLevel = 300;
+                            guardX = 168;
+                            guardY = 142;
+                        } else if (currentLevel == 3) {
+                            secondsPerLevel = 30;
+                            guardX = 168;  // find out (look at server print)
+                            guardY = 142;  // find out (look at server print)
+                        }
+
+                        // Reset time
+                        cyclesLeft = (secondsPerLevel * 1000) / cycleLength;
+                        levelUp();
                     }
+                    return;
                 }
 
                 // Update guard's position and send it to all players
@@ -120,6 +132,14 @@ public class TimerLogic {
     private void gameWin() {
         Network.GameWin msg = new Network.GameWin();
 
+        server.server.sendToAllTCP(msg);
+    }
+
+    private void levelUp() {
+        Network.LevelUp msg = new Network.LevelUp();
+        msg.time = secondsPerLevel;
+        msg.x = 29.26049f;
+        msg.y = 1.154136f;
         server.server.sendToAllTCP(msg);
     }
 

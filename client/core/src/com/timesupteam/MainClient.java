@@ -1,5 +1,7 @@
 package com.timesupteam;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector2;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
@@ -12,7 +14,7 @@ public class MainClient {
 
     private final Client client;
 
-    private final String SERVER_IP = "localhost";  // "193.40.156.59";
+    private final String SERVER_IP = "193.40.156.59"; // "localhost";  //
     private final int TCP_PORT = 8080;  // must be the same on server
     private final int UDP_PORT = 8081;  // must be the same on server
     private final PlayScreen screen;
@@ -67,6 +69,21 @@ public class MainClient {
 
                 else if (object instanceof Network.GameWin) {
                     TimesUpTeamGame.isWin = true;
+                }
+
+                else if (object instanceof Network.LevelUp) {
+                    Network.LevelUp msg = (Network.LevelUp) object;
+
+                    screen.getHud().setWorldTimer(msg.time);
+                    screen.getKeysManager().keysPickedUp = 0;
+                    Gdx.app.postRunnable(new Runnable() {
+                        @Override
+                        public void run() {
+                            screen.player.b2Body.setTransform(
+                                    new Vector2(screen.player.b2Body.getPosition().x, screen.player.b2Body.getPosition().y),
+                                    screen.player.b2Body.getAngle());
+                        }
+                    });
                 }
 
                 else if (object instanceof Network.MovePlayer) {

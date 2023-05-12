@@ -23,7 +23,7 @@ public class KeysManager {
 
     private List<Keys> keys = new ArrayList<>();
     private List<Keys> keysToBeDestroyed = new ArrayList<>();
-    private int keysPickedUp = 0;
+    public int keysPickedUp = 0;
     private static int keyId = 0;  // each key has a unique id, so we can send KeyPicked event to the server with key id
 
     public KeysManager(PlayScreen screen) {

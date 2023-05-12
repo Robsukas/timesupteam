@@ -70,6 +70,7 @@ public class MainClient {
                 else if (object instanceof Network.GameWin) {
                     System.out.println("game win!");
                     TimesUpTeamGame.isWin = true;
+                    client.stop();
                 }
 
                 else if (object instanceof Network.LevelUp) {

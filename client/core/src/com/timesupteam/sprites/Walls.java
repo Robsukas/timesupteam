@@ -14,21 +14,21 @@ public class Walls extends InteractiveTileObject {
 
     @Override
     public void onTopHit() {
-        Gdx.app.log("Walls", "Collision on Top");
+//        Gdx.app.log("Walls", "Collision on Top");
     }
 
     @Override
     public void onBottomHit() {
-        Gdx.app.log("Walls", "Collision on Bottom");
+//        Gdx.app.log("Walls", "Collision on Bottom");
     }
 
     @Override
     public void onLeftHit() {
-        Gdx.app.log("Walls", "Collision on Left");
+//        Gdx.app.log("Walls", "Collision on Left");
     }
 
     @Override
     public void onRightHit() {
-        Gdx.app.log("Walls", "Collision on Right");
+//        Gdx.app.log("Walls", "Collision on Right");
     }
 }

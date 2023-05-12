@@ -14,6 +14,8 @@ public class Network {
         kryo.register(MoveGuard.class);
         kryo.register(GameStart.class);
         kryo.register(GameOver.class);
+        kryo.register(GameWin.class);
+        kryo.register(LevelUp.class);
     }
 
     static public class MovePlayer {
@@ -37,5 +39,14 @@ public class Network {
 
     static public class GameOver {
 //        public int time;  // seconds
+    }
+
+    static public class GameWin {
+
+    }
+
+    static public class LevelUp {
+        public int time;
+        public float x, y;
     }
 }

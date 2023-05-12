@@ -1,6 +1,7 @@
 package com.timesupteam;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector2;
 import com.esotericsoftware.kryonet.Client;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
@@ -13,7 +14,7 @@ public class MainClient {
 
     private final Client client;
 
-    private final String SERVER_IP = "193.40.156.59"; // "localhost";
+    private final String SERVER_IP = "193.40.156.59"; // "localhost";  //
     private final int TCP_PORT = 8080;  // must be the same on server
     private final int UDP_PORT = 8081;  // must be the same on server
     private final PlayScreen screen;
@@ -59,6 +60,7 @@ public class MainClient {
                     screen.getDoorsManager().openStartDoor();
                     TimesUpTeamGame.isTimeUp = false;
                     TimesUpTeamGame.isRunning = true;
+                    TimesUpTeamGame.isWin = false;
                 }
 
                 else if (object instanceof Network.GameOver) {
@@ -69,6 +71,32 @@ public class MainClient {
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
+                }
+
+                else if (object instanceof Network.GameWin) {
+                    System.out.println("game win!");
+                    TimesUpTeamGame.isWin = true;
+                    client.stop();
+                }
+
+                else if (object instanceof Network.LevelUp) {
+                    System.out.println("level up!");
+                    final Network.LevelUp msg = (Network.LevelUp) object;
+
+                    screen.getHud().setWorldTimer(msg.time);
+                    screen.getHud().keyCount = 0;
+                    screen.getHud().keyCountLabel.setText(String.format("%01d/3", 0));
+                    screen.getKeysManager().keysPickedUp = 0;
+                    screen.getDoorsManager().isOpened = false;
+                    screen.game.audioManager.playLevelUpSound();
+                    Gdx.app.postRunnable(new Runnable() {
+                        @Override
+                        public void run() {
+                            screen.player.b2Body.setTransform(
+                                    new Vector2(msg.x, msg.y),
+                                    screen.player.b2Body.getAngle());
+                        }
+                    });
                 }
 
                 else if (object instanceof Network.MovePlayer) {
@@ -93,6 +121,7 @@ public class MainClient {
                     } else {
                         System.out.println("- player2 exists, moving them...");
                         screen.moveSecondPlayer(msg.x, msg.y);
+                        // ...
                     }
 
                     System.out.println();
@@ -141,6 +170,7 @@ public class MainClient {
         }
     }
 
+
     /**
      * Send player's position (with their ID) to the server, so the server can forward it to other players.
      */
@@ -151,9 +181,9 @@ public class MainClient {
         msg.x = x;
         msg.y = y;
 
-//        System.out.println();
-//        System.out.printf("--- Sending my new position to the server... (id: %d, x: %f, y: %f)\n", msg.id, msg.x, msg.y);
-//        System.out.println();
+        System.out.println();
+        System.out.printf("--- Sending my new position to the server... (id: %d, x: %f, y: %f)\n", msg.id, msg.x, msg.y);
+        System.out.println();
 
         client.sendTCP(msg);
     }

@@ -1,5 +1,6 @@
 package com.rahamehed.server;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -8,11 +9,13 @@ import java.util.TimerTask;
 public class TimerLogic {
 
     private final int cycleLength = 500; // ms
-    private final int secondsPerLevel = 60;
+    private int secondsPerLevel = 60;
     private MainServer server;
     private MapHandler mapHandler;
     private Timer timer;
     private int cyclesLeft;
+
+    private int currentLevel = 1;
 
     private int player1LastX;
     private int player1LastY;
@@ -36,6 +39,7 @@ public class TimerLogic {
      */
     public void start() {
         // Both players have joined
+        reset();
 
         // Send game start event to all players
         gameStart();
@@ -57,12 +61,53 @@ public class TimerLogic {
                     return;
                 }
 
+                // Check if players are in the end room
+                if (playersInEndRoom()) {
+                    if (currentLevel == 2) {  // todo: change to 3 when level 3 exists
+                        gameWin();
+                        timer.cancel();
+                    } else {
+                        currentLevel++;
+                        if (currentLevel == 2) {
+                            secondsPerLevel = 300;
+                            guardX = 179;
+                            guardY = 14;
+                        } else if (currentLevel == 3) {
+                            secondsPerLevel = 30;
+                            guardX = 168;  // find out (look at server print)
+                            guardY = 142;  // find out (look at server print)
+                        }
+
+                        // Reset time
+                        cyclesLeft = (secondsPerLevel * 1000) / cycleLength;
+                        levelUp();
+                    }
+                    return;
+                }
+
                 // Update guard's position and send it to all players
                 moveGuard();
 
                 cyclesLeft--;
             }
         }, 0, cycleLength);
+    }
+
+
+    /**
+     * Check whether both players are in the end room.
+     */
+    private boolean playersInEndRoom() {
+        boolean finished = true;
+        int endRoomY = 14;
+        for (int[] p : server.players.values()) {
+            System.out.println(Arrays.toString(p));
+            if (p[1] > endRoomY) {
+                finished = false;
+                break;
+            }
+        }
+        return finished;
     }
 
     /**
@@ -80,6 +125,24 @@ public class TimerLogic {
      */
     private void gameOver() {
         Network.GameOver msg = new Network.GameOver();
+
+        server.server.sendToAllTCP(msg);
+    }
+
+    private void gameWin() {
+        Network.GameWin msg = new Network.GameWin();
+
+        server.server.sendToAllTCP(msg);
+    }
+
+    private void levelUp() {
+        Network.LevelUp msg = new Network.LevelUp();
+        msg.time = secondsPerLevel;
+        msg.x = 29.26049f;
+        msg.y = 1.154136f;
+
+        // Set one player's server-side coordinate temporarily to not trigger both players in end room
+        server.players.entrySet().iterator().next().setValue(new int[]{15, 15});
 
         server.server.sendToAllTCP(msg);
     }
@@ -140,7 +203,8 @@ public class TimerLogic {
             gameOver();
         }
 
-//        System.out.println("- player: " + player1X + ", " + player1Y);
+        System.out.println("- player: x=" + player1X + ", y=" + player1Y);
+        System.out.println("- guard : x=" + guardX + ", y=" + guardY);
 //        System.out.println("- moving guard to " + msg.x + ", " + msg.y);
 
         server.server.sendToAllTCP(msg);
@@ -152,5 +216,7 @@ public class TimerLogic {
         }
         guardX = 53;
         guardY = 35;
+        currentLevel = 1;
+        secondsPerLevel = 60;
     }
 }

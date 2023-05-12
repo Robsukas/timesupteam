@@ -20,7 +20,9 @@ public class DoorsManager {
     private List<StartDoor> startDoorsToBeDestroyed;
 
     private List<EndDoor> endDoors = new ArrayList<>();
-    private List<EndDoor> endDoorsToBeDestroyed;
+    private List<EndDoor> endDoorsToBeDestroyed = new ArrayList<>();
+
+    public boolean isOpened = false;
 
     public DoorsManager(PlayScreen screen) {
         this.world = screen.getWorld();
@@ -34,6 +36,8 @@ public class DoorsManager {
 
     public void addEndDoor(EndDoor door) {
         endDoors.add(door);
+        System.out.println("added door");
+        System.out.println(endDoors.size());
     }
 
     /**
@@ -45,10 +49,23 @@ public class DoorsManager {
 
 
     /**
-     * Destroys the start door (puts in queue).
+     * Destroys the next end door (puts in queue).
      */
     public void openEndDoor() {
-        endDoorsToBeDestroyed = endDoors;
+        EndDoor door1 = endDoors.get(0);
+        EndDoor door2 = endDoors.get(1);
+        EndDoor door3 = endDoors.get(2);
+        EndDoor door4 = endDoors.get(3);
+
+        endDoorsToBeDestroyed.add(door1);
+        endDoorsToBeDestroyed.add(door2);
+        endDoorsToBeDestroyed.add(door3);
+        endDoorsToBeDestroyed.add(door4);
+
+        endDoors.remove(door1);
+        endDoors.remove(door2);
+        endDoors.remove(door3);
+        endDoors.remove(door4);
     }
 
     /**

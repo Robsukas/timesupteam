@@ -13,10 +13,12 @@ public class AudioManager {
 
     public Music gameOverMusic;
 
+    public Music winGameMusic;
+
     public Sound clickSound;
+    public Sound levelUpSound;
 
     public Music violinMusic;
-    public Music winGameMusic;
 
     public Music clockMusic;
     private float soundVolume = 1.0f;
@@ -32,6 +34,7 @@ public class AudioManager {
         keyPickedSound = Gdx.audio.newSound(Gdx.files.internal("audio/keyPickedSound.mp3"));
         openDoorSound = Gdx.audio.newSound(Gdx.files.internal("audio/openDoorSound.mp3"));
         winGameMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/winGameMusic.mp3"));
+        levelUpSound = Gdx.audio.newSound(Gdx.files.internal("audio/levelUpSound.mp3"));
     }
 
     public void playMenuMusic() {
@@ -61,15 +64,6 @@ public class AudioManager {
             gameOverMusic.play();
         }
     }
-
-    public void playWinGameMusic() {
-        if (TimesUpTeamGame.DEBUG.get("music")) {
-            stopAllMusic();
-            winGameMusic.setLooping(false);
-            winGameMusic.play();
-        }
-    }
-
     public void playClickSound() {
         clickSound.play(soundVolume);
     }
@@ -80,6 +74,18 @@ public class AudioManager {
 
     public void playOpenDoorSound() {
         openDoorSound.play(soundVolume);
+    }
+
+    public void playLevelUpSound() {
+        levelUpSound.play(soundVolume);
+    }
+
+    public void playWinGameMusic() {
+        if (TimesUpTeamGame.DEBUG.get("music")) {
+            stopAllMusic();
+            winGameMusic.setLooping(false);
+            winGameMusic.play();
+        }
     }
 
     public void stopAllMusic() {
@@ -122,5 +128,6 @@ public class AudioManager {
         clickSound.dispose();
         violinMusic.dispose();
         clockMusic.dispose();
+        winGameMusic.dispose();
     }
 }

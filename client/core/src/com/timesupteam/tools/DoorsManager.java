@@ -55,37 +55,35 @@ public class DoorsManager {
 //        endDoorsToBeDestroyed = endDoors;
         System.out.println(endDoors.size());
 
+        EndDoor door1;
+        EndDoor door2;
+        EndDoor door3;
+        EndDoor door4;
+
         // Needs to be modified with 3 doors
         if (endDoors.size() == 8) {
-            EndDoor door1 = endDoors.get(0);
-            endDoorsToBeDestroyed.add(door1);
-            EndDoor door2 = endDoors.get(1);
-            endDoorsToBeDestroyed.add(door1);
-            EndDoor door3 = endDoors.get(4);
-            endDoorsToBeDestroyed.add(door1);
-            EndDoor door4 = endDoors.get(5);
-            endDoorsToBeDestroyed.add(door1);
+            door1 = endDoors.get(0);
+            door2 = endDoors.get(1);
+            door3 = endDoors.get(4);
+            door4 = endDoors.get(5);
 
-            endDoors.remove(door1);
-            endDoors.remove(door2);
-            endDoors.remove(door3);
-            endDoors.remove(door4);
         } else if (endDoors.size() == 4) {
-            EndDoor door1 = endDoors.get(0);
-            endDoorsToBeDestroyed.add(door1);
-            EndDoor door2 = endDoors.get(1);
-            endDoorsToBeDestroyed.add(door1);
-            EndDoor door3 = endDoors.get(2);
-            endDoorsToBeDestroyed.add(door1);
-            EndDoor door4 = endDoors.get(3);
-            endDoorsToBeDestroyed.add(door1);
-
-            endDoors.remove(door1);
-            endDoors.remove(door2);
-            endDoors.remove(door3);
-            endDoors.remove(door4);
+            door1 = endDoors.get(0);
+            door2 = endDoors.get(1);
+            door3 = endDoors.get(2);
+            door4 = endDoors.get(3);
         }
 
+
+        endDoorsToBeDestroyed.add(door1);
+        endDoorsToBeDestroyed.add(door2);
+        endDoorsToBeDestroyed.add(door3);
+        endDoorsToBeDestroyed.add(door4);
+
+        endDoors.remove(door1);
+        endDoors.remove(door2);
+        endDoors.remove(door3);
+        endDoors.remove(door4);
     }
 
     /**

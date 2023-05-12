@@ -68,11 +68,13 @@ public class MainClient {
                 }
 
                 else if (object instanceof Network.GameWin) {
+                    System.out.println("game win!");
                     TimesUpTeamGame.isWin = true;
                 }
 
                 else if (object instanceof Network.LevelUp) {
-                    Network.LevelUp msg = (Network.LevelUp) object;
+                    System.out.println("level up!");
+                    final Network.LevelUp msg = (Network.LevelUp) object;
 
                     screen.getHud().setWorldTimer(msg.time);
                     screen.getKeysManager().keysPickedUp = 0;
@@ -80,7 +82,7 @@ public class MainClient {
                         @Override
                         public void run() {
                             screen.player.b2Body.setTransform(
-                                    new Vector2(screen.player.b2Body.getPosition().x, screen.player.b2Body.getPosition().y),
+                                    new Vector2(msg.x, msg.y),
                                     screen.player.b2Body.getAngle());
                         }
                     });

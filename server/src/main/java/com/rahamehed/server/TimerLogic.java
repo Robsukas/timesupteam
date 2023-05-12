@@ -140,6 +140,10 @@ public class TimerLogic {
         msg.time = secondsPerLevel;
         msg.x = 29.26049f;
         msg.y = 1.154136f;
+
+        // Set one player's server-side coordinate temporarily to not trigger both players in end room
+        server.players.entrySet().iterator().next().setValue(new int[]{15, 15});
+
         server.server.sendToAllTCP(msg);
     }
 

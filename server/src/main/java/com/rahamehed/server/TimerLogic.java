@@ -204,6 +204,7 @@ public class TimerLogic {
         }
 
         System.out.println("- player: x=" + player1X + ", y=" + player1Y);
+        System.out.println("- guard : x=" + guardX + ", y=" + guardY);
 //        System.out.println("- moving guard to " + msg.x + ", " + msg.y);
 
         server.server.sendToAllTCP(msg);

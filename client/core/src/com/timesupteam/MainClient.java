@@ -77,7 +77,10 @@ public class MainClient {
                     final Network.LevelUp msg = (Network.LevelUp) object;
 
                     screen.getHud().setWorldTimer(msg.time);
+                    screen.getHud().keyCount = 0;
+                    screen.getHud().keyCountLabel.setText(String.format("%01d/3", 0));
                     screen.getKeysManager().keysPickedUp = 0;
+                    screen.game.audioManager.playLevelUpSound();
                     Gdx.app.postRunnable(new Runnable() {
                         @Override
                         public void run() {

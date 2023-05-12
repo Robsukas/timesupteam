@@ -23,12 +23,12 @@ public class HUD implements Disposable {
     // Displayed variables
     private int worldTimer;
     private float timeCount;
-    private int keyCount;
+    public int keyCount;
 //    private boolean timeUp;
 
     // Scene2D widgets
     Label countdownLabel;
-    Label keyCountLabel;
+    public Label keyCountLabel;
     Label timeLabel;
     Label levelLabel;
     Label worldLabel;

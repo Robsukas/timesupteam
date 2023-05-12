@@ -16,6 +16,7 @@ public class AudioManager {
     public Music winGameMusic;
 
     public Sound clickSound;
+    public Sound levelUpSound;
 
     public Music violinMusic;
 
@@ -33,6 +34,7 @@ public class AudioManager {
         keyPickedSound = Gdx.audio.newSound(Gdx.files.internal("audio/keyPickedSound.mp3"));
         openDoorSound = Gdx.audio.newSound(Gdx.files.internal("audio/openDoorSound.mp3"));
         winGameMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/winGameMusic.mp3"));
+        levelUpSound = Gdx.audio.newSound(Gdx.files.internal("audio/levelUpSound.wav"));
     }
 
     public void playMenuMusic() {
@@ -72,6 +74,10 @@ public class AudioManager {
 
     public void playOpenDoorSound() {
         openDoorSound.play(soundVolume);
+    }
+
+    public void playLevelUpSound() {
+        levelUpSound.play(soundVolume);
     }
 
     public void playWinGameMusic() {

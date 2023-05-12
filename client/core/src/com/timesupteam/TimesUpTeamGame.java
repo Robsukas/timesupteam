@@ -21,7 +21,7 @@ public class TimesUpTeamGame extends Game {
         DEBUG.put("lights", false);
         DEBUG.put("Box2DDebugLines", false);
         DEBUG.put("kill when timer finishes", false);
-        DEBUG.put("music", false);
+        DEBUG.put("music", true);
         DEBUG.put("open door", true);
     }
 

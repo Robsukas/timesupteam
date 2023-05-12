@@ -13,6 +13,8 @@ public class AudioManager {
 
     public Music gameOverMusic;
 
+    public Music winGameMusic;
+
     public Sound clickSound;
 
     public Music violinMusic;
@@ -30,6 +32,7 @@ public class AudioManager {
         clockMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/clockMusic.mp3"));
         keyPickedSound = Gdx.audio.newSound(Gdx.files.internal("audio/keyPickedSound.mp3"));
         openDoorSound = Gdx.audio.newSound(Gdx.files.internal("audio/openDoorSound.mp3"));
+        winGameMusic = Gdx.audio.newMusic(Gdx.files.internal("audio/winGameMusic.mp3"));
     }
 
     public void playMenuMusic() {
@@ -71,12 +74,21 @@ public class AudioManager {
         openDoorSound.play(soundVolume);
     }
 
+    public void playWinGameMusic() {
+        if (TimesUpTeamGame.DEBUG.get("music")) {
+            stopAllMusic();
+            winGameMusic.setLooping(false);
+            winGameMusic.play();
+        }
+    }
+
     public void stopAllMusic() {
         menuMusic.stop();
         playScreenMusic.stop();
         gameOverMusic.stop();
         violinMusic.stop();
         clockMusic.stop();
+        winGameMusic.stop();
     }
 
     public boolean isMenuMusicPlaying() {
@@ -89,6 +101,7 @@ public class AudioManager {
         gameOverMusic.setVolume(volume);
         violinMusic.setVolume(volume);
         clockMusic.setVolume(volume);
+        winGameMusic.setVolume(volume);
     }
     public void setAllSoundVolume(float volume) {
         soundVolume = volume;
@@ -109,5 +122,6 @@ public class AudioManager {
         clickSound.dispose();
         violinMusic.dispose();
         clockMusic.dispose();
+        winGameMusic.dispose();
     }
 }

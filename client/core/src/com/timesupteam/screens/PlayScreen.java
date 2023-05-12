@@ -27,6 +27,8 @@ import com.timesupteam.tools.DoorsManager;
 import com.timesupteam.tools.KeysManager;
 import com.timesupteam.tools.WorldContactListener;
 
+import java.sql.Time;
+
 public class PlayScreen implements Screen {
 
     // Main variables
@@ -329,6 +331,7 @@ public class PlayScreen implements Screen {
 
         if (TimesUpTeamGame.isWin) {
             game.setScreen(new WinGameScreen(game, "Winner-winner, chicken dinner!"));
+            TimesUpTeamGame.isWin = false;
             this.dispose();
         }
     }

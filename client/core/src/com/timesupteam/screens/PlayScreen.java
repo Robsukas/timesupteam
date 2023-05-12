@@ -326,6 +326,11 @@ public class PlayScreen implements Screen {
                 this.dispose();
             }
         }
+
+        if (TimesUpTeamGame.isWin) {
+            game.setScreen(new WinGameScreen(game, "Winner-winner, chicken dinner!"));
+            this.dispose();
+        }
     }
 
     @Override

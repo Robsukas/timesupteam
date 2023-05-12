@@ -12,7 +12,7 @@ public class MainClient {
 
     private final Client client;
 
-    private final String SERVER_IP = "193.40.156.59"; //"193.40.156.59";  // "localhost";
+    private final String SERVER_IP = "localhost";  // "193.40.156.59";
     private final int TCP_PORT = 8080;  // must be the same on server
     private final int UDP_PORT = 8081;  // must be the same on server
     private final PlayScreen screen;
@@ -58,10 +58,15 @@ public class MainClient {
                     screen.getDoorsManager().openStartDoor();
                     TimesUpTeamGame.isTimeUp = false;
                     TimesUpTeamGame.isRunning = true;
+                    TimesUpTeamGame.isWin = false;
                 }
 
                 else if (object instanceof Network.GameOver) {
                     client.stop(); // disconnect player from server
+                }
+
+                else if (object instanceof Network.GameWin) {
+                    TimesUpTeamGame.isWin = true;
                 }
 
                 else if (object instanceof Network.MovePlayer) {
@@ -136,9 +141,9 @@ public class MainClient {
         msg.x = x;
         msg.y = y;
 
-//        System.out.println();
-//        System.out.printf("--- Sending my new position to the server... (id: %d, x: %f, y: %f)\n", msg.id, msg.x, msg.y);
-//        System.out.println();
+        System.out.println();
+        System.out.printf("--- Sending my new position to the server... (id: %d, x: %f, y: %f)\n", msg.id, msg.x, msg.y);
+        System.out.println();
 
         client.sendTCP(msg);
     }

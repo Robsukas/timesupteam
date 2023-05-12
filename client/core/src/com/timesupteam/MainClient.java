@@ -12,7 +12,7 @@ public class MainClient {
 
     private final Client client;
 
-    private final String SERVER_IP = "localhost"; //"193.40.156.59";  // "localhost";
+    private final String SERVER_IP = "193.40.156.59"; //"193.40.156.59";  // "localhost";
     private final int TCP_PORT = 8080;  // must be the same on server
     private final int UDP_PORT = 8081;  // must be the same on server
     private final PlayScreen screen;

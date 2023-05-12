@@ -22,6 +22,8 @@ public class DoorsManager {
     private List<EndDoor> endDoors = new ArrayList<>();
     private List<EndDoor> endDoorsToBeDestroyed = new ArrayList<>();
 
+    public boolean isOpened = false;
+
     public DoorsManager(PlayScreen screen) {
         this.world = screen.getWorld();
         this.client = screen.getClient();
@@ -34,6 +36,8 @@ public class DoorsManager {
 
     public void addEndDoor(EndDoor door) {
         endDoors.add(door);
+        System.out.println("added door");
+        System.out.println(endDoors.size());
     }
 
     /**
@@ -45,11 +49,43 @@ public class DoorsManager {
 
 
     /**
-     * Destroys the start door (puts in queue).
+     * Destroys the end door (puts in queue).
      */
     public void openEndDoor() {
 //        endDoorsToBeDestroyed = endDoors;
-        endDoorsToBeDestroyed.add(endDoors.remove(0));
+        System.out.println(endDoors.size());
+
+        // Needs to be modified with 3 doors
+        if (endDoors.size() == 8) {
+            EndDoor door1 = endDoors.get(0);
+            endDoorsToBeDestroyed.add(door1);
+            EndDoor door2 = endDoors.get(1);
+            endDoorsToBeDestroyed.add(door1);
+            EndDoor door3 = endDoors.get(4);
+            endDoorsToBeDestroyed.add(door1);
+            EndDoor door4 = endDoors.get(5);
+            endDoorsToBeDestroyed.add(door1);
+
+            endDoors.remove(door1);
+            endDoors.remove(door2);
+            endDoors.remove(door3);
+            endDoors.remove(door4);
+        } else if (endDoors.size() == 4) {
+            EndDoor door1 = endDoors.get(0);
+            endDoorsToBeDestroyed.add(door1);
+            EndDoor door2 = endDoors.get(1);
+            endDoorsToBeDestroyed.add(door1);
+            EndDoor door3 = endDoors.get(2);
+            endDoorsToBeDestroyed.add(door1);
+            EndDoor door4 = endDoors.get(3);
+            endDoorsToBeDestroyed.add(door1);
+
+            endDoors.remove(door1);
+            endDoors.remove(door2);
+            endDoors.remove(door3);
+            endDoors.remove(door4);
+        }
+
     }
 
     /**

@@ -92,8 +92,9 @@ public class KeysManager {
         keysToBeDestroyed.clear();
 
         // If all keys are picked up, open the end door
-        if (keysPickedUp == 3) {
+        if (keysPickedUp == 3 && !screen.getDoorsManager().isOpened) {
             screen.getDoorsManager().openEndDoor();
+            screen.getDoorsManager().isOpened = true;
         }
     }
 }

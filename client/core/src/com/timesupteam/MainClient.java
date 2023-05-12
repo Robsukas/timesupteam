@@ -80,6 +80,7 @@ public class MainClient {
                     screen.getHud().keyCount = 0;
                     screen.getHud().keyCountLabel.setText(String.format("%01d/3", 0));
                     screen.getKeysManager().keysPickedUp = 0;
+                    screen.getDoorsManager().isOpened = false;
                     screen.game.audioManager.playLevelUpSound();
                     Gdx.app.postRunnable(new Runnable() {
                         @Override

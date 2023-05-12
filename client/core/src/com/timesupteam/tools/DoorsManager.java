@@ -55,10 +55,10 @@ public class DoorsManager {
 //        endDoorsToBeDestroyed = endDoors;
         System.out.println(endDoors.size());
 
-        EndDoor door1;
-        EndDoor door2;
-        EndDoor door3;
-        EndDoor door4;
+        EndDoor door1 = null;
+        EndDoor door2 = null;
+        EndDoor door3 = null;
+        EndDoor door4 = null;
 
         // Needs to be modified with 3 doors
         if (endDoors.size() == 8) {

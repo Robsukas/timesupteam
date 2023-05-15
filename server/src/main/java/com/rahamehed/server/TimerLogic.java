@@ -27,6 +27,9 @@ public class TimerLogic {
     private List<int[]> currentGuardPath;
     private int pathCounter = 0;
 
+    // Track which levels the players are in.
+    private int lvlTracker = 1;
+
     public TimerLogic(MainServer server, MapHandler mapHandler) {
         this.server = server;
         this.mapHandler = mapHandler;
@@ -138,8 +141,14 @@ public class TimerLogic {
     private void levelUp() {
         Network.LevelUp msg = new Network.LevelUp();
         msg.time = secondsPerLevel;
-        msg.x = 29.26049f;
-        msg.y = 1.154136f;
+        lvlTracker++;
+        if (lvlTracker == 2) {
+            msg.x = 29.26049f;
+            msg.y = 1.154136f;
+        } else if (lvlTracker == 3) {
+            msg.x = 29.26049f;
+            msg.y = 1.154136f;
+        }
 
         // Set one player's server-side coordinate temporarily to not trigger both players in end room
         server.players.entrySet().iterator().next().setValue(new int[]{15, 15});

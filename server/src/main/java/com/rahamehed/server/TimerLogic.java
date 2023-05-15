@@ -66,19 +66,19 @@ public class TimerLogic {
 
                 // Check if players are in the end room
                 if (playersInEndRoom()) {
-                    if (currentLevel == 2) {  // todo: change to 3 when level 3 exists
+                    if (currentLevel == 3) {
                         gameWin();
                         timer.cancel();
                     } else {
                         currentLevel++;
                         if (currentLevel == 2) {
                             secondsPerLevel = 300;
-                            guardX = 179;
-                            guardY = 14;
+                            guardX = 170;
+                            guardY = 42;
                         } else if (currentLevel == 3) {
                             secondsPerLevel = 30;
-                            guardX = 168;  // find out (look at server print)
-                            guardY = 142;  // find out (look at server print)
+                            guardX = 283;  // find out (look at server print)
+                            guardY = 55;  // find out (look at server print)
                         }
 
                         // Reset time

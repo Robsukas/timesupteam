@@ -178,12 +178,8 @@ public class PlayScreen implements Screen {
     public void setViolinVolumeWithProximity(float playerX, float guardX, float playerY, float guardY) {
         // Calculate the distance from the player to the guard and using the exponential function, set the volume of the violin music.
         float distance = (float) Math.sqrt(Math.pow(playerX - guardX, 2) + Math.pow(playerY - guardY, 2));
-        if (distance < 3.2f) /* ~ 20 tiles */ {
-            float volume = (float) Math.exp(-distance * 0.75f);
-            game.audioManager.setViolinMusic(volume);
-        } else {
-            game.audioManager.setViolinMusic(0);
-        }
+        float volume = (float) Math.exp(-distance * 0.75f);
+        game.audioManager.setViolinMusic(volume);
     }
     public void handleInput() {
         boolean moveUp = Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP);
@@ -303,7 +299,6 @@ public class PlayScreen implements Screen {
         // Draw players, with our main character on top
         if (guard != null) {
             guard.draw(game.batch); // must have texture!
-            ;
         }
 
         if (player2 != null) {
@@ -325,17 +320,14 @@ public class PlayScreen implements Screen {
 
         // Game over logic
         if (TimesUpTeamGame.DEBUG.get("kill when timer finishes")) {
-            if (TimesUpTeamGame.isTimeUp) {  // replace with real logic
+            if (TimesUpTeamGame.isTimeUp && !TimesUpTeamGame.isWin) {
                 game.setScreen(new GameOverScreen(game, "Game over!"));
-                this.dispose();
-//                client.stop();
             }
         }
 
         if (TimesUpTeamGame.isWin) {
             game.setScreen(new WinGameScreen(game, "Winner-winner, chicken dinner!"));
             TimesUpTeamGame.isWin = false;
-            this.dispose();
         }
     }
 
@@ -360,7 +352,7 @@ public class PlayScreen implements Screen {
 
     @Override
     public void hide() {
-
+        this.dispose();
     }
 
     @Override

@@ -86,6 +86,7 @@ public class MainClient {
                     screen.getHud().setWorldTimer(msg.time);
                     screen.getHud().keyCount = 0;
                     screen.getHud().keyCountLabel.setText(String.format("%01d/3", 0));
+                    screen.getHud().nextLevel();
                     screen.getKeysManager().keysPickedUp = 0;
                     screen.getDoorsManager().isOpened = false;
                     screen.game.audioManager.playLevelUpSound();

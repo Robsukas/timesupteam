@@ -24,6 +24,7 @@ public class HUD implements Disposable {
     private int worldTimer;
     private float timeCount;
     public int keyCount;
+    private int level = 1;
 //    private boolean timeUp;
 
     // Scene2D widgets
@@ -56,7 +57,7 @@ public class HUD implements Disposable {
         countdownLabel = new Label("--", new Label.LabelStyle(font12, Color.WHITE));
         keyCountLabel = new Label(String.format("%01d/3", keyCount), new Label.LabelStyle(font12, Color.WHITE));
         timeLabel = new Label("TIME", new Label.LabelStyle(font12, Color.WHITE));
-        levelLabel = new Label("1-1", new Label.LabelStyle(font12, Color.WHITE));
+        levelLabel = new Label(String.format("%01d", level), new Label.LabelStyle(font12, Color.WHITE));
         worldLabel = new Label("LEVEL", new Label.LabelStyle(font12, Color.WHITE));
         characterLabel = new Label("KEY COUNT", new Label.LabelStyle(font12, Color.WHITE));
 
@@ -99,6 +100,11 @@ public class HUD implements Disposable {
     public void addKeyCount(int value) {
         keyCount += value;
         keyCountLabel.setText(String.format("%01d/3", keyCount));
+    }
+
+    public void nextLevel() {
+        level++;
+        levelLabel.setText(String.format("%01d", level));
     }
 
     @Override

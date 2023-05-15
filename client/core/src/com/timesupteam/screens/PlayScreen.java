@@ -27,6 +27,7 @@ import com.timesupteam.tools.DoorsManager;
 import com.timesupteam.tools.KeysManager;
 import com.timesupteam.tools.WorldContactListener;
 
+import java.awt.*;
 import java.sql.Time;
 
 public class PlayScreen implements Screen {
@@ -61,6 +62,9 @@ public class PlayScreen implements Screen {
     private RayHandler rayHandler;
     private ConeLight flashlight;
     private PointLight circularLight;
+
+    private PointLight staticLight;
+
 
     // Multiplayer variables
     public MainClient client;
@@ -107,11 +111,52 @@ public class PlayScreen implements Screen {
         world.setContactListener(new WorldContactListener());
 
         // Initialize lighting
+
+
+
         rayHandler = new RayHandler(world);
         rayHandler.useCustomViewport(gamePort.getScreenX(), gamePort.getScreenY(), gamePort.getScreenWidth(), gamePort.getScreenHeight());
 
         RayHandler.useDiffuseLight(true);
         rayHandler.setBlurNum(2);
+
+        //Lights near the doors
+
+
+        //level1 lights
+
+        PointLight startDoorLeft1 = new PointLight(rayHandler, 100, Color.WHITE, 50 / TimesUpTeamGame.PPM, 9.857865f,14.517742f);
+        PointLight startDoorRight1 = new PointLight(rayHandler, 100, Color.WHITE, 50 / TimesUpTeamGame.PPM, 10.320358f,14.517742f);
+        PointLight endDoorLeft1 = new PointLight(rayHandler, 100, Color.WHITE, 50 / TimesUpTeamGame.PPM, 9.846732f,18.962738f);
+        PointLight endDoorRight1 = new PointLight(rayHandler, 100, Color.WHITE, 50 / TimesUpTeamGame.PPM, 10.309225f,18.987740f);
+        startDoorLeft1.setXray(true);
+        startDoorRight1.setXray(true);
+        endDoorLeft1.setXray(true);
+        endDoorRight1.setXray(true);
+
+        //level2 lights
+
+        PointLight startDoorLeft2 = new PointLight(rayHandler, 100, Color.WHITE, 50 / TimesUpTeamGame.PPM, 29.055700f,10.846323f);
+        PointLight startDoorRight2 = new PointLight(rayHandler, 100, Color.WHITE, 50 / TimesUpTeamGame.PPM, 29.518229f,10.846323f);
+        PointLight endDoorLeft2 = new PointLight(rayHandler, 100, Color.WHITE, 50 / TimesUpTeamGame.PPM, 28.717051f,18.972572f);
+        PointLight endDoorRight2 = new PointLight(rayHandler, 100, Color.WHITE, 50 / TimesUpTeamGame.PPM, 29.192080f,18.997574f);
+        startDoorLeft2.setXray(true);
+        startDoorRight2.setXray(true);
+        endDoorLeft2.setXray(true);
+        endDoorRight2.setXray(true);
+
+        //level3 lights
+
+        PointLight startDoorLeft3 = new PointLight(rayHandler, 100, Color.WHITE, 50 / TimesUpTeamGame.PPM, 45.202579f,8.589208f);
+        PointLight startDoorRight3 = new PointLight(rayHandler, 100, Color.WHITE, 50 / TimesUpTeamGame.PPM, 45.652607f,8.589208f);
+        PointLight endDoorLeft3 = new PointLight(rayHandler, 100, Color.WHITE, 50 / TimesUpTeamGame.PPM, 45.036930f,18.967434f);
+        PointLight endDoorRight3 = new PointLight(rayHandler, 100, Color.WHITE, 50 / TimesUpTeamGame.PPM, 45.511959f,18.967434f);
+        startDoorLeft3.setXray(true);
+        startDoorRight3.setXray(true);
+        endDoorLeft3.setXray(true);
+        endDoorRight3.setXray(true);
+
+
 
         // Lights for main character
         circularLight = new PointLight(rayHandler, 100, Color.WHITE, 50 / TimesUpTeamGame.PPM, 0, 0);

@@ -77,8 +77,8 @@ public class TimerLogic {
                             guardY = 42;
                         } else if (currentLevel == 3) {
                             secondsPerLevel = 70;
-                            guardX = 283;  // find out (look at server print)
-                            guardY = 55;  // find out (look at server print)
+                            guardX = 283;
+                            guardY = 55;
                         }
 
                         // Reset time
@@ -226,6 +226,7 @@ public class TimerLogic {
         guardX = 53;
         guardY = 35;
         currentLevel = 1;
+        lvlTracker = 1;
         secondsPerLevel = 60;
     }
 }

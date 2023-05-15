@@ -23,7 +23,7 @@ public class TimesUpTeamGame extends Game {
         DEBUG.put("kill when timer finishes", false);
         DEBUG.put("music", true);
         DEBUG.put("open door", false);
-        DEBUG.put("wall hack", true);
+        DEBUG.put("wall hack", false);
     }
 
     // Whether game is running

@@ -72,7 +72,7 @@ public class AStarMazeSolver {
 
         MapHandler mapHandler = new MapHandler();
         try {
-            mapHandler.readInMap("level_1.tmx", "top");
+            mapHandler.readInMap("level.tmx", "top");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

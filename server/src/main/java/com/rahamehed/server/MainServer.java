@@ -34,7 +34,7 @@ public class MainServer {
         mapHandler = new MapHandler();
         timer = new TimerLogic(this, mapHandler);
         try {
-            mapHandler.readInMap("level_1.tmx", "top");
+            mapHandler.readInMap("level.tmx", "top");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

@@ -209,7 +209,7 @@ public class TimerLogic {
 
         // If guard is on the same tile as player, end game
         if (guardX == player1X && guardY == player1Y) {
-            gameOver();
+            // gameOver(); // TODO !!!
         }
 
         System.out.println("- player: x=" + player1X + ", y=" + player1Y);

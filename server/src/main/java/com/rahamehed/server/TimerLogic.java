@@ -76,7 +76,7 @@ public class TimerLogic {
                             guardX = 170;
                             guardY = 42;
                         } else if (currentLevel == 3) {
-                            secondsPerLevel = 30;
+                            secondsPerLevel = 60;
                             guardX = 283;  // find out (look at server print)
                             guardY = 55;  // find out (look at server print)
                         }

@@ -189,9 +189,9 @@ public class Character extends Sprite {
 
     public void defineCharacter() {
         BodyDef bdef = new BodyDef();
-        bdef.position.set(10.084535f, 4.845491f);  // starting pos of characters
+        bdef.position.set(10.095362f, 14.105248f);  // starting pos of characters
 
-//        bdef.position.set(29.26049f, 1.154136f); // level 2
+//        bdef.position.set(29.281116f, 10.426880f); // level 2
 
 //        bdef.position.set(45.438042f, 8.195828f); // level 3
 

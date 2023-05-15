@@ -143,8 +143,8 @@ public class TimerLogic {
         msg.time = secondsPerLevel;
         lvlTracker++;
         if (lvlTracker == 2) {
-            msg.x = 29.26049f;
-            msg.y = 1.154136f;
+            msg.x = 29.281116f;
+            msg.y = 10.426880f;
         } else if (lvlTracker == 3) {
             msg.x = 45.438042f;
             msg.y = 8.195828f;

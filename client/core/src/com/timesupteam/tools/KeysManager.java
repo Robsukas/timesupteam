@@ -1,6 +1,8 @@
 package com.timesupteam.tools;
 
+import box2dLight.PointLight;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.physics.box2d.World;
 import com.timesupteam.MainClient;
 import com.timesupteam.TimesUpTeamGame;
@@ -83,6 +85,7 @@ public class KeysManager {
     public void update() {
         for (Keys key : keysToBeDestroyed) {
             key.getCell().setTile(null);
+            key.light.remove(true);
             world.destroyBody(key.body);
             hud.addKeyCount(1);
             keysPickedUp++;

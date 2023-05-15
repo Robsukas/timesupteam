@@ -129,6 +129,8 @@ public class PlayScreen implements Screen {
         PointLight startDoorRight1 = new PointLight(rayHandler, 100, Color.WHITE, 50 / TimesUpTeamGame.PPM, 10.320358f,14.517742f);
         PointLight endDoorLeft1 = new PointLight(rayHandler, 100, Color.WHITE, 50 / TimesUpTeamGame.PPM, 9.846732f,18.962738f);
         PointLight endDoorRight1 = new PointLight(rayHandler, 100, Color.WHITE, 50 / TimesUpTeamGame.PPM, 10.309225f,18.987740f);
+
+
         startDoorLeft1.setXray(true);
         startDoorRight1.setXray(true);
         endDoorLeft1.setXray(true);
@@ -140,6 +142,9 @@ public class PlayScreen implements Screen {
         PointLight startDoorRight2 = new PointLight(rayHandler, 100, Color.WHITE, 50 / TimesUpTeamGame.PPM, 29.518229f,10.846323f);
         PointLight endDoorLeft2 = new PointLight(rayHandler, 100, Color.WHITE, 50 / TimesUpTeamGame.PPM, 28.717051f,18.972572f);
         PointLight endDoorRight2 = new PointLight(rayHandler, 100, Color.WHITE, 50 / TimesUpTeamGame.PPM, 29.192080f,18.997574f);
+
+
+
         startDoorLeft2.setXray(true);
         startDoorRight2.setXray(true);
         endDoorLeft2.setXray(true);
@@ -207,6 +212,10 @@ public class PlayScreen implements Screen {
         return hud;
     }
 
+    public RayHandler getRayHandler() {
+        return rayHandler;
+    }
+
     public DoorsManager getDoorsManager() {
         return doorsManager;
     }
@@ -219,13 +228,13 @@ public class PlayScreen implements Screen {
         game.audioManager.setViolinMusic(0f);
         // TODO: Set the volume of the clock music to 0, when the second player is not yet in the game and when connected, set volume back to normal.
     }
-
     public void setViolinVolumeWithProximity(float playerX, float guardX, float playerY, float guardY) {
         // Calculate the distance from the player to the guard and using the exponential function, set the volume of the violin music.
         float distance = (float) Math.sqrt(Math.pow(playerX - guardX, 2) + Math.pow(playerY - guardY, 2));
         float volume = (float) Math.exp(-distance * 0.75f);
         game.audioManager.setViolinMusic(volume);
     }
+
     public void handleInput() {
         boolean moveUp = Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP);
         boolean moveLeft = Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT);

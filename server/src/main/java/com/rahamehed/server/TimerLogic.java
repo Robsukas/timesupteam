@@ -146,8 +146,8 @@ public class TimerLogic {
             msg.x = 29.26049f;
             msg.y = 1.154136f;
         } else if (lvlTracker == 3) {
-            msg.x = 29.26049f;
-            msg.y = 1.154136f;
+            msg.x = 45.438042f;
+            msg.y = 8.195828f;
         }
 
         // Set one player's server-side coordinate temporarily to not trigger both players in end room

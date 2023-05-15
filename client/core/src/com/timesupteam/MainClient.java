@@ -65,12 +65,12 @@ public class MainClient {
 
                 else if (object instanceof Network.GameOver) {
                     System.out.println("Game over");
-                    client.stop(); // disconnect player from server
-                    try {
-                        client.dispose();
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
+//                    client.stop(); // disconnect player from server
+//                    try {
+//                        client.dispose();
+//                    } catch (IOException e) {
+//                        throw new RuntimeException(e);
+//                    }
                 }
 
                 else if (object instanceof Network.GameWin) {

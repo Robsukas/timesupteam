@@ -203,7 +203,7 @@ public class Character extends Sprite {
         b2Body = world.createBody(bdef);
 
 
-        if (!isMainCharacter)
+        if (!isMainCharacter || TimesUpTeamGame.DEBUG.get("wall hack"))
             // Don't use collision box for second player, since their position is updated directly
             // (avoid unnecessary calculations)
             return;
